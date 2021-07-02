@@ -8,8 +8,8 @@
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
-      <p style="color: #09090a; font-size: 20px">Skywent</p>
-      <p>OxDa25EF...b523Fbaf <img src="../../assets/fz.png" alt="" /></p>
+      <p style="color: #09090a; font-size: 20px">{{ userinfo.user_name }}</p>
+      <p>{{ subStr }} <img src="../../assets/fz.png" alt="" /></p>
 
       <el-button
         round
@@ -21,7 +21,12 @@
           color: #09090a;
           font-weight: 500;
         "
-        @click="$router.push({ name: 'redactUser', params: { userId: '123' } })"
+        @click="
+          $router.push({
+            name: 'redactUser',
+            params: { userId: user_id },
+          })
+        "
         >Edit profile</el-button
       >
       <div
@@ -42,26 +47,31 @@
       </div>
     </div>
     <!-- 产品系列 -->
-    <div class="personalCenter-Tabs">
-      <el-tabs v-model="activeName">
+    <div class="personalCenter-Tabs" v-loading="loading">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="CREATED" name="first">
           <ul class="exhibition">
             <li
               style="position: relative"
-              v-for="(item, index) in userUrl.slice(0, a)"
+              v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
               @click="$router.push({ name: 'details', params: { id: index } })"
               @mouseover="hover = true"
               @mouseleave="hover = false"
             >
               <img
-                :src="item.url"
+                :src="
+                  item.prop_image.replace(
+                    'ipfs://ipfs/',
+                    'https://api.lionnft.io/v1/upload/view?hash='
+                  )
+                "
                 :class="{ hoverBg: index == hoverIndex }"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
                 alt=""
               />
-              <h3 class="username">{{ item.name }}</h3>
+              <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
@@ -83,119 +93,40 @@
                 Buy now →
               </div>
             </li>
-            <div class="loadMore" v-if="a < userUrl.length" @click="loadMore">
+            <div
+              class="loadMore"
+              v-if="a < createdList.length"
+              @click="loadMore"
+            >
               Load More
             </div>
+
             <div class="loadMore" v-else>没有更多了</div>
           </ul>
         </el-tab-pane>
         <el-tab-pane label="SOLD" name="second">
           <ul class="exhibition">
             <li
-              v-for="(item, index) in userUrl.slice(0, a)"
-              :key="index"
-              @click="
-                $router.push({ name: 'establishs', params: { id: index } })
-              "
-              @mouseover="hover = true"
-              @mouseleave="hover = false"
-            >
-              <img
-                :src="item.url"
-                :class="{ hoverBg: index == hoverIndex }"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-                alt=""
-              />
-              <h3 class="username">{{ item.name }}</h3>
-              <p class="usermessage">{{ item.message }}</p>
-              <div class="userprice">
-                <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
-                </span>
-                <span> 1/1</span>
-                <div
-                  class="userpriceimg"
-                  style="float: right; margin-right: 40px"
-                >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
-                </div>
-              </div>
-              <div
-                :class="hoverIndex == index ? 'redirects' : 'redirect'"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-              >
-                Buy now →
-              </div>
-            </li>
-            <div class="loadMore" v-if="a < userUrl.length" @click="loadMore">
-              Load More
-            </div>
-            <div class="loadMore" v-else>没有更多了</div>
-          </ul>
-        </el-tab-pane>
-        <el-tab-pane label="BOUGHT" name="third">
-          <ul class="exhibition">
-            <li
-              v-for="(item, index) in userUrl.slice(0, a)"
-              :key="index"
-              @click="$router.push({ name: 'purchase', params: { id: index } })"
-              @mouseover="hover = true"
-              @mouseleave="hover = false"
-            >
-              <img
-                :src="item.url"
-                :class="{ hoverBg: index == hoverIndex }"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-                alt=""
-              />
-              <h3 class="username">{{ item.name }}</h3>
-              <p class="usermessage">{{ item.message }}</p>
-              <div class="userprice">
-                <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
-                </span>
-                <span> 1/1</span>
-                <div
-                  class="userpriceimg"
-                  style="float: right; margin-right: 40px"
-                >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
-                </div>
-              </div>
-              <div
-                :class="hoverIndex == index ? 'redirects' : 'redirect'"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-              >
-                Buy now →
-              </div>
-            </li>
-            <div class="loadMore" v-if="a < userUrl.length" @click="loadMore">
-              Load More
-            </div>
-            <div class="loadMore" v-else>没有更多了</div>
-          </ul>
-        </el-tab-pane>
-        <el-tab-pane label="COLLECTION" name="fourth">
-          <ul class="exhibition">
-            <li
-              v-for="(item, index) in userUrl.slice(0, a)"
+              style="position: relative"
+              v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
               @click="$router.push({ name: 'details', params: { id: index } })"
               @mouseover="hover = true"
               @mouseleave="hover = false"
             >
               <img
-                :src="item.url"
+                :src="
+                  item.prop_image.replace(
+                    'ipfs://ipfs/',
+                    'https://api.lionnft.io/v1/upload/view?hash='
+                  )
+                "
                 :class="{ hoverBg: index == hoverIndex }"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
                 alt=""
               />
-              <h3 class="username">{{ item.name }}</h3>
+              <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
@@ -217,9 +148,124 @@
                 Buy now →
               </div>
             </li>
-            <div class="loadMore" v-if="a < userUrl.length" @click="loadMore">
+            <div
+              class="loadMore"
+              v-if="a < createdList.length"
+              @click="loadMore"
+            >
               Load More
             </div>
+
+            <div class="loadMore" v-else>没有更多了</div>
+          </ul>
+        </el-tab-pane>
+        <el-tab-pane label="BOUGHT" name="third">
+          <ul class="exhibition">
+            <li
+              style="position: relative"
+              v-for="(item, index) in createdList.slice(0, a)"
+              :key="index"
+              @click="$router.push({ name: 'details', params: { id: index } })"
+              @mouseover="hover = true"
+              @mouseleave="hover = false"
+            >
+              <img
+                :src="
+                  item.prop_image.replace(
+                    'ipfs://ipfs/',
+                    'https://api.lionnft.io/v1/upload/view?hash='
+                  )
+                "
+                :class="{ hoverBg: index == hoverIndex }"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+                alt=""
+              />
+              <h3 class="username">{{ item.prop_name }}</h3>
+              <p class="usermessage">{{ item.message }}</p>
+              <div class="userprice">
+                <span style="float: left; color: #0066ed; margin-right: 20px">
+                  {{ item.price }} BNB
+                </span>
+                <span> 1/1</span>
+                <div
+                  class="userpriceimg"
+                  style="float: right; margin-right: 40px"
+                >
+                  <img src="../../assets/souchang.png" alt="" /> 2314
+                </div>
+              </div>
+              <div
+                :class="hoverIndex == index ? 'redirects' : 'redirect'"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+              >
+                Buy now →
+              </div>
+            </li>
+            <div
+              class="loadMore"
+              v-if="a < createdList.length"
+              @click="loadMore"
+            >
+              Load More
+            </div>
+
+            <div class="loadMore" v-else>没有更多了</div>
+          </ul>
+        </el-tab-pane>
+        <el-tab-pane label="COLLECTION" name="fourth">
+          <ul class="exhibition">
+            <li
+              style="position: relative"
+              v-for="(item, index) in createdList.slice(0, a)"
+              :key="index"
+              @click="$router.push({ name: 'details', params: { id: index } })"
+              @mouseover="hover = true"
+              @mouseleave="hover = false"
+            >
+              <img
+                :src="
+                  item.prop_image.replace(
+                    'ipfs://ipfs/',
+                    'https://api.lionnft.io/v1/upload/view?hash='
+                  )
+                "
+                :class="{ hoverBg: index == hoverIndex }"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+                alt=""
+              />
+              <h3 class="username">{{ item.prop_name }}</h3>
+              <p class="usermessage">{{ item.message }}</p>
+              <div class="userprice">
+                <span style="float: left; color: #0066ed; margin-right: 20px">
+                  {{ item.price }} BNB
+                </span>
+                <span> 1/1</span>
+                <div
+                  class="userpriceimg"
+                  style="float: right; margin-right: 40px"
+                >
+                  <img src="../../assets/souchang.png" alt="" /> 2314
+                </div>
+              </div>
+              <div
+                :class="hoverIndex == index ? 'redirects' : 'redirect'"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+              >
+                Buy now →
+              </div>
+            </li>
+            <div
+              class="loadMore"
+              v-if="a < createdList.length"
+              @click="loadMore"
+            >
+              Load More
+            </div>
+
             <div class="loadMore" v-else>没有更多了</div>
           </ul>
         </el-tab-pane>
@@ -229,66 +275,92 @@
 </template>
 
 <script>
+import Http from "../../utils/http";
+
+import { ethers } from "ethers";
+
 export default {
   name: "PersonalCenter",
   props: {},
   data() {
     return {
+      user_id: "0x7585eF42d7D523e94282826Fb7E223C9E7fD2945",
+      loading: true,
       hover: false,
       hoverIndex: -2,
       a: 6,
       activeName: "first",
-      userUrl: [
-        {
-          url: require("../../assets/sp1.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp2.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp3.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp4.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp5.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp6.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp2.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-      ],
+      createdList: [],
+      userinfo: {},
+      str: "",
+      subStr: "",
+      filters: "created",
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.getUserInfo();
+    this.getCreated();
+  },
   methods: {
+    handleClick(tab, event) {
+      console.log(tab.label);
+      if (tab.label == "SOLD") {
+        this.filters = "onsale";
+        this.getCreated();
+      } else if (tab.label == "BOUGHT") {
+        this.filters = "liked";
+        this.getCreated();
+      } else if ((tab.label = "COLLECTION")) {
+        this.filters = "collection";
+        this.getCreated();
+      } else {
+        this.filters = "created";
+        this.getCreated();
+      }
+    },
     loadMore() {
       this.a += 6;
+    },
+    getUserInfo() {
+      if (this.user_id == "") {
+        this.loading = false;
+      }
+      Http.httpGet("v1/user", { address: this.user_id }, (resp) => {
+        console.log(resp);
+        this.userinfo = resp.data;
+        this.str = this.userinfo.user_address;
+        this.subStr = this.SubStr(this.str);
+      });
+    },
+    SubStr(str) {
+      var subStr1 = str.slice(0, 6);
+      var subStr2 = str.slice(str.length - 5, 42);
+      var subStr = subStr1 + "..." + subStr2;
+      return subStr;
+    },
+    getCreated() {
+      Http.httpGet(
+        "v1/item/list",
+        {
+          address: this.user_id,
+          filter: this.filters,
+        },
+        (resp) => {
+          console.log(resp);
+          this.createdList = resp.list;
+          this.createdList.forEach((item, index) => {
+            if (this.createdList[index].price === "") {
+              this.createdList[index].price = "暂无价格";
+            } else {
+              this.createdList[index].price = ethers.utils.formatUnits(
+                this.createdList[index].price
+              );
+            }
+          });
+          this.loading = false;
+        }
+      );
     },
   },
 };
@@ -338,25 +410,27 @@ export default {
   position: relative;
   width: 1200px;
   margin: 0 auto;
+  flex-direction: row;
   flex-wrap: wrap;
 }
+
 .exhibition li {
   position: relative;
-  margin-right: 75px;
-  margin-bottom: 50px;
-  width: 346px;
-  height: 372px;
-  border-radius: 36px;
+  margin-right: 42px;
+  overflow: hidden;
   float: left;
-  box-shadow: 0px 0px 8px 1px rgba(140, 140, 140, 0.26);
+  width: 372px;
+  height: 520px;
+  box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
+  border-radius: 20px;
+  margin: 10px 10px;
+  margin-bottom: 60px;
 }
-.exhibition img {
-  width: 346px;
-  height: 296px;
-  background: #ffffff;
 
-  // border-top-left-radius: 36px;
-  // border-top-right-radius: 36px;
+.exhibition img {
+  width: 372px;
+  height: 389px;
+  background: #ffffff;
 }
 .exhibition li:nth-child(3n + 0) {
   margin-right: 0px;
@@ -374,10 +448,11 @@ export default {
   border: 1px solid #bbbbbb;
   border-radius: 16px;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 50%;
   transform: translate(-50%);
 }
+
 .collection {
   width: 24px;
   height: 24px;
@@ -410,50 +485,15 @@ export default {
   color: #ffffff;
   cursor: pointer;
 }
-.exhibition {
-  display: flex;
-  position: relative;
-  width: 1200px;
-  margin: 0 auto;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-.exhibition li {
-  position: relative;
-  margin-right: 42px;
-  margin-bottom: 60px;
-  overflow: hidden;
-  float: left;
-  width: 372px;
-  height: 520px;
-  box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
-  border-radius: 20px;
-}
-.exhibition img {
-  width: 372px;
-  height: 389px;
-  background: #ffffff;
-}
-.exhibition li:nth-child(3n + 0) {
-  margin-right: 0px;
-}
-.exhibition-b {
-  margin-left: 30px;
-  padding-top: 15px;
-}
-.loadMore {
-  width: 112px;
-  height: 33px;
-  line-height: 33px;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid #bbbbbb;
-  border-radius: 16px;
-  position: absolute;
-  bottom: 0px;
-  left: 50%;
-  transform: translate(-50%);
-}
+// .exhibition {
+//   display: flex;
+//   position: relative;
+//   width: 1200px;
+//   margin: 0 auto;
+//   flex-direction: row;
+//   flex-wrap: wrap;
+// }
+
 .collection {
   width: 24px;
   height: 24px;

@@ -8,26 +8,31 @@
       @click="$router.push({ name: 'details', params: { id: index } })"
       @slideChange="onSlideChange"
     >
-      <swiper-slide v-for="(item, index) in showList" :key="index">
+      <swiper-slide v-for="(item, index) in showList.slice(0, 5)" :key="index">
         <div
           class="neirong"
           @mouseover="hoverIndex = index"
           @mouseleave="hoverIndex = -2"
         >
           <img
-            :src="item.url"
+            :src="
+              item.prop_image.replace(
+                'ipfs://ipfs/',
+                'https://api.lionnft.io/v1/upload/view?hash='
+              )
+            "
             :class="{ hoverBg: index == hoverIndex }"
             @mouseover="hoverIndex = index"
             @mouseleave="hoverIndex = -2"
             alt=""
           />
-          <h3 class="username">{{ item.name }}</h3>
+          <h3 class="username">{{ item.prop_name }}</h3>
           <p class="usermessage">{{ item.message }}</p>
           <div class="userprice">
             <span style="float: left; color: #0066ed; margin-right: 20px">
-              {{ item.price }} BNB
+              {{ item.price }} {{ item.coin_name }}
             </span>
-            <span> 1/1</span>
+            <span> {{ item.supply_sell }}/{{ item.supply }}</span>
             <div class="userpriceimg" style="float: right; margin-right: 40px">
               <img src="../../assets/souchang.png" alt="" /> 2314
             </div>
@@ -60,12 +65,16 @@ import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 import Swiper2, { Navigation, Pagination } from "swiper";
 Swiper2.use([Navigation, Pagination]);
+import Http from "../../utils/http";
+
+import { ethers } from "ethers";
 
 // SwiperCore.use([Navigation, Autoplay]);
 
 export default {
   name: "swiper-example-pagination",
   title: "Pagination",
+
   data() {
     return {
       hover: false,
@@ -85,46 +94,9 @@ export default {
           nextEl: ".NameSwiperright",
           prevEl: ".NameSwiperleft",
         },
-        centeredSlides: true,
+        // centeredSlides: true,
       },
-      showList: [
-        {
-          url: require("../../assets/sp2.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp3.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp4.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp5.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp1.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp6.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-      ],
+      showList: [],
     };
   },
   components: {
@@ -136,6 +108,9 @@ export default {
       return this.$refs.NameSwiper.$swiper;
     },
   },
+  mounted() {
+    this.getList();
+  },
   methods: {
     onSwiper(swiper) {
       console.log(swiper);
@@ -143,8 +118,21 @@ export default {
     onSlideChange() {
       console.log("slide change");
     },
+    getList() {
+      Http.httpGet("v1/explore/list", {}, (resp) => {
+        this.showList = resp.list;
+        this.showList.forEach((item, index) => {
+          if (this.showList[index].price === "") {
+            this.showList[index].price = "暂无价格";
+          } else {
+            this.showList[index].price = ethers.utils.formatUnits(
+              this.showList[index].price
+            );
+          }
+        });
+      });
+    },
   },
-  mounted() {},
 };
 </script>
 <style lang="less" scoped>

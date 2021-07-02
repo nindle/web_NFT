@@ -55,7 +55,23 @@
           </p>
           <p class="right">
             <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
-            <span>Lucy LU</span>
+            <el-popover placement="bottom" trigger="click">
+              <p class="popoverstyle_a">
+                0x6024ecc8b...0013 <img src="./assets/fz.png" alt="" />
+              </p>
+              <p class="popoverstyle_b">Set display name</p>
+              <div class="popoverstyle_c">
+                <img src="./assets/tx1.png" alt="" />
+                <p class="popoverstyle_c_a">Balance</p>
+                <p class="popoverstyle_c_b">0.0 BNB</p>
+              </div>
+              <el-divider></el-divider>
+              <p class="popoverstyle_d">My items</p>
+              <p class="popoverstyle_d">Edit profile</p>
+              <el-button slot="reference" style="background-color: #d7e8fe">
+                Lucy LU
+              </el-button>
+            </el-popover>
           </p>
         </div>
         <el-button type="primary" class="userlogin" @click="open" round v-else>
@@ -67,109 +83,12 @@
           src="./assets/language.png"
           alt=""
         />
-
-        <!-- @click="drawer = true"  之前连接qb样式 -->
       </div>
-      <!-- <el-drawer :visible.sync="drawer" :withHeader="false">
-        已登录
-        <div v-if="walletimg.length == 0">
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              border-bottom: 1px solid #eceef0;
-            "
-          >
-            <img
-              src="./assets/个人中心.png"
-              alt=""
-              style="margin: 0 20px; width: 25px; height: 25px"
-            />
-            <p style="color: #09090a; font-size: 16px">My wallet</p>
-            <p style="color: #84858a; font-size: 14px; margin-left: 80px">
-              0xfbe6...1e36
-              <img
-                style="width: 16px; height: 16px"
-                src="./assets/fz.png"
-                alt=""
-              />
-            </p>
-          </div>
-          <div
-            style="
-              width: 345px;
-              height: 132px;
-              line-height: 37px;
-              text-align: center;
-              margin: 20px;
-              border-radius: 10px;
-            "
-          >
-            <p style="color: #84858a; font-size: 14px">Total balance</p>
-            <p style="color: #09090a; font-size: 16px; font-weight: 500">
-              $0.00 USD
-            </p>
-          </div>
-        </div>
-        未登录
-        <div v-else>
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              border-bottom: 1px solid #eceef0;
-            "
-          >
-            <img
-              src="./assets/个人中心.png"
-              alt=""
-              style="margin: 0 20px; width: 25px; height: 25px"
-            />
-            <p style="color: #09090a; font-size: 16px">My wallet</p>
-          </div>
-          <div style="line-height: 30px">
-            <p style="color: #84858a; font-size: 14px; margin: 10px 20px">
-              Connect with one of our available wallet infoproviders or create a
-              new one.
-            </p>
-          </div>
-
-          <ul
-            style="
-              margin: 0 20px;
-              border: 1px solid #d4d4d4;
-              border-radius: 10px;
-            "
-          >
-            <li
-              style="
-                display: flex;
-                align-items: center;
-                border-bottom: 1px solid #eceef0;
-              "
-              v-for="(item, index) in walletimg.slice(0, a)"
-              :key="index"
-            >
-              <img
-                :src="item.img"
-                alt=""
-                style="width: 36px; height: 36px; margin: 0 20px"
-              />
-              <p style="color: #484848; font-size: 14px">{{ item.value }}</p>
-            </li>
-            <li
-              style="text-align: center; color: #484848; font-size: 14px"
-              @click="load"
-            >
-              Show more options
-            </li>
-          </ul>
-        </div>
-      </el-drawer> -->
     </el-header>
 
     <router-view />
-    <div class="bottom">
+
+    <div :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
         <img src="./assets/login.png" alt="" />
         <p
@@ -197,10 +116,22 @@
           nft@Meta World.com
         </p>
         <div class="bottom_b">
-          <img
-            src="./assets/WeChatead37cdb38c97fdd427f7dc5d266f2e2.png"
-            alt=""
-          />
+          <tr>
+            <td>ABOUT US</td>
+            <td>WHITE PAPER</td>
+            <td>AUDIT REPORT</td>
+          </tr>
+          <tr>
+            <td>COMPANY VISION</td>
+            <td>COMPANY VISIONT</td>
+            <td>HOW TO BUY</td>
+          </tr>
+          <tr>
+            <td>CONTACT US</td>
+          </tr>
+          <tr>
+            <td>BUSINESS COOPERATION</td>
+          </tr>
         </div>
       </div>
     </div>
@@ -216,14 +147,7 @@ export default {
       a: 5,
       success: "",
       drawer: false,
-      // imgUrl: [
-      //   {
-      //     img1: require("./assets/个人中心.png"),
-      //   },
-      //   {
-      //     img2: require("./assets/个人中心选中.png"),
-      //   },
-      // ],
+      toRouter: "",
       walletimg: [
         {
           img: require("./assets/zu.png"),
@@ -268,7 +192,16 @@ export default {
       ],
     };
   },
-
+  watch: {
+    $route(to, from) {
+      console.log(to.path);
+      if (to.path == "/") {
+        this.toRouter = 1;
+      } else {
+        this.toRouter = 2;
+      }
+    },
+  },
   computed: {
     imgSrc() {
       return this.cur == 3 ? this.imgUrl[1].img2 : this.imgUrl[0].img1;
@@ -319,6 +252,62 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.bottom_b tr td {
+  width: 200px;
+  cursor: pointer;
+}
+.popoverstyle_a {
+  height: 13px;
+  font-size: 16px;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #333333;
+  line-height: 32px;
+}
+.popoverstyle_b {
+  height: 15px;
+  font-size: 14px;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: #0066ed;
+  line-height: 32px;
+  margin: 15px 0 25px;
+}
+.popoverstyle_c {
+  height: 47px;
+  line-height: 18px;
+  margin-bottom: 35px;
+}
+.popoverstyle_c img {
+  float: left;
+  width: 47px;
+  height: 47px;
+  margin-right: 20px;
+}
+.popoverstyle_c_a {
+  font-size: 16px;
+  font-family: Source Han Sans CN;
+  font-weight: 400;
+  color: #333333;
+}
+.popoverstyle_c_b {
+  font-size: 16px;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #333333;
+  line-height: 32px;
+}
+.popoverstyle_d {
+  font-size: 18px;
+  font-family: Source Han Sans CN;
+  font-weight: 500;
+  color: #333333;
+  line-height: 34px;
+  cursor: pointer;
+}
+.el-divider--horizontal {
+  margin: 20px 0;
+}
 .userlogin {
   // width: 147px;
   height: 38px;
@@ -381,6 +370,11 @@ export default {
   // line-height: 118px;
   // text-align: center;
 }
+.bottoms {
+  position: relative;
+  height: 238px;
+  background: #262b34;
+}
 .bottom_a {
   width: 1200px;
   margin: 0 auto;
@@ -391,7 +385,13 @@ export default {
   top: 0px;
   right: 540px;
   width: 464px;
-  height: 220px;
+  line-height: 30px;
+  margin-top: 55px;
+  // text-align: center;
+  font-size: 10px;
+  font-family: Source Han Sans CN;
+  font-weight: 500;
+  color: #f0f0f0;
 }
 .bottom_b img {
   width: 100%;
@@ -402,6 +402,10 @@ export default {
   font-size: 12px;
   border-radius: 20px;
   border-radius: 50%;
+}
+/deep/.el-button {
+  padding: 0;
+  border: 0;
 }
 
 .el-header {
@@ -526,10 +530,6 @@ hr {
 }
 /deep/.el-drawer {
   width: 395px !important;
-}
-/deep/.el-dialog--center .el-dialog__body {
-  text-align: left;
-  padding-bottom: 10px;
 }
 /deep/.el-drawer.rtl {
   top: 60px !important;

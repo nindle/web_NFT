@@ -1,29 +1,34 @@
 <template>
   <div>
     <h2 class="bazaar_headline">Browse</h2>
-    <ul class="exhibition">
+    <ul class="exhibition" v-loading="loading">
       <li
         style="position: relative"
-        v-for="(item, index) in userUrl.slice(0, a)"
+        v-for="(item, index) in showList.slice(0, a)"
         :key="index"
         @click="$router.push({ name: 'details', params: { id: index } })"
         @mouseover="hover = true"
         @mouseleave="hover = false"
       >
         <img
-          :src="item.url"
+          :src="
+            item.prop_image.replace(
+              'ipfs://ipfs/',
+              'https://api.lionnft.io/v1/upload/view?hash='
+            )
+          "
           :class="{ hoverBg: index == hoverIndex }"
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
           alt=""
         />
-        <h3 class="username">{{ item.name }}</h3>
+        <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.message }}</p>
         <div class="userprice">
           <span style="float: left; color: #0066ed; margin-right: 20px">
-            {{ item.price }} BNB
+            {{ item.price }} {{ item.coin_name }}
           </span>
-          <span> 1/1</span>
+          <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
             <img src="../../assets/souchang.png" alt="" /> 2314
           </div>
@@ -36,15 +41,25 @@
           Buy now →
         </div>
       </li>
-      <div class="loadMore" v-if="a < userUrl.length" @click="loadMore">
+      <div
+        :class="showList == 0 ? 'loadMores' : 'loadMore'"
+        v-if="a < showList.length"
+        @click="loadMore"
+      >
         Load More
       </div>
-      <div class="loadMore" v-else>没有更多了</div>
+      <div :class="showList == 0 ? 'loadMores' : 'loadMore'" v-else>
+        没有更多了
+      </div>
     </ul>
   </div>
 </template>
 
 <script>
+import Http from "../../utils/http";
+
+import { ethers } from "ethers";
+
 export default {
   name: "Bazaar",
   props: {},
@@ -98,26 +113,32 @@ export default {
           price: 0.158,
         },
       ],
-      optionMenu: [
-        { url: require("../../assets/1.png"), optionMenuName: "New" },
-        { url: require("../../assets/2.png"), optionMenuName: "Art" },
-        { url: require("../../assets/3.png"), optionMenuName: "Domain Names" },
-        {
-          url: require("../../assets/4.png"),
-          optionMenuName: "Virtual Worlds",
-        },
-        { url: require("../../assets/5.png"), optionMenuName: "Trading Cards" },
-        { url: require("../../assets/6.png"), optionMenuName: "Collectibles" },
-        { url: require("../../assets/7.png"), optionMenuName: "Sports" },
-        { url: require("../../assets/8.png"), optionMenuName: "Utility" },
-      ],
+      showList: [],
+      loading: true,
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.getList();
+  },
   methods: {
     loadMore() {
       this.a += 3;
+    },
+    getList() {
+      Http.httpGet("v1/explore/list", {}, (resp) => {
+        this.showList = resp.list;
+        this.showList.forEach((item, index) => {
+          if (this.showList[index].price === "") {
+            this.showList[index].price = "暂无价格";
+          } else {
+            this.showList[index].price = ethers.utils.formatUnits(
+              this.showList[index].price
+            );
+          }
+        });
+        this.loading = false;
+      });
     },
   },
 };
@@ -231,6 +252,9 @@ export default {
   margin-left: 30px;
   padding-top: 15px;
 }
+.loadMores {
+  display: none;
+}
 .loadMore {
   width: 112px;
   height: 33px;
@@ -242,6 +266,7 @@ export default {
   position: absolute;
   bottom: -10px;
   left: 50%;
+  display: block;
   transform: translate(-50%);
 }
 .collection {

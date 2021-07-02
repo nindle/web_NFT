@@ -107,10 +107,6 @@
       <div class="sponsor">
         <img src="../../assets/zanzhushang.png" alt="" />
       </div>
-      <!-- 底部 -->
-      <!-- <div class="bottom">
-          <img src="../../assets/wei.png" alt="" />
-        </div> -->
     </div>
   </div>
 </template>
@@ -148,16 +144,16 @@ export default {
         { url: require("../../assets/1.jpg") },
         { url: require("../../assets/5.jpg") },
       ],
-      classifyList: [
-        { url: require("../../assets/1.png"), value: "New" },
-        { url: require("../../assets/2.png"), value: "Art" },
-        { url: require("../../assets/3.png"), value: "Domain Names" },
-        { url: require("../../assets/4.png"), value: "Virtual Worlds" },
-        { url: require("../../assets/5.png"), value: "Trading Cards" },
-        { url: require("../../assets/6.png"), value: "Collectibles" },
-        { url: require("../../assets/7.png"), value: "Sports" },
-        { url: require("../../assets/8.png"), value: "Utility" },
-      ],
+      // classifyList: [
+      //   { url: require("../../assets/1.png"), value: "New" },
+      //   { url: require("../../assets/2.png"), value: "Art" },
+      //   { url: require("../../assets/3.png"), value: "Domain Names" },
+      //   { url: require("../../assets/4.png"), value: "Virtual Worlds" },
+      //   { url: require("../../assets/5.png"), value: "Trading Cards" },
+      //   { url: require("../../assets/6.png"), value: "Collectibles" },
+      //   { url: require("../../assets/7.png"), value: "Sports" },
+      //   { url: require("../../assets/8.png"), value: "Utility" },
+      // ],
       selectedLanguage: this.$store.getters.language,
     };
   },
@@ -240,7 +236,8 @@ export default {
   padding: 0;
 }
 .exhibition {
-  height: 680px;
+  height: 650px;
+  margin-top: 60px;
 }
 .exhibition-a {
   background-color: #fff;
@@ -394,7 +391,7 @@ hr {
   margin: 30px 44%;
 }
 .sponsor {
-  height: 118px;
+  // height: 118px;
   background: #627188;
   // line-height: 118px;
   text-align: center;

@@ -56,7 +56,7 @@
         <el-input
           class="el-input-a"
           placeholder="Enter yuor display name"
-          v-model="formLabelAlign.name"
+          v-model="formLabelAlign.username"
         ></el-input>
       </el-form-item>
       <el-form-item label="Custom URL">
@@ -64,7 +64,7 @@
           width:400px
           class="el-input-a"
           placeholder="Enter your custom URL"
-          v-model="formLabelAlign.region"
+          v-model="formLabelAlign.short_url"
         >
           <template slot="prepend">rarible.com/</template>
         </el-input>
@@ -73,7 +73,7 @@
         <el-input
           class="el-input-a"
           placeholder="Tell about yourself in a few words"
-          v-model="formLabelAlign.type"
+          v-model="formLabelAlign.desc"
         ></el-input>
       </el-form-item>
       <el-button
@@ -85,6 +85,7 @@
           margin-top: 20px;
         "
         type="primary"
+        @click="postUserEdit()"
         >Update profile</el-button
       >
     </el-form>
@@ -92,6 +93,8 @@
 </template>
 
 <script>
+import Http from "../../utils/http";
+
 export default {
   name: "RedactUser",
   props: {},
@@ -101,15 +104,39 @@ export default {
       dialogVisible: false,
       disabled: false,
       formLabelAlign: {
-        name: "",
-        region: "",
-        type: "",
+        username: "",
+        short_url: "",
+        desc: "",
+        address: "",
+        cover: "",
+        website: "",
+        twitter: "",
+        pic: "",
       },
     };
   },
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.formLabelAlign.address = this.$route.params.userId;
+  },
+  methods: {
+    postUserEdit() {
+      const formLabelAlign = this.formLabelAlign;
+      Http.httpPost("v1/user/edit", { ...formLabelAlign }, (resp) => {
+        this.formLabelAlign = {};
+        console.log(resp);
+        if (resp.code == 200) {
+          this.$message({
+            message: "编辑成功",
+            type: "success",
+          });
+          this.$router.go(-1);
+        } else {
+          this.$message.error("编辑失败");
+        }
+      });
+    },
+  },
 };
 </script>
 

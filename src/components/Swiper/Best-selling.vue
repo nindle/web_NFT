@@ -8,7 +8,10 @@
       @click="ggs"
       @slideChange="onSlideChanges"
     >
-      <swiper-slide v-for="(item, index) in showList" :key="index">
+      <swiper-slide
+        v-for="(item, index) in userInfoList.slice(0, 5)"
+        :key="index"
+      >
         <div class="neirong">
           <img
             :src="item.background"
@@ -26,7 +29,7 @@
             "
             alt=""
           />
-          <h3 class="username">{{ item.name }}</h3>
+          <h3 class="username">{{ item.user_name }}</h3>
           <p class="usermessage">{{ item.message }}</p>
         </div>
       </swiper-slide>
@@ -41,13 +44,13 @@
   </div>
 </template>
 <script>
-// Import Swiper Vue.js components
-
 import "swiper/swiper-bundle.min.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import SwiperCore, { Autoplay, Navigation } from "swiper";
 
 SwiperCore.use([Navigation, Autoplay]);
+
+import Http from "../../utils/http";
 
 export default {
   data() {
@@ -68,51 +71,11 @@ export default {
           prevEl: ".bestSelling-left",
         },
       },
-      showList: [
-        {
-          headPortrait: require("../../assets/head.png"),
-          background: require("../../assets/bgc.png"),
-          name: "CaptiveDoll",
-          message:
-            "Polka City | Virtual Currency Investment Platform Polka City | A new fully autonomous contract based NFT platform that allows you to Invest in virtual assets in the form of a virtual city.",
-        },
-        {
-          headPortrait: require("../../assets/head.png"),
-          background: require("../../assets/bgc.png"),
-          name: "CaptiveDoll",
-          message:
-            "Polka City | Virtual Currency Investment Platform Polka City | A new fully autonomous contract based NFT platform that allows you to Invest in virtual assets in the form of a virtual city.",
-        },
-        {
-          headPortrait: require("../../assets/head.png"),
-          background: require("../../assets/bgc.png"),
-          name: "CaptiveDoll",
-          message:
-            "Polka City | Virtual Currency Investment Platform Polka City | A new fully autonomous contract based NFT platform that allows you to Invest in virtual assets in the form of a virtual city.",
-        },
-        {
-          headPortrait: require("../../assets/head.png"),
-          background: require("../../assets/bgc.png"),
-          name: "CaptiveDoll",
-          message:
-            "Polka City | Virtual Currency Investment Platform Polka City | A new fully autonomous contract based NFT platform that allows you to Invest in virtual assets in the form of a virtual city.",
-        },
-        {
-          headPortrait: require("../../assets/head.png"),
-          background: require("../../assets/bgc.png"),
-          name: "CaptiveDoll",
-          message:
-            "Polka City | Virtual Currency Investment Platform Polka City | A new fully autonomous contract based NFT platform that allows you to Invest in virtual assets in the form of a virtual city.",
-        },
-        {
-          headPortrait: require("../../assets/head.png"),
-          background: require("../../assets/bgc.png"),
-          name: "CaptiveDoll",
-          message:
-            "Polka City | Virtual Currency Investment Platform Polka City | A new fully autonomous contract based NFT platform that allows you to Invest in virtual assets in the form of a virtual city.",
-        },
-      ],
+      userInfoList: [],
     };
+  },
+  mounted() {
+    this.getUserInfo();
   },
   components: {
     Swiper,
@@ -133,8 +96,24 @@ export default {
     ggs() {
       console.log("click");
     },
+    getUserInfo() {
+      Http.httpGet("v1/user/top", { user: "seller" }, (resp) => {
+        console.log(resp);
+        this.userInfoList = resp.list;
+        this.userInfoList.forEach((item) => {
+          item.headPortrait = require("../../assets/head.png");
+          item.background = require("../../assets/bgc.png");
+          item.message = "暂无简介1";
+          if (item.user_name == null) {
+            item.user_name = "暂无名称";
+          }
+          //  headPortrait: require("../../assets/head.png"),
+          // background: require("../../assets/bgc.png"),
+        });
+        // this.userInfoList = resp.list;
+      });
+    },
   },
-  mounted() {},
 };
 </script>
 <style scoped>
