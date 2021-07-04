@@ -50,7 +50,8 @@ import SwiperCore, { Autoplay, Navigation } from "swiper";
 
 SwiperCore.use([Navigation, Autoplay]);
 
-import Http from "../../utils/http";
+// import Http from "../../utils/http";
+import $http from '../../utils/request';
 
 export default {
   data() {
@@ -96,22 +97,21 @@ export default {
     ggs() {
       console.log("click");
     },
-    getUserInfo() {
-      Http.httpGet("v1/user/top", { user: "seller" }, (resp) => {
-        console.log(resp);
-        this.userInfoList = resp.list;
-        this.userInfoList.forEach((item) => {
-          item.headPortrait = require("../../assets/head.png");
-          item.background = require("../../assets/bgc.png");
-          item.message = "暂无简介1";
-          if (item.user_name == null) {
-            item.user_name = "暂无名称";
-          }
-          //  headPortrait: require("../../assets/head.png"),
-          // background: require("../../assets/bgc.png"),
-        });
-        // this.userInfoList = resp.list;
+    async getUserInfo() {
+      const resp = await $http.get("https://api.lionnft.io/v1/user/top?user=seller");
+      console.log(resp);
+      this.userInfoList = resp.list;
+      this.userInfoList.forEach((item) => {
+        item.headPortrait = require("../../assets/head.png");
+        item.background = require("../../assets/bgc.png");
+        item.message = "暂无简介1";
+        if (item.user_name == null) {
+          item.user_name = "暂无名称";
+        }
+        //  headPortrait: require("../../assets/head.png"),
+        // background: require("../../assets/bgc.png"),
       });
+      // this.userInfoList = resp.list;
     },
   },
 };

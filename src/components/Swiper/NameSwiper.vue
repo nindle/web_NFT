@@ -65,7 +65,8 @@ import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 import Swiper2, { Navigation, Pagination } from "swiper";
 Swiper2.use([Navigation, Pagination]);
-import Http from "../../utils/http";
+// import Http from "../../utils/http";
+import $http from '../../utils/request';
 
 import { ethers } from "ethers";
 
@@ -118,18 +119,17 @@ export default {
     onSlideChange() {
       console.log("slide change");
     },
-    getList() {
-      Http.httpGet("v1/explore/list", {}, (resp) => {
-        this.showList = resp.list;
-        this.showList.forEach((item, index) => {
-          if (this.showList[index].price === "") {
-            this.showList[index].price = "暂无价格";
-          } else {
-            this.showList[index].price = ethers.utils.formatUnits(
-              this.showList[index].price
-            );
-          }
-        });
+    async getList() {
+      const resp = await $http.get("https://api.lionnft.io/v1/explore/list");
+      this.showList = resp.list;
+      this.showList.forEach((item, index) => {
+        if (this.showList[index].price === "") {
+          this.showList[index].price = "暂无价格";
+        } else {
+          this.showList[index].price = ethers.utils.formatUnits(
+            this.showList[index].price
+          );
+        }
       });
     },
   },

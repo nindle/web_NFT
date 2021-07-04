@@ -56,7 +56,8 @@
 </template>
 
 <script>
-import Http from "../../utils/http";
+// import Http from "../../utils/http";
+import $http from '../../utils/request';
 
 import { ethers } from "ethers";
 
@@ -125,20 +126,19 @@ export default {
     loadMore() {
       this.a += 3;
     },
-    getList() {
-      Http.httpGet("v1/explore/list", {}, (resp) => {
-        this.showList = resp.list;
-        this.showList.forEach((item, index) => {
-          if (this.showList[index].price === "") {
-            this.showList[index].price = "暂无价格";
-          } else {
-            this.showList[index].price = ethers.utils.formatUnits(
-              this.showList[index].price
-            );
-          }
-        });
-        this.loading = false;
+    async getList() {
+      const resp = await $http.get("https://api.lionnft.io/v1/explore/list")
+      this.showList = resp.list;
+      this.showList.forEach((item, index) => {
+        if (this.showList[index].price === "") {
+          this.showList[index].price = "暂无价格";
+        } else {
+          this.showList[index].price = ethers.utils.formatUnits(
+            this.showList[index].price
+          );
+        }
       });
+      this.loading = false;
     },
   },
 };
