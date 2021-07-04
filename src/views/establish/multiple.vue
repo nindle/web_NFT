@@ -1,7 +1,8 @@
 <template>
   <div class="establish">
     <div class="rollback" @click="$router.go(-1)">
-      <i class="el-icon-arrow-left"></i>Mangae collectible type
+      <i class="el-icon-arrow-left" />
+      Mangae collectible type
     </div>
     <el-form label-position="top" :model="formLabelAlign">
       <!-- 标题 -->
@@ -40,11 +41,17 @@
       </div>
 
       <!-- 文件上传 -->
-      <el-upload action="#" list-type="picture-card" :auto-upload="false">
+      <el-upload
+        ref="upload"
+        action="https://api.lionnft.io/v1/upload/file"
+        list-type="picture-card"
+        :auto-upload="false"
+        :on-success="uploadSuccess"
+      >
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>Choose file</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
         </div>
       </el-upload>
 
@@ -53,11 +60,11 @@
         <p class="establish-img-p">Upload file to preview your brand new NFT</p>
       </div>
 
-      <div style="position: relative; margin-bottom: 10px">
-        <span style="font-size: 20px; font-weight: bold; color: #333333">
+      <div style="position: relative; margin-bottom: 10px;">
+        <span style="font-size: 20px; font-weight: bold; color: #333333;">
           Put on marketplace
         </span>
-        <el-switch v-model="value"> </el-switch>
+        <el-switch v-model="value" />
         <p
           style="
             font-size: 14px;
@@ -70,10 +77,10 @@
         </p>
       </div>
 
-      <el-form-item label="Price" v-show="value">
+      <el-form-item v-show="value" label="Price">
         <el-input
-          placeholder="e.g.Redeemable T-Shirt with logo"
           v-model="formLabelAlign.price"
+          placeholder="e.g.Redeemable T-Shirt with logo"
         >
           <template slot="append">BNB</template>
         </el-input>
@@ -88,30 +95,29 @@
         </el-select> -->
       </el-form-item>
 
-      <div style="position: relative; margin-bottom: 10px">
-        <span style="font-size: 20px; font-weight: bold; color: #333333">
+      <div style="position: relative; margin-bottom: 10px;">
+        <span style="font-size: 20px; font-weight: bold; color: #333333;">
           Unlock once purchased
         </span>
-        <el-switch v-model="values"> </el-switch>
+        <el-switch v-model="values" />
       </div>
 
       <el-form-item label="Title">
         <el-input
-          placeholder="e.g. “Redeemable T-Shirt with logo”"
           v-model="formLabelAlign.title"
-        >
-        </el-input>
+          placeholder="e.g. “Redeemable T-Shirt with logo”"
+        />
       </el-form-item>
 
       <el-form-item label="Description(Optional)">
         <el-input
-          placeholder="e.g.”After purchasing you”ll be able to get the real T-Shirt”"
           v-model="formLabelAlign.description"
-        ></el-input>
+          placeholder="e.g.”After purchasing you”ll be able to get the real T-Shirt”"
+        />
       </el-form-item>
 
       <el-form-item label="Royalties">
-        <el-input placeholder="E.g. 10%" v-model="formLabelAlign.royalties">
+        <el-input v-model="formLabelAlign.royalties" placeholder="E.g. 10%">
           <template slot="append">%</template>
         </el-input>
       </el-form-item>
@@ -124,11 +130,10 @@
         <el-input-number
           v-model="formLabelAlign.supply"
           controls-position="right"
-          @change="handleChange"
           :min="1"
           :max="10"
-        >
-        </el-input-number>
+          @change="handleChange"
+        />
       </el-form-item>
 
       <el-form-item label="Properties (Optional)">
@@ -138,16 +143,16 @@
           class="properties"
         >
           <el-input
-            placeholder="E.g. size"
             v-model="formLabelAlign.properties[index]"
+            placeholder="E.g. size"
           >
-            <template slot="append"></template>
+            <template slot="append" />
           </el-input>
           <el-input
-            placeholder="E.g. M"
             v-model="formLabelAlign.propertiess[index]"
+            placeholder="E.g. M"
           >
-            <template slot="append"></template>
+            <template slot="append" />
           </el-input>
         </div>
       </el-form-item>
@@ -167,35 +172,38 @@
         Create item
       </el-button>
     </el-form>
-    <el-dialog title="Follow steps" :visible.sync="dialogVisible" center>
+    <el-dialog title="Create NFT steps" :visible.sync="dialogVisible" center>
       <div class="Approve">
         <p class="Approve_a">Approve</p>
         <p class="Approve_b">Checking balance and approving</p>
         <el-button
+          :disabled="aprLoading == true || changes == 1"
           :class="changes == '' ? 'Approve_c' : 'Approve_cc'"
-          @click="changes = 1"
+          @click="setApproveAll"
         >
-          Start
+          {{ changes >= 1 ? 'Done' : aprLoading ? 'In Progress...' : 'Start' }}
         </el-button>
       </div>
       <div class="Approve">
         <p class="Approve_a">Upload files & Mint token</p>
         <p class="Approve_b">Call contract method</p>
         <el-button
+          :disabled="upLoading == true || changes == 2"
           :class="changes == '1' ? 'Approve_c' : 'Approve_cc'"
-          @click="changes = 2"
+          @click="uploadFile"
         >
-          Start
+          {{ changes >= 2 ? 'Done' : upLoading ? 'In Progress...' : 'Start' }}
         </el-button>
       </div>
       <div class="Approve">
         <p class="Approve_a">Sign sell order</p>
         <p class="Approve_b">sign sell order using your wallet</p>
         <el-button
+          :disabled="ordLoading == true || changes == 3"
           :class="changes == '2' ? 'Approve_c' : 'Approve_cc'"
-          @click="changes = 3"
+          @click="createOrder"
         >
-          Start
+          {{ changes == 3 ? 'Done' : ordLoading ? 'In Progress...' : 'Start' }}
         </el-button>
       </div>
     </el-dialog>
@@ -203,57 +211,85 @@
 </template>
 
 <script>
+import contracts from '../../wallet/contracts';
+import {
+  initWallet,
+  getBalance,
+  Contracts1155,
+  getProvider,
+  randomHex,
+} from '../../wallet/wallet';
+import { BigNumber } from '@ethersproject/bignumber';
+
+let currCont = null;
 export default {
-  name: "Establish",
+  name: 'Establish',
   props: {},
   data() {
     return {
-      changes: "",
+      changes: '',
       dialogVisible: true,
       propertiesList: [1],
       options: [
         {
-          value: "选项1",
-          label: "BNB",
+          value: '选项1',
+          label: 'BNB',
         },
         {
-          value: "选项2",
-          label: "DAI",
+          value: '选项2',
+          label: 'DAI',
         },
         {
-          value: "选项3",
-          label: "BNB",
+          value: '选项3',
+          label: 'BNB',
         },
         {
-          value: "选项4",
-          label: "DAI",
+          value: '选项4',
+          label: 'DAI',
         },
         {
-          value: "选项5",
-          label: "BNB",
+          value: '选项5',
+          label: 'BNB',
         },
       ],
-      valuename: "",
-      activeName: "first",
+      valuename: '',
+      activeName: 'first',
       value: true,
       values: true,
-      dialogImageUrl: "",
+      dialogImageUrl: '',
       dialogVisible: false,
       disabled: false,
       formLabelAlign: {
-        title: "",
-        price: "",
-        Description: "",
-        type: "",
-        royalties: "",
-        supply: "",
+        tokenid: 0,
+        token: '0xE9285F4Bd13D86Fe4f4b019C6b54cc3f8c6f858C',
+        image: '',
+        title: '',
+        price: '',
+        description: '',
+        type: '',
+        royalties: '',
+        supply: '1',
         properties: [],
         propertiess: [],
       },
+      aprLoading: false,
+      aprError: false,
+      upLoading: false,
+      upError: false,
+      ordLoading: false,
+      ordError: false,
     };
   },
   created() {},
-  mounted() {},
+  async mounted() {
+    const address = await initWallet();
+    if (address != '') {
+      const cont1155 = Contracts1155();
+      currCont = cont1155;
+      await this.whiteList(cont1155);
+      await this.isApprovedAll(cont1155);
+    }
+  },
   beforeUpdate() {
     this.editFn();
   },
@@ -271,6 +307,122 @@ export default {
 
     postFrom() {
       this.dialogVisible = true;
+    },
+    handleChange() {
+
+    },
+
+    // 链上开始
+    async isApprovedAll(cont) {
+      const res = await contracts.isApprovedAll(cont, this.$address);
+      if (res == true) {
+        this.changes = 1;
+      }
+    },
+    // 授权
+    async setApproveAll() {
+      if (currCont) {
+        const res = await contracts.setApproveAll(currCont, this.$address);
+        if (res == true) {
+          this.changes = 1;
+        }
+      }
+    },
+    // 白名单
+    async whiteList(cont) {
+      const res = await contracts.isWhitelist(cont, this.$address);
+      if (res == false) {
+        alert('不在白名单，无法创建NFT');
+        this.$router.push('/');
+        return;
+      }
+    },
+    // 上传图片
+    uploadFile() {
+      this.upLoading = true;
+      this.$refs.upload.submit();
+    },
+    // 上传成功
+    async uploadSuccess(resp) {
+      console.log('uploadSuccess=>', resp);
+      this.formLabelAlign.image = resp.ipfs;
+
+      let props = {};
+      for (let key in this.formLabelAlign.propertiess) {
+        let name = this.formLabelAlign.properties[key];
+        let value = this.formLabelAlign.propertiess[key];
+        props[name] = value;
+      }
+
+      const jsonResp = await contracts.uploadJson(
+        this.formLabelAlign.image,
+        this.formLabelAlign.title,
+        this.formLabelAlign.description,
+        props,
+      );
+      console.log('jsonResp=>', jsonResp);
+
+      const tokenResp = await contracts.newTokenId(this.formLabelAlign.token);
+      console.log('tokenResp=>', tokenResp);
+      this.formLabelAlign.tokenid = tokenResp.data.tokenid;
+
+      const mintResp = await contracts.mintErc1155(
+        currCont,
+        tokenResp.data.tokenid,
+        tokenResp.data.signature,
+        [],
+        this.formLabelAlign.supply,
+        jsonResp.ipfs.replace('ipfs://ipfs', ''),
+      );
+      console.log('mintResp=>', mintResp);
+
+      const addResp = await contracts.addItem(mintResp.hash, 3);
+      console.log('addResp=>', addResp);
+      this.upLoading = false;
+      this.changes = 2;
+    },
+    // 创建订单
+    async createOrder() {
+      this.ordLoading = true;
+      const order = {
+        key: {
+          salt: BigNumber.from(randomHex(32)),
+          owner: this.$address,
+          sellAsset: {
+            token: this.formLabelAlign.token,
+            tokenId: BigNumber.from(this.formLabelAlign.tokenid),
+            assetType: 3,
+          },
+          buyAsset: {
+            token: '0x0000000000000000000000000000000000000000',
+            tokenId: BigNumber.from('0'),
+            assetType: 1,
+          },
+        },
+        selling: BigNumber.from(this.formLabelAlign.supply || '1'),
+        buying: this.$parseEther(this.formLabelAlign.price || '0.1'),
+        sellerFee: BigNumber.from(this.formLabelAlign.royalties || '100'),
+      };
+      console.log(order);
+      const provider = getProvider();
+      const signResp = await contracts.orderSigner(provider.getSigner(), order);
+      console.log('signResp=>', signResp);
+
+      const saleResp = await contracts.changeSale(
+        order.key.sellAsset.token,
+        order.key.sellAsset.tokenId.toString(),
+        1,
+      );
+      console.log('saleResp=>', saleResp);
+
+      const createOrder = contracts.sequence(order);
+
+      const createOrderResp = await contracts.createOrder(createOrder, signResp);
+      console.log('createOrderResp=>', createOrderResp);
+      this.ordLoading = false;
+      this.changes = 3;
+      alert('创建完成');
+      this.dialogVisible = false;
     },
   },
 };

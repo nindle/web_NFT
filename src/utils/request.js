@@ -35,7 +35,7 @@ service.interceptors.response.use(
     if (res.code !== 200) {
       // to re-login
       store.dispatch('user/resetToken').then(() => {
-        location.reload();
+        // location.reload();
       });
       return Promise.reject(new Error(res.message || 'Error'));
     } else {

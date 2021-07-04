@@ -5,12 +5,11 @@
         src="./assets/login.png"
         alt=""
         class="header-login"
-        @click="goHome"
         replace
-      />
+        @click="goHome"
+      >
       <div class="header-input">
-        <el-input placeholder="Search by creator collectible or collection ">
-        </el-input>
+        <el-input placeholder="Search by creator collectible or collection " />
         <img
           src="./assets/search.png"
           alt=""
@@ -21,51 +20,54 @@
             width: 27px;
             height: 27px;
           "
-        />
+        >
       </div>
       <div class="header-icon">
         <router-link
           class="header-icon-a"
           :to="'/'"
-          @click.native="cur = 1"
           :class="{ active: cur === 1 ? true : false }"
-          >Home</router-link
+          @click.native="cur = 1"
         >
+          Home
+        </router-link>
         <router-link
           class="header-icon-a"
-          @click.native="cur = 2"
           :to="'/bazaar'"
           :class="{ active: cur === 2 ? true : false }"
-          >Browse</router-link
+          @click.native="cur = 2"
         >
+          Browse
+        </router-link>
         <router-link
           class="header-icon-a"
-          @click.native="cur = 3"
           :to="'/personalCenter'"
           :class="{ active: cur === 3 ? true : false }"
-          >Account</router-link
+          @click.native="cur = 3"
         >
-        <el-button type="primary" @click="account()" class="create" round>
+          Account
+        </router-link>
+        <el-button type="primary" class="create" round @click="account()">
           Create
         </el-button>
-        <div class="loginSuccessful" v-if="this.success == 200">
+        <div v-if="this.success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
+            <img src="./assets/point.png" alt="" style="margin: 0 4px">
             <span>Ethereum Mainnet</span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
-                0x6024ecc8b...0013 <img src="./assets/fz.png" alt="" />
+                {{ address | faddr }} <img src="./assets/fz.png" alt="">
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="" />
+                <img src="./assets/tx1.png" alt="">
                 <p class="popoverstyle_c_a">Balance</p>
-                <p class="popoverstyle_c_b">0.0 BNB</p>
+                <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
-              <el-divider></el-divider>
+              <el-divider />
               <p class="popoverstyle_d">My items</p>
               <p class="popoverstyle_d">Edit profile</p>
               <el-button slot="reference" style="background-color: #d7e8fe">
@@ -74,7 +76,7 @@
             </el-popover>
           </p>
         </div>
-        <el-button type="primary" class="userlogin" @click="open" round v-else>
+        <el-button v-else type="primary" class="userlogin" round @click="open">
           Link wallet
         </el-button>
 
@@ -82,7 +84,7 @@
           style="margin: 0 10px; height: 26px"
           src="./assets/language.png"
           alt=""
-        />
+        >
       </div>
     </el-header>
 
@@ -90,7 +92,7 @@
 
     <div :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="" />
+        <img src="./assets/login.png" alt="">
         <p
           style="
             font-size: 24px;
@@ -140,9 +142,13 @@
 
 <script>
 import imgUrl from "./assets/xiaohuli.png";
+import { initWallet, getAddress, getBalance } from "./wallet/wallet";
+
 export default {
   data() {
     return {
+      address: '',
+      balance: 0,
       cur: 1,
       a: 5,
       success: "",
@@ -192,16 +198,6 @@ export default {
       ],
     };
   },
-  watch: {
-    $route(to, from) {
-      console.log(to.path);
-      if (to.path == "/") {
-        this.toRouter = 1;
-      } else {
-        this.toRouter = 2;
-      }
-    },
-  },
   computed: {
     imgSrc() {
       return this.cur == 3 ? this.imgUrl[1].img2 : this.imgUrl[0].img1;
@@ -212,8 +208,24 @@ export default {
       }
     },
   },
-
-  created() {},
+  watch: {
+    $route(to, from) {
+      console.log(to.path);
+      if (to.path == "/") {
+        this.toRouter = 1;
+      } else {
+        this.toRouter = 2;
+      }
+    },
+  },
+  async created() {
+    const address = await initWallet();
+    if (address != "") {
+      this.success = 200;
+      this.address = address;
+      this.balance = await getBalance();
+    }
+  },
   mounted() {},
   methods: {
     account() {
