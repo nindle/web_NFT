@@ -53,7 +53,7 @@
         <div v-if="this.success == 200" class="loginSuccessful">
           <p class="lfet">
             <img src="./assets/point.png" alt="" style="margin: 0 4px">
-            <span>Ethereum Mainnet</span>
+            <span>BSC Mainnet</span>
           </p>
           <p class="right">
             <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
@@ -71,7 +71,7 @@
               <p class="popoverstyle_d">My items</p>
               <p class="popoverstyle_d">Edit profile</p>
               <el-button slot="reference" style="background-color: #d7e8fe">
-                Lucy LU
+                {{ userInfo.user_name || '未设置' }}
               </el-button>
             </el-popover>
           </p>
@@ -143,6 +143,7 @@
 <script>
 import imgUrl from "./assets/xiaohuli.png";
 import { initWallet, getAddress, getBalance } from "./wallet/wallet";
+import { userInfoApi } from "./api/user";
 
 export default {
   data() {
@@ -154,6 +155,7 @@ export default {
       success: "",
       drawer: false,
       toRouter: "",
+      userInfo: {}
     };
   },
   computed: {
@@ -181,6 +183,7 @@ export default {
       this.success = 200;
       this.address = this.SubStr(address);
       this.balance = await getBalance();
+      this.userInfo = await userInfoApi(address);
     }
   },
   mounted() {},

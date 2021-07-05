@@ -45,7 +45,7 @@ export async function initWallet() {
   Vue.prototype.$address = accounts[0];
 
   console.log('networkVersion=>', window.ethereum.networkVersion);
-  if (ethereum.networkVersion != 97) {
+  if (window.ethereum.networkVersion != 97) {
     // alert('请切换到BSCTestnet网络！');
     this.$message.error('请切换到BSCTestnet网络！');
 
