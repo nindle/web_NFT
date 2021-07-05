@@ -1,21 +1,6 @@
 module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
-  // devServer: {
-  //   // 设置代理
-  //   proxy: {
-  //     "/v1": {
-  //       target: "https://lionnft.io/",
-  //       ws: false,
-  //       changOrigin: true
-  //     },
-  //     "/static": {
-  //       target: "https://lionnft.io/",
-  //       ws: false,
-  //       changOrigin: true
-  //     },
-  //   }
-  // },
   devServer: {
     open: false,
     host: '0.0.0.0',
@@ -24,7 +9,7 @@ module.exports = {
     hotOnly: false,
     //配置代理
     proxy: {
-      //以'/api'开头的接口会转接到下面的target的ip
+      //以'/v1'开头的接口会转接到下面的target的ip
       '/v1': {
         target: 'https://api.lionnft.io/', // target host
         changeOrigin: true, // needed for virtual hosted sites
@@ -42,7 +27,6 @@ module.exports = {
       // }
     }
   },
-
   publicPath: '/'
-}
+};
 

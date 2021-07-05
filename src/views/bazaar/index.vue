@@ -1,12 +1,17 @@
 <template>
   <div>
     <h2 class="bazaar_headline">Browse</h2>
-    <ul class="exhibition" v-loading="loading">
+    <ul v-loading="loading" class="exhibition">
       <li
-        style="position: relative"
         v-for="(item, index) in showList.slice(0, a)"
         :key="index"
-        @click="$router.push({ name: 'details', params: { id: index } })"
+        style="position: relative"
+        @click="
+          $router.push({
+            name: 'details',
+            params: { id: item.token_id, token: item.token },
+          })
+        "
         @mouseover="hover = true"
         @mouseleave="hover = false"
       >
@@ -18,10 +23,10 @@
             )
           "
           :class="{ hoverBg: index == hoverIndex }"
+          alt=""
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-          alt=""
-        />
+        >
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.message }}</p>
         <div class="userprice">
@@ -30,7 +35,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt="" /> 2314
+            <img src="../../assets/souchang.png" alt=""> 2314
           </div>
         </div>
         <div
@@ -42,13 +47,13 @@
         </div>
       </li>
       <div
-        :class="showList == 0 ? 'loadMores' : 'loadMore'"
         v-if="a < showList.length"
+        :class="showList == 0 ? 'loadMores' : 'loadMore'"
         @click="loadMore"
       >
         Load More
       </div>
-      <div :class="showList == 0 ? 'loadMores' : 'loadMore'" v-else>
+      <div v-else :class="showList == 0 ? 'loadMores' : 'loadMore'">
         没有更多了
       </div>
     </ul>
@@ -57,7 +62,7 @@
 
 <script>
 // import Http from "../../utils/http";
-import $http from '../../utils/request';
+import $http from "../../utils/request";
 
 import { ethers } from "ethers";
 
@@ -70,50 +75,6 @@ export default {
       hoverIndex: -2,
       a: 6,
       b: 5,
-      userUrl: [
-        {
-          url: require("../../assets/sp1.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp2.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp3.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp4.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp5.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp6.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-        {
-          url: require("../../assets/sp2.png"),
-          name: "Lucy LU",
-          message: "Superme China",
-          price: 0.158,
-        },
-      ],
       showList: [],
       loading: true,
     };
@@ -127,7 +88,7 @@ export default {
       this.a += 3;
     },
     async getList() {
-      const resp = await $http.get("https://api.lionnft.io/v1/explore/list")
+      const resp = await $http.get("https://api.lionnft.io/v1/explore/list");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
         if (this.showList[index].price === "") {

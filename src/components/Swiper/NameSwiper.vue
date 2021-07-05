@@ -1,8 +1,8 @@
 <template>
   <div style="position: relative">
     <swiper
-      style="padding: 10px 16px"
       ref="NameSwiper"
+      style="padding: 10px 16px"
       :options="swiperOptions"
       @swiper="onSwiper"
       @click="$router.push({ name: 'details', params: { id: index } })"
@@ -13,6 +13,12 @@
           class="neirong"
           @mouseover="hoverIndex = index"
           @mouseleave="hoverIndex = -2"
+          @click="
+            $router.push({
+              name: 'details',
+              params: { id: item.token_id, token: item.token },
+            })
+          "
         >
           <img
             :src="
@@ -22,10 +28,10 @@
               )
             "
             :class="{ hoverBg: index == hoverIndex }"
+            alt=""
             @mouseover="hoverIndex = index"
             @mouseleave="hoverIndex = -2"
-            alt=""
-          />
+          >
           <h3 class="username">{{ item.prop_name }}</h3>
           <p class="usermessage">{{ item.message }}</p>
           <div class="userprice">
@@ -34,7 +40,7 @@
             </span>
             <span> {{ item.supply_sell }}/{{ item.supply }}</span>
             <div class="userpriceimg" style="float: right; margin-right: 40px">
-              <img src="../../assets/souchang.png" alt="" /> 2314
+              <img src="../../assets/souchang.png" alt=""> 2314
             </div>
           </div>
           <div
@@ -46,13 +52,13 @@
           </div>
         </div>
       </swiper-slide>
-      <div class="swiper-pagination" slot="pagination"></div>
+      <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev NameSwiperleft">
-      <img src="../../assets/left.png" alt="" />
+      <img src="../../assets/left.png" alt="">
     </div>
     <div class="swiper-button-next NameSwiperright">
-      <img src="../../assets/right.png" alt="" />
+      <img src="../../assets/right.png" alt="">
     </div>
   </div>
 </template>
@@ -66,15 +72,19 @@ import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import Swiper2, { Navigation, Pagination } from "swiper";
 Swiper2.use([Navigation, Pagination]);
 // import Http from "../../utils/http";
-import $http from '../../utils/request';
+import $http from "../../utils/request";
 
 import { ethers } from "ethers";
 
 // SwiperCore.use([Navigation, Autoplay]);
 
 export default {
-  name: "swiper-example-pagination",
+  name: "SwiperExamplePagination",
   title: "Pagination",
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
 
   data() {
     return {
@@ -99,10 +109,6 @@ export default {
       },
       showList: [],
     };
-  },
-  components: {
-    Swiper,
-    SwiperSlide,
   },
   computed: {
     swiper() {

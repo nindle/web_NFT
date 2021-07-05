@@ -11,6 +11,7 @@ Vue.prototype.$ethers = ethers;
 import Cookies from 'js-cookie';
 Vue.prototype.$cookie = Cookies;
 
+
 import './styles/index.less'; // global css
 import i18n from './lang'; // internationalization
 import './icons'; // iconfont

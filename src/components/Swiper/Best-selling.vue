@@ -1,8 +1,8 @@
 <template>
   <div style="position: relative">
     <swiper
-      style="padding: 0 16px"
       ref="bestSelling"
+      style="padding: 0 16px"
       :options="swiperOption"
       @swiper="onSwipers"
       @click="ggs"
@@ -17,7 +17,7 @@
             :src="item.background"
             style="width: 371px; height: 186px"
             alt=""
-          />
+          >
           <img
             :src="item.headPortrait"
             style="
@@ -28,18 +28,18 @@
               left: 154px;
             "
             alt=""
-          />
+          >
           <h3 class="username">{{ item.user_name }}</h3>
           <p class="usermessage">{{ item.message }}</p>
         </div>
       </swiper-slide>
-      <div class="swiper-pagination" slot="pagination"></div>
+      <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev bestSelling-left">
-      <img src="../../assets/left.png" alt="" />
+      <img src="../../assets/left.png" alt="">
     </div>
     <div class="swiper-button-next bestSelling-right">
-      <img src="../../assets/right.png" alt="" />
+      <img src="../../assets/right.png" alt="">
     </div>
   </div>
 </template>
@@ -54,6 +54,10 @@ SwiperCore.use([Navigation, Autoplay]);
 import $http from '../../utils/request';
 
 export default {
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
   data() {
     return {
       swiperOption: {
@@ -75,17 +79,13 @@ export default {
       userInfoList: [],
     };
   },
-  mounted() {
-    this.getUserInfo();
-  },
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
   computed: {
     swiper() {
       return this.$refs.bestSelling.$swiper;
     },
+  },
+  mounted() {
+    this.getUserInfo();
   },
   methods: {
     onSwipers(swiper) {

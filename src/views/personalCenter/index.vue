@@ -1,15 +1,15 @@
 <template>
   <div>
     <!-- 个人中心背景图 -->
-    <div class="personalCenter-bgc"></div>
+    <div class="personalCenter-bgc" />
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img src="../../assets/head.png" alt="" />
+      <img src="../../assets/head.png" alt="">
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
       <p style="color: #09090a; font-size: 20px">{{ userinfo.user_name }}</p>
-      <p>{{ subStr }} <img src="../../assets/fz.png" alt="" /></p>
+      <p>{{ subStr }} <img src="../../assets/fz.png" alt=""></p>
 
       <el-button
         round
@@ -27,8 +27,9 @@
             params: { userId: user_id },
           })
         "
-        >Edit profile</el-button
       >
+        Edit profile
+      </el-button>
       <div
         style="
           width: 43px;
@@ -43,19 +44,24 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        />
+        >
       </div>
     </div>
     <!-- 产品系列 -->
-    <div class="personalCenter-Tabs" v-loading="loading">
+    <div v-loading="loading" class="personalCenter-Tabs">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="CREATED" name="first">
           <ul class="exhibition">
             <li
-              style="position: relative"
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
-              @click="$router.push({ name: 'details', params: { id: index } })"
+              style="position: relative"
+              @click="
+                $router.push({
+                  name: 'details',
+                  params: { id: item.token_id, token: item.token },
+                })
+              "
               @mouseover="hover = true"
               @mouseleave="hover = false"
             >
@@ -67,10 +73,10 @@
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
+                alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-                alt=""
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -82,7 +88,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -94,23 +100,28 @@
               </div>
             </li>
             <div
-              class="loadMore"
               v-if="a < createdList.length"
+              class="loadMore"
               @click="loadMore"
             >
               Load More
             </div>
 
-            <div class="loadMore" v-else>没有更多了</div>
+            <div v-else class="loadMore">没有更多了</div>
           </ul>
         </el-tab-pane>
         <el-tab-pane label="SOLD" name="second">
           <ul class="exhibition">
             <li
-              style="position: relative"
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
-              @click="$router.push({ name: 'details', params: { id: index } })"
+              style="position: relative"
+              @click="
+                $router.push({
+                  name: 'details',
+                  params: { id: item.token_id, token: item.token },
+                })
+              "
               @mouseover="hover = true"
               @mouseleave="hover = false"
             >
@@ -122,10 +133,10 @@
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
+                alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-                alt=""
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -137,7 +148,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -149,23 +160,28 @@
               </div>
             </li>
             <div
-              class="loadMore"
               v-if="a < createdList.length"
+              class="loadMore"
               @click="loadMore"
             >
               Load More
             </div>
 
-            <div class="loadMore" v-else>没有更多了</div>
+            <div v-else class="loadMore">没有更多了</div>
           </ul>
         </el-tab-pane>
         <el-tab-pane label="BOUGHT" name="third">
           <ul class="exhibition">
             <li
-              style="position: relative"
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
-              @click="$router.push({ name: 'details', params: { id: index } })"
+              style="position: relative"
+              @click="
+                $router.push({
+                  name: 'details',
+                  params: { id: item.token_id, token: item.token },
+                })
+              "
               @mouseover="hover = true"
               @mouseleave="hover = false"
             >
@@ -177,10 +193,10 @@
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
+                alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-                alt=""
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -192,7 +208,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -204,23 +220,28 @@
               </div>
             </li>
             <div
-              class="loadMore"
               v-if="a < createdList.length"
+              class="loadMore"
               @click="loadMore"
             >
               Load More
             </div>
 
-            <div class="loadMore" v-else>没有更多了</div>
+            <div v-else class="loadMore">没有更多了</div>
           </ul>
         </el-tab-pane>
         <el-tab-pane label="COLLECTION" name="fourth">
           <ul class="exhibition">
             <li
-              style="position: relative"
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
-              @click="$router.push({ name: 'details', params: { id: index } })"
+              style="position: relative"
+              @click="
+                $router.push({
+                  name: 'details',
+                  params: { id: item.token_id, token: item.token },
+                })
+              "
               @mouseover="hover = true"
               @mouseleave="hover = false"
             >
@@ -232,10 +253,10 @@
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
+                alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-                alt=""
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -247,7 +268,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -259,14 +280,14 @@
               </div>
             </li>
             <div
-              class="loadMore"
               v-if="a < createdList.length"
+              class="loadMore"
               @click="loadMore"
             >
               Load More
             </div>
 
-            <div class="loadMore" v-else>没有更多了</div>
+            <div v-else class="loadMore">没有更多了</div>
           </ul>
         </el-tab-pane>
       </el-tabs>
@@ -279,12 +300,14 @@ import Http from "../../utils/http";
 
 import { ethers } from "ethers";
 
+import { initWallet } from "../../wallet/wallet";
+
 export default {
   name: "PersonalCenter",
   props: {},
   data() {
     return {
-      user_id: "0x7585eF42d7D523e94282826Fb7E223C9E7fD2945",
+      user_id: "",
       loading: true,
       hover: false,
       hoverIndex: -2,
@@ -297,11 +320,15 @@ export default {
       filters: "created",
     };
   },
-  created() {},
-  mounted() {
-    this.getUserInfo();
-    this.getCreated();
+  async created() {
+    const address = await initWallet();
+    if (address != "") {
+      this.user_id = address;
+      this.getUserInfo();
+      this.getCreated();
+    }
   },
+  mounted() {},
   methods: {
     handleClick(tab, event) {
       console.log(tab.label);

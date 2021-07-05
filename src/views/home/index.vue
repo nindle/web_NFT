@@ -5,7 +5,7 @@
       <template>
         <el-carousel indicator-position="outside">
           <el-carousel-item v-for="(item, index) in imgUrl" :key="index">
-            <img :src="item.url" alt="" />
+            <img :src="item.url" alt="">
           </el-carousel-item>
         </el-carousel>
       </template>
@@ -29,11 +29,11 @@
             Explore
           </el-button> -->
           <el-button
-            plain
             id="Createstyle"
+            plain
             @click="$router.push({ name: 'establish', params: { id: index } })"
           >
-            Create<i class="el-icon-arrow-right el-icon--right"></i>
+            Create<i class="el-icon-arrow-right el-icon--right" />
           </el-button>
         </div>
       </div>
@@ -59,7 +59,7 @@
 
         <ul>
           <li>
-            <img src="../../assets/qb@2x.png" alt="" />
+            <img src="../../assets/qb@2x.png" alt="">
             <p class="introduce_title">Best-selling author</p>
             <p class="introduce_content">
               Once you’ve set up your wallet of choice, connect it to Meta World
@@ -68,7 +68,7 @@
             </p>
           </li>
           <li>
-            <img src="../../assets/cz@2x.png" alt="" />
+            <img src="../../assets/cz@2x.png" alt="">
             <p class="introduce_title">Create your collection</p>
             <p class="introduce_content">
               Click Create and set up your collection. Add social links, a
@@ -77,7 +77,7 @@
             </p>
           </li>
           <li>
-            <img src="../../assets/tp@2x.png" alt="" />
+            <img src="../../assets/tp@2x.png" alt="">
             <p class="introduce_title">Add your NFTs</p>
             <p class="introduce_content">
               Upload your work (image, video, audio, or 3D art), add a title and
@@ -86,7 +86,7 @@
             </p>
           </li>
           <li>
-            <img src="../../assets/sm@2x.png" alt="" />
+            <img src="../../assets/sm@2x.png" alt="">
             <p class="introduce_title">List them for saler</p>
             <p class="introduce_content">
               Choose between auctions, fixed-price listings, and declining-price
@@ -98,14 +98,14 @@
         <!-- <img src="../../assets/zanshi1.png" alt="" /> -->
       </div>
       <el-button
-        type="primary"
         id="ExploretheBrowse"
-        @click="$router.replace('/establish')"
+        type="primary"
+        @click="$router.replace('/bazaar')"
       >
         Explore the Browse
       </el-button>
       <div class="sponsor">
-        <img src="../../assets/zanzhushang.png" alt="" />
+        <img src="../../assets/zanzhushang.png" alt="">
       </div>
     </div>
   </div>
@@ -116,11 +116,11 @@ import Bestselling from "../../../src/components/Swiper/Best-selling";
 
 export default {
   name: "Home",
-  props: {},
   components: {
     NameSwiper,
     Bestselling,
   },
+  props: {},
   data() {
     return {
       a: 3,
@@ -144,16 +144,7 @@ export default {
         { url: require("../../assets/1.jpg") },
         { url: require("../../assets/5.jpg") },
       ],
-      // classifyList: [
-      //   { url: require("../../assets/1.png"), value: "New" },
-      //   { url: require("../../assets/2.png"), value: "Art" },
-      //   { url: require("../../assets/3.png"), value: "Domain Names" },
-      //   { url: require("../../assets/4.png"), value: "Virtual Worlds" },
-      //   { url: require("../../assets/5.png"), value: "Trading Cards" },
-      //   { url: require("../../assets/6.png"), value: "Collectibles" },
-      //   { url: require("../../assets/7.png"), value: "Sports" },
-      //   { url: require("../../assets/8.png"), value: "Utility" },
-      // ],
+
       selectedLanguage: this.$store.getters.language,
     };
   },

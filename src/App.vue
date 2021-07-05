@@ -59,7 +59,7 @@
             <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
-                {{ address | faddr }} <img src="./assets/fz.png" alt="">
+                {{ address }} <img src="./assets/fz.png" alt="">
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
@@ -147,55 +147,13 @@ import { initWallet, getAddress, getBalance } from "./wallet/wallet";
 export default {
   data() {
     return {
-      address: '',
+      address: "",
       balance: 0,
       cur: 1,
       a: 5,
       success: "",
       drawer: false,
       toRouter: "",
-      walletimg: [
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-        {
-          img: require("./assets/zu.png"),
-          value: "MetaMask",
-        },
-      ],
     };
   },
   computed: {
@@ -210,7 +168,6 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log(to.path);
       if (to.path == "/") {
         this.toRouter = 1;
       } else {
@@ -222,12 +179,19 @@ export default {
     const address = await initWallet();
     if (address != "") {
       this.success = 200;
-      this.address = address;
+      this.address = this.SubStr(address);
       this.balance = await getBalance();
     }
   },
   mounted() {},
   methods: {
+    SubStr(str) {
+      var subStr1 = str.slice(0, 6);
+      var subStr2 = str.slice(str.length - 5, 42);
+      var subStr = subStr1 + "..." + subStr2;
+      return subStr;
+    },
+
     account() {
       this.$router.replace("/establish");
     },
@@ -243,7 +207,13 @@ export default {
     load() {
       this.a += 3;
     },
-    open() {
+    async open() {
+      const address = await initWallet();
+      if (address != "") {
+        this.success = 200;
+        this.address = this.SubStr(address);
+        this.balance = await getBalance();
+      }
       this.$alert(
         `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
         "Please connect the wallet",

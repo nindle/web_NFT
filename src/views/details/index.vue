@@ -1,40 +1,52 @@
 <template>
-  <div class="details">
+  <div v-loading="loading" class="details">
     <!-- 商品大图zs -->
-    <img src="../../assets/sp1.png" style="border-radius: 20px" alt="" />
-    <div class="clear"></div>
+    <img
+      :src="
+        details.prop_image.replace(
+          'ipfs://ipfs/',
+          'https://api.lionnft.io/v1/upload/view?hash='
+        )
+      "
+      style="border-radius: 20px"
+      alt=""
+    >
+    <div class="clear" />
 
     <!-- 产品详情 -->
     <ul class="details-a">
       <li class="productTitle">
-        The role of Lu Bu in the movie "Dynasty Warriors"
+        {{ details.prop_name }}
       </li>
       <li class="attestation">Meta World Certification</li>
       <li>
         <span class="browse">Owned by</span>
-        <span style="color: #0066ed; margin: 0 13px 0 -12px">Lucy LU</span>
-        <span class="browse"> 6 of 12 available</span>
+        <span style="color: #0066ed; margin: 0 13px 0 -12px">
+          {{ details.creator_user_name }}
+        </span>
+        <span class="browse">
+          {{ details.supply_sell }} of {{ details.supply }} available
+        </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img src="../../assets/examine.png" alt="" id="examines" />2212
+          <img id="examines" src="../../assets/examine.png" alt="">2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img src="../../assets/souchang.png" alt="" id="examine" />
-          2122</span
-        >
+          <img id="examine" src="../../assets/souchang.png" alt="">
+          2122</span>
       </li>
       <li class="price">
         <img
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        />
-        0.5 BNB
+        >
+        {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
         <el-button class="details-button" type="primary">Buy Now</el-button>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li>
         <div class="productdetails">
           <div style="float: left">
@@ -42,7 +54,7 @@
               src="../../assets/19.jpeg"
               style="margin: 10px 15px 0 0"
               alt=""
-            />
+            >
           </div>
           <div class="productdetails-a" style="position: relative">
             <p
@@ -63,7 +75,7 @@
                 color: #000000;
               "
             >
-              Lead Supreme United /
+              {{ details.creator_user_name }} /
             </span>
             <span
               style="
@@ -72,9 +84,8 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-              >0x747b...4a49</span
-            >
-            <img src="../../assets/replicator.png" alt="" id="replicator" />
+            >{{ creator }}</span>
+            <img id="replicator" src="../../assets/replicator.png" alt="">
           </div>
         </div>
       </li>
@@ -85,7 +96,7 @@
               src="../../assets/19.jpeg"
               style="margin: 10px 15px 0 0"
               alt=""
-            />
+            >
           </div>
           <div class="productdetails-a" style="position: relative">
             <p
@@ -96,7 +107,7 @@
                 color: #aaaaaa;
               "
             >
-              creator
+              own
             </p>
             <span
               style="
@@ -106,7 +117,7 @@
                 color: #000000;
               "
             >
-              Lead Supreme United /
+              {{ details.own_user_name }} /
             </span>
             <span
               style="
@@ -115,59 +126,12 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-              >0x747b...4a49</span
-            >
-            <img src="../../assets/replicator.png" alt="" id="replicator" />
+            >{{ creator_address }}</span>
+            <img id="replicator" src="../../assets/replicator.png" alt="">
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
-      <!-- <li>
-        <el-tabs v-model="activeName">
-          <el-tab-pane label="OWNER" name="first">
-            <div class="productdetails">
-              <div style="float: left">
-                <img src="../../assets/19.jpeg" alt="" />
-                <div class="clear"></div>
-              </div>
-              <div class="productdetails-a">
-                <p style="color: #84858a; font-size: 12px">CREATOR</p>
-                <p style="color: #09090a; font-size: 14px">VSrat</p>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="HISTORY" name="second">
-            <div class="productdetails">
-              <div style="float: left">
-                <img src="../../assets/19.jpeg" alt="" />
-              </div>
-              <div class="productdetails-a">
-                <p style="color: #09090a; font-size: 14px">VSrat</p>
-                <p style="color: #09090a; font-size: 14px">
-                  The NFT was minted
-                </p>
-                <p style="color: #84858a; font-size: 10px">9 hours ago</p>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="INFO" name="third">
-            <div class="productdetails-b">
-              <p style="color: #84858a; font-size: 12px">NFT ID</p>
-              <p style="color: #2081e2; font-size: 14px">58599</p>
-            </div>
-            <div class="productdetails-b">
-              <p style="color: #84858a; font-size: 12px">MINT TRANSACTION</p>
-              <p style="color: #2081e2; font-size: 14px">
-                0x4b54a513...6852ca94c4
-              </p>
-            </div>
-            <div class="productdetails-b">
-              <p style="color: #84858a; font-size: 12px">CONTRACT ADDRESS</p>
-              <p style="color: #2081e2; font-size: 14px">0xf5db...cdAA4b</p>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
-      </li> -->
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li
         style="
           font-size: 15px;
@@ -180,15 +144,15 @@
       </li>
       <li>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="name" label="user"> </el-table-column>
-          <el-table-column prop="perating" label="perating"> </el-table-column>
-          <el-table-column prop="time" label="time"> </el-table-column>
+          <el-table-column prop="name" label="user" />
+          <el-table-column prop="perating" label="perating" />
+          <el-table-column prop="time" label="time" />
         </el-table>
       </li>
     </ul>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="Work description" name="first"
-        >Louis Koo, played Lu Bu in the movie "Dynasty Warriors". ========
+      <el-tab-pane label="Work description" name="first">
+        Louis Koo, played Lu Bu in the movie "Dynasty Warriors". ========
         Character introduction: Lu Bu, a native of Jiuyuan County, Wuyuan
         County. One of the heroes in the late Eastern Han Dynasty. Because of
         Xiaowu, Lv Bu was awarded the post of Captain of Cavalry and Chief
@@ -200,8 +164,8 @@
         commander". It is sometimes said that "Lu Bu is among the people and the
         red rabbit is in the horse." ========
       </el-tab-pane>
-      <el-tab-pane label="About NFT" name="second"
-        >The full name of NFT is non-Fungible Token, which is a non-homogeneous
+      <el-tab-pane label="About NFT" name="second">
+        The full name of NFT is non-Fungible Token, which is a non-homogeneous
         Token. It is the only cryptocurrency Token used to represent digital
         assets, and has the characteristics of indivisible, irreplaceable and
         unique. On the blockchain, digital cryptocurrencies are divided into two
@@ -214,38 +178,86 @@
         can be substituted with each other and can be split infinitely. For
         example, if you have a bitcoin in your hand and I have a bitcoin in my
         hand, there is essentially no difference, this is homogenization, this
-        is homogenized currency.</el-tab-pane
-      >
+        is homogenized currency.
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+import http from "../../utils/http";
+import { ethers } from "ethers";
 export default {
   name: "Details",
   props: {},
   data() {
     return {
+      loading: true,
+      details: {},
       activeName: "first",
       tableData: [
         {
-          time: "2016-05-02",
-          name: "Lead Supreme United",
-          perating: "888USDT on sale",
-          Detalls: "View",
+          time: "",
+          name: "",
+          perating: "",
         },
         {
-          time: "2016-05-02",
-          name: "Lead Supreme United",
-          perating: "888USDT on sale",
-          Detalls: "View",
+          time: "",
+          name: "",
+          perating: "",
         },
       ],
+      token_id: this.$route.params.id,
+      token: this.$route.params.token,
+      str: "",
+      strs: "",
+      creator: "",
+      creator_address: "",
     };
   },
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    console.log(this);
+    this.getDetails();
+  },
+  methods: {
+    getDetails() {
+      http.httpGet(
+        "v1/item/info",
+        {
+          token: this.token,
+          token_id: this.token_id,
+        },
+        (resp) => {
+          console.log(resp);
+          if (resp.code !== 200) {
+          } else {
+            this.loading = false;
+          }
+          this.details = resp.data;
+          this.details.price = ethers.utils.formatUnits(this.details.price);
+          this.str = this.details.creator;
+          this.strs = this.details.creator_address;
+          this.creator = this.SubStr(this.str);
+          this.creator_address = this.SubStr(this.strs);
+          this.tableData[0].name = this.details.creator_user_name;
+          this.tableData[1].name = this.details.own_user_name;
+          this.tableData[0].time = this.$dayjs(this.details.create_time).format(
+            "YYYY-MM-DD"
+          );
+          this.tableData[1].time = this.$dayjs(this.details.create_time).format(
+            "YYYY-MM-DD"
+          );
+        }
+      );
+    },
+    SubStr(str) {
+      var subStr1 = str.slice(0, 6);
+      var subStr2 = str.slice(str.length - 5, 42);
+      var subStr = subStr1 + "..." + subStr2;
+      return subStr;
+    },
+  },
 };
 </script>
 
@@ -253,7 +265,7 @@ export default {
 #replicator {
   position: absolute;
   top: 30px;
-  left: 320px;
+  left: 331px;
   width: 16px;
   height: 16px;
   border-radius: 0;
@@ -340,7 +352,7 @@ export default {
   width: 612px;
   height: 782px;
   background: #ffffff;
-  box-shadow: 0px 0px 8px 1px rgba(140, 140, 140, 0.26);
+  // box-shadow: 0px 0px 8px 1px rgba(140, 140, 140, 0.26);
   border-radius: 36px;
 }
 .clear {
