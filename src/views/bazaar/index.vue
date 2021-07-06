@@ -28,7 +28,7 @@
           @mouseout="hoverIndex = -1"
         >
         <h3 class="username">{{ item.prop_name }}</h3>
-        <p class="usermessage">{{ item.message }}</p>
+        <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
           <span style="float: left; color: #0066ed; margin-right: 20px">
             {{ item.price }} {{ item.coin_name }}
@@ -252,6 +252,9 @@ export default {
   font-family: Source Han Sans CN;
   font-weight: 500;
   color: #898989;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .username {
   margin-top: 10px;

@@ -176,6 +176,7 @@ export default {
   color: #0066ed;
   border: 3px solid #0066ed;
   border-radius: 10px;
+  padding: 0;
 }
 // /deep/.el-button {
 //   padding: 0;

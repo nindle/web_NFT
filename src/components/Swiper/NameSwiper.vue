@@ -32,7 +32,7 @@
           <h3 class="username">
             {{ item.prop_name }}
           </h3>
-          <p class="usermessage">{{ item.message }}</p>
+          <p class="usermessage">{{ item.prop_desc }}</p>
           <div class="userprice">
             <span style="float: left; color: #0066ed; margin-right: 20px">
               {{ item.price }} {{ item.coin_name }}
@@ -172,6 +172,10 @@ export default {
   height: 100%;
 }
 .usermessage {
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-left: 20px;
   margin-top: 10px;
   font-size: 18px;

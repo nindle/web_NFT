@@ -215,13 +215,7 @@ export default {
     load() {
       this.a += 3;
     },
-    async open() {
-      // const address = await initWallet();
-      // if (address != "") {
-      //   this.success = 200;
-      //   this.address = this.SubStr(address);
-      //   this.balance = await getBalance();
-      // }
+    open() {
       this.$alert(
         `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
         "Please connect the wallet",
@@ -229,13 +223,14 @@ export default {
           confirmButtonText: "Connecting Wallet",
           center: true,
           dangerouslyUseHTMLString: true,
+          confirmButtonClass: "btnstyle",
         }
-      ).then(() => {
-        this.success = 200;
-        this.$message({
-          type: "success",
-          message: "登录成功!",
-        });
+      ).then(async () => {
+        const address = await initWallet();
+        if (address != "") {
+          // this.success = 200;
+          this.balance = await getBalance();
+        }
       });
     },
   },
