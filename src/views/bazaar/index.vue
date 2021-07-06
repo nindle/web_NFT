@@ -26,7 +26,7 @@
           alt=""
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-        />
+        >
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
@@ -35,7 +35,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt="" /> 2314
+            <img src="../../assets/souchang.png" alt=""> 2314
           </div>
         </div>
         <div

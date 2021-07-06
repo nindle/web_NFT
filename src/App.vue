@@ -7,7 +7,7 @@
         class="header-login"
         replace
         @click="goHome"
-      />
+      >
       <div class="header-input">
         <el-input placeholder="Search by creator collectible or collection " />
         <img
@@ -20,7 +20,7 @@
             width: 27px;
             height: 27px;
           "
-        />
+        >
       </div>
       <div class="header-icon">
         <router-link
@@ -52,18 +52,18 @@
         </el-button>
         <div v-if="this.success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
+            <img src="./assets/point.png" alt="" style="margin: 0 4px">
             <span>BSC Mainnet</span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
-                {{ address }} <img src="./assets/fz.png" alt="" />
+                {{ address }} <img src="./assets/fz.png" alt="">
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="" />
+                <img src="./assets/tx1.png" alt="">
                 <p class="popoverstyle_c_a">Balance</p>
                 <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
@@ -88,7 +88,7 @@
           style="margin: 0 10px; height: 26px"
           src="./assets/language.png"
           alt=""
-        />
+        >
       </div>
     </el-header>
 
@@ -96,7 +96,7 @@
 
     <div :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="" />
+        <img src="./assets/login.png" alt="">
         <p
           style="
             font-size: 24px;
