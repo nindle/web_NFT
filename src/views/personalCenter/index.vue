@@ -1,15 +1,18 @@
 <template>
   <div>
     <!-- 个人中心背景图 -->
-    <div class="personalCenter-bgc" />
+    <div class="personalCenter-bgc">
+      <img :src="userBgc" alt="" />
+    </div>
+
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img src="../../assets/head.png" alt="">
+      <img :src="userpic" alt="" />
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
       <p style="color: #09090a; font-size: 20px">{{ userinfo.user_name }}</p>
-      <p>{{ subStr }} <img src="../../assets/fz.png" alt=""></p>
+      <p>{{ subStr }} <img src="../../assets/fz.png" alt="" /></p>
 
       <el-button
         round
@@ -44,11 +47,11 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        >
+        />
       </div>
     </div>
     <!-- 产品系列 -->
-    <div v-loading="loading" class="personalCenter-Tabs">
+    <div class="personalCenter-Tabs">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="CREATED" name="first">
           <ul class="exhibition">
@@ -76,7 +79,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -88,7 +91,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -136,7 +139,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -148,7 +151,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -196,7 +199,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -208,7 +211,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -256,7 +259,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -268,7 +271,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -299,6 +302,7 @@
 import Http from "../../utils/http";
 import $http from "../../utils/request";
 
+import bgc from "../../assets/bj.png";
 import { ethers } from "ethers";
 
 import { initWallet } from "../../wallet/wallet";
@@ -309,7 +313,8 @@ export default {
   data() {
     return {
       user_id: "",
-      loading: true,
+      userBgc: require("../../assets/bj.png"),
+      userpic: require("../../assets/touxiang.png"),
       hover: false,
       hoverIndex: -2,
       a: 6,
@@ -351,16 +356,19 @@ export default {
       this.a += 6;
     },
     async getUserInfo() {
-      if (this.user_id == "") {
-        this.loading = false;
-      }
-      console.log(this.user_id);
-
       const resp = await $http.get(
         `https://api.lionnft.io/v1/user?address=${this.user_id}`
       );
       this.userinfo = resp.data;
-      console.log(resp);
+      if (this.userinfo.user_pic !== "") {
+        this.userBgc = this.userinfo.user_pic;
+      }
+      if (this.userinfo.user_cover !== "") {
+        this.userpic = this.userinfo.user_cover;
+      }
+
+      console.log(this.userinfo);
+
       this.str = this.userinfo.user_address;
       this.subStr = this.SubStr(this.str);
     },
@@ -402,7 +410,6 @@ export default {
 .personalCenter-bgc {
   width: 100%;
   height: 224px;
-  background-image: url("../../assets/bj.png");
   z-index: 2;
 }
 .personalCenter-pic {

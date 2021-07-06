@@ -28,18 +28,18 @@
             "
             :class="{ hoverBg: index == hoverIndex }"
             alt=""
-          >
+          />
           <h3 class="username">
             {{ item.prop_name }}
           </h3>
-          <p class="usermessage">{{ item.message }}</p>
+          <p class="usermessage">{{ item.prop_desc }}</p>
           <div class="userprice">
             <span style="float: left; color: #0066ed; margin-right: 20px">
               {{ item.price }} {{ item.coin_name }}
             </span>
             <span> {{ item.supply_sell }}/{{ item.supply }}</span>
             <div class="userpriceimg" style="float: right; margin-right: 40px">
-              <img src="../../assets/souchang.png" alt=""> 2314
+              <img src="../../assets/souchang.png" alt="" /> 2314
             </div>
           </div>
           <div :class="hoverIndex == index ? 'redirects' : 'redirect'">
@@ -50,10 +50,10 @@
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev NameSwiperleft">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next NameSwiperright">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -172,6 +172,10 @@ export default {
   height: 100%;
 }
 .usermessage {
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-left: 20px;
   margin-top: 10px;
   font-size: 18px;

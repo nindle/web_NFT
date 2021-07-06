@@ -14,12 +14,12 @@
       >
         <div class="neirong">
           <img
-            :src="item.background"
+            :src="item.user_pic"
             style="width: 371px; height: 186px"
             alt=""
-          >
+          />
           <img
-            :src="item.headPortrait"
+            :src="item.user_cover"
             style="
               width: 60px;
               height: 60px;
@@ -28,7 +28,7 @@
               left: 154px;
             "
             alt=""
-          >
+          />
           <h3 class="username">{{ item.user_name }}</h3>
           <p class="usermessage">{{ item.message }}</p>
         </div>
@@ -36,10 +36,10 @@
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev bestSelling-left">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next bestSelling-right">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -60,6 +60,8 @@ export default {
   },
   data() {
     return {
+      userbgc: require("../../assets/bgc.png"),
+      headPortrait: require("../../assets/touxiang.png"),
       swiperOption: {
         slidesPerView: 3,
         spaceBetween: 40,
@@ -68,8 +70,6 @@ export default {
         loopFillGroupWithBlank: true,
         pagination: {
           el: ".swiper-pagination",
-          // type: "fraction",
-          // clickable: true,
         },
         navigation: {
           nextEl: ".bestSelling-right",
@@ -96,17 +96,35 @@ export default {
         "https://api.lionnft.io/v1/user/top?user=seller"
       );
       this.userInfoList = resp.list;
+      console.log(this.userInfoList);
+
       this.userInfoList.forEach((item) => {
-        item.headPortrait = require("../../assets/head.png");
-        item.background = require("../../assets/bgc.png");
-        item.message = "暂无简介1";
-        if (item.user_name == null) {
+        console.log(item.user_cover);
+        //设置默认背景图
+        if (item.user_pic == "") {
+          item.user_pic = this.userbgc;
+        } else if (item.user_pic == null) {
+          item.user_pic = this.userbgc;
+        }
+        //设置默认头像
+        if (item.user_cover == "") {
+          item.user_cover = this.headPortrait;
+        } else if (item.user_cover == null) {
+          item.user_cover = this.headPortrait;
+        }
+        //设置默认简介
+        if (item.message == "") {
+          item.message = "暂无简介";
+        } else if (item.message == null) {
+          item.message = "暂无简介";
+        }
+        // 设置默认名称
+        if (item.user_name == "") {
+          item.user_name = "暂无名称";
+        } else if (item.user_name == null) {
           item.user_name = "暂无名称";
         }
-        //  headPortrait: require("../../assets/head.png"),
-        // background: require("../../assets/bgc.png"),
       });
-      // this.userInfoList = resp.list;
     },
   },
 };
