@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import ERC721 from './VVMERC721.json';
 import ERC1155 from './VVMToken1155.json';
+import ExchangeV1 from './ExchangeV1.json';
 import { ethers } from 'ethers';
 import { Message } from 'element-ui';
 
@@ -23,6 +24,14 @@ export function Contracts1155() {
   console.log(ERC1155.address, ERC1155.abi);
   const erc1155 = new ethers.Contract(ERC1155.address, ERC1155.abi, provider.getSigner());
   return erc1155;
+}
+
+// 实例化交易合约
+export function ContractExchange() {
+  const provider = getProvider();
+  console.log(ExchangeV1.address, ExchangeV1.abi);
+  const cont = new ethers.Contract(ExchangeV1.address, ExchangeV1.abi, provider.getSigner());
+  return cont;
 }
 
 // 初始化ethers
