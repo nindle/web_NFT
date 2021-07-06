@@ -2,17 +2,25 @@
   <div>
     <!-- 个人中心背景图 -->
     <div class="personalCenter-bgc">
-      <img :src="userBgc" alt="">
+      <img :src="userBgc" alt="" />
     </div>
 
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img :src="userpic" alt="">
+      <img :src="userpic" alt="" />
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
       <p style="color: #09090a; font-size: 20px">{{ userinfo.user_name }}</p>
-      <p>{{ subStr }} <img src="../../assets/fz.png" alt=""></p>
+      <p>
+        {{ subStr }}
+        <img
+          src="../../assets/fz.png"
+          style="cursor: pointer"
+          alt=""
+          @click="copyText"
+        />
+      </p>
 
       <el-button
         round
@@ -47,7 +55,7 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        >
+        />
       </div>
     </div>
     <!-- 产品系列 -->
@@ -79,7 +87,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -91,7 +99,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -139,7 +147,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -151,7 +159,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -199,7 +207,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -211,7 +219,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -259,7 +267,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.message }}</p>
               <div class="userprice">
@@ -271,7 +279,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -302,7 +310,6 @@
 import Http from "../../utils/http";
 import $http from "../../utils/request";
 
-import bgc from "../../assets/bj.png";
 import { ethers } from "ethers";
 
 import { initWallet } from "../../wallet/wallet";
@@ -336,6 +343,19 @@ export default {
   },
   mounted() {},
   methods: {
+    copyText() {
+      var input = document.createElement("input"); // js创建一个input输入框
+      input.value = this.userinfo.user_address; // 将需要复制的文本赋值到创建的input输入框中
+      document.body.appendChild(input); // 将输入框暂时创建到实例里面
+      input.select(); // 选中输入框中的内容
+      document.execCommand("Copy"); // 执行复制操作
+      document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
+      this.$message({
+        message: "复制成功",
+        type: "success",
+      });
+    },
+
     handleClick(tab, event) {
       console.log(tab.label);
       if (tab.label == "SOLD") {

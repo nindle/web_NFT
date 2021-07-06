@@ -10,7 +10,7 @@
       "
       style="border-radius: 20px"
       alt=""
-    >
+    />
     <div class="clear" />
 
     <!-- 产品详情 -->
@@ -28,25 +28,26 @@
           {{ details.supply_sell }} of {{ details.supply }} available
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="">2212
+          <img id="examines" src="../../assets/examine.png" alt="" />2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="">
-          2122</span>
+          <img id="examine" src="../../assets/souchang.png" alt="" />
+          2122</span
+        >
       </li>
       <li class="price">
         <img
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        >
+        />
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
         <el-button class="details-button" type="primary">Buy Now</el-button>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li>
         <div class="productdetails">
           <div style="float: left">
@@ -54,7 +55,7 @@
               src="../../assets/19.jpeg"
               style="margin: 10px 15px 0 0"
               alt=""
-            >
+            />
           </div>
           <div class="productdetails-a" style="position: relative">
             <p
@@ -84,8 +85,15 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator }}</span>
-            <img id="replicator" src="../../assets/replicator.png" alt="">
+              >{{ creator }}</span
+            >
+            <img
+              id="replicator"
+              src="../../assets/replicator.png"
+              alt=""
+              style="cursor: pointer"
+              @click="copyText(1)"
+            />
           </div>
         </div>
       </li>
@@ -96,7 +104,7 @@
               src="../../assets/19.jpeg"
               style="margin: 10px 15px 0 0"
               alt=""
-            >
+            />
           </div>
           <div class="productdetails-a" style="position: relative">
             <p
@@ -126,12 +134,19 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator_address }}</span>
-            <img id="replicator" src="../../assets/replicator.png" alt="">
+              >{{ creator_address }}</span
+            >
+            <img
+              id="replicator"
+              src="../../assets/replicator.png"
+              alt=""
+              style="cursor: pointer"
+              @click="copyText(2)"
+            />
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li
         style="
           font-size: 15px;
@@ -152,17 +167,7 @@
     </ul>
     <el-tabs v-model="activeName">
       <el-tab-pane label="Work description" name="first">
-        Louis Koo, played Lu Bu in the movie "Dynasty Warriors". ========
-        Character introduction: Lu Bu, a native of Jiuyuan County, Wuyuan
-        County. One of the heroes in the late Eastern Han Dynasty. Because of
-        Xiaowu, Lv Bu was awarded the post of Captain of Cavalry and Chief
-        Officer of Hanoi, etc. by Muding Yuan of Binzhou. After killing Ding
-        Yuan, he became Dong Zhuo's adopted son and was awarded to Zhong Lang.
-        Suspended by Dong Zhuo, he was instigated by Situ Wang Yun to punish
-        Dong Zhuo, moved to General Wu, Kaifuyitong Sansi, and entered Fengwen
-        County. Lu Bu is famous for his bravery and is known as the "flying
-        commander". It is sometimes said that "Lu Bu is among the people and the
-        red rabbit is in the horse." ========
+        {{ details.prop_desc }}
       </el-tab-pane>
       <el-tab-pane label="About NFT" name="second">
         The full name of NFT is non-Fungible Token, which is a non-homogeneous
@@ -185,7 +190,7 @@
 </template>
 
 <script>
-import http from "../../utils/http";
+import $http from "../../utils/request";
 import { ethers } from "ethers";
 export default {
   name: "Details",
@@ -220,34 +225,46 @@ export default {
     this.getDetails();
   },
   methods: {
-    getDetails() {
-      http.httpGet(
-        "v1/item/info",
-        {
-          token: this.token,
-          token_id: this.token_id,
-        },
-        (resp) => {
-          console.log(resp);
-          if (resp.code !== 200) {
-          } else {
-            this.loading = false;
-          }
-          this.details = resp.data;
-          this.details.price = ethers.utils.formatUnits(this.details.price);
-          this.str = this.details.creator;
-          this.strs = this.details.creator_address;
-          this.creator = this.SubStr(this.str);
-          this.creator_address = this.SubStr(this.strs);
-          this.tableData[0].name = this.details.creator_user_name;
-          this.tableData[1].name = this.details.own_user_name;
-          this.tableData[0].time = this.$dayjs(this.details.create_time).format(
-            "YYYY-MM-DD"
-          );
-          this.tableData[1].time = this.$dayjs(this.details.create_time).format(
-            "YYYY-MM-DD"
-          );
-        }
+    copyText(id) {
+      var input = document.createElement("input"); // js创建一个input输入框
+      if (id == 1) {
+        input.value = this.str;
+      } else {
+        input.value = this.strs;
+      }
+      // 将需要复制的文本赋值到创建的input输入框中
+      document.body.appendChild(input); // 将输入框暂时创建到实例里面
+      input.select(); // 选中输入框中的内容
+      document.execCommand("Copy"); // 执行复制操作
+      document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
+      this.$message({
+        message: "复制成功",
+        type: "success",
+      });
+    },
+    async getDetails() {
+      const resp = await $http.get(
+        `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
+      );
+      console.log(resp);
+      if (resp.code !== 200) {
+      } else {
+        this.loading = false;
+      }
+      this.details = resp.data;
+
+      this.details.price = ethers.utils.formatUnits(this.details.price);
+      this.str = this.details.creator;
+      this.strs = this.details.creator_address;
+      this.creator = this.SubStr(this.str);
+      this.creator_address = this.SubStr(this.strs);
+      this.tableData[0].name = this.details.creator_user_name;
+      this.tableData[1].name = this.details.own_user_name;
+      this.tableData[0].time = this.$dayjs(this.details.create_time).format(
+        "YYYY-MM-DD"
+      );
+      this.tableData[1].time = this.$dayjs(this.details.create_time).format(
+        "YYYY-MM-DD"
       );
     },
     SubStr(str) {

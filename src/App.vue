@@ -7,7 +7,7 @@
         class="header-login"
         replace
         @click="goHome"
-      >
+      />
       <div class="header-input">
         <el-input placeholder="Search by creator collectible or collection " />
         <img
@@ -20,7 +20,7 @@
             width: 27px;
             height: 27px;
           "
-        >
+        />
       </div>
       <div class="header-icon">
         <router-link
@@ -52,23 +52,34 @@
         </el-button>
         <div v-if="this.success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px">
+            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
             <span>BSC Mainnet</span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
-                {{ address }} <img src="./assets/fz.png" alt="">
+                {{ address }}
+                <img
+                  src="./assets/fz.png"
+                  style="cursor: pointer"
+                  @click="copyText"
+                  alt=""
+                />
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="">
+                <img src="./assets/tx1.png" alt="" />
                 <p class="popoverstyle_c_a">Balance</p>
                 <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
               <el-divider />
-              <p class="popoverstyle_d">My items</p>
+              <p
+                class="popoverstyle_d"
+                @click="$router.push({ name: 'personalCenter' })"
+              >
+                My items
+              </p>
               <p class="popoverstyle_d">Edit profile</p>
               <el-button
                 id="userstyle"
@@ -88,7 +99,7 @@
           style="margin: 0 10px; height: 26px"
           src="./assets/language.png"
           alt=""
-        >
+        />
       </div>
     </el-header>
 
@@ -96,7 +107,7 @@
 
     <div :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="">
+        <img src="./assets/login.png" alt="" />
         <p
           style="
             font-size: 24px;
@@ -153,6 +164,7 @@ export default {
   data() {
     return {
       address: "",
+      addres: "",
       balance: 0,
       cur: 1,
       a: 5,
@@ -181,18 +193,22 @@ export default {
       }
     },
   },
-  async created() {
-    const address = await initWallet();
-    if (address != "") {
-      this.success = 200;
-      this.address = this.SubStr(address);
-      this.balance = await getBalance();
-      const { data: data } = await userInfoApi(address);
-      this.userInfo = data;
-    }
-  },
+  created() {},
   mounted() {},
   methods: {
+    copyText() {
+      var input = document.createElement("input"); // js创建一个input输入框
+      input.value = this.addres; // 将需要复制的文本赋值到创建的input输入框中
+      document.body.appendChild(input); // 将输入框暂时创建到实例里面
+      input.select(); // 选中输入框中的内容
+      document.execCommand("Copy"); // 执行复制操作
+      document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
+      this.$message({
+        message: "复制成功",
+        type: "success",
+      });
+    },
+
     SubStr(str) {
       var subStr1 = str.slice(0, 6);
       var subStr2 = str.slice(str.length - 5, 42);
@@ -228,8 +244,12 @@ export default {
       ).then(async () => {
         const address = await initWallet();
         if (address != "") {
-          // this.success = 200;
+          this.success = 200;
+          this.addres = address;
+          this.address = this.SubStr(address);
           this.balance = await getBalance();
+          const { data: data } = await userInfoApi(address);
+          this.userInfo = data;
         }
       });
     },
