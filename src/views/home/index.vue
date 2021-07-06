@@ -177,9 +177,9 @@ export default {
   border: 3px solid #0066ed;
   border-radius: 10px;
 }
-/deep/.el-button {
-  padding: 0;
-}
+// /deep/.el-button {
+//   padding: 0;
+// }
 .el-carousel__item h3 {
   color: #475669;
   font-size: 14px;

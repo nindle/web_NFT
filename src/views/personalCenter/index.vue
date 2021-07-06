@@ -297,6 +297,7 @@
 
 <script>
 import Http from "../../utils/http";
+import $http from "../../utils/request";
 
 import { ethers } from "ethers";
 
@@ -321,9 +322,9 @@ export default {
     };
   },
   async created() {
-    const address = await initWallet();
-    if (address != "") {
-      this.user_id = address;
+    const addres = await initWallet();
+    if (addres != "") {
+      this.user_id = addres;
       this.getUserInfo();
       this.getCreated();
     }
@@ -349,23 +350,28 @@ export default {
     loadMore() {
       this.a += 6;
     },
-    getUserInfo() {
+    async getUserInfo() {
       if (this.user_id == "") {
         this.loading = false;
       }
-      Http.httpGet("v1/user", { address: this.user_id }, (resp) => {
-        console.log(resp);
-        this.userinfo = resp.data;
-        this.str = this.userinfo.user_address;
-        this.subStr = this.SubStr(this.str);
-      });
+      console.log(this.user_id);
+
+      const resp = await $http.get(
+        `https://api.lionnft.io/v1/user?address=${this.user_id}`
+      );
+      this.userinfo = resp.data;
+      console.log(resp);
+      this.str = this.userinfo.user_address;
+      this.subStr = this.SubStr(this.str);
     },
+
     SubStr(str) {
       var subStr1 = str.slice(0, 6);
       var subStr2 = str.slice(str.length - 5, 42);
       var subStr = subStr1 + "..." + subStr2;
       return subStr;
     },
+
     getCreated() {
       Http.httpGet(
         "v1/item/list",
@@ -374,7 +380,6 @@ export default {
           filter: this.filters,
         },
         (resp) => {
-          console.log(resp);
           this.createdList = resp.list;
           this.createdList.forEach((item, index) => {
             if (this.createdList[index].price === "") {

@@ -5,14 +5,13 @@
       style="padding: 10px 16px"
       :options="swiperOptions"
       @swiper="onSwiper"
-      @click="$router.push({ name: 'details', params: { id: index } })"
       @slideChange="onSlideChange"
     >
       <swiper-slide v-for="(item, index) in showList.slice(0, 5)" :key="index">
         <div
           class="neirong"
           @mouseover="hoverIndex = index"
-          @mouseleave="hoverIndex = -2"
+          @mouseout="hoverIndex = -1"
           @click="
             $router.push({
               name: 'details',
@@ -29,10 +28,10 @@
             "
             :class="{ hoverBg: index == hoverIndex }"
             alt=""
-            @mouseover="hoverIndex = index"
-            @mouseleave="hoverIndex = -2"
           >
-          <h3 class="username">{{ item.prop_name }}</h3>
+          <h3 class="username">
+            {{ item.prop_name }}
+          </h3>
           <p class="usermessage">{{ item.message }}</p>
           <div class="userprice">
             <span style="float: left; color: #0066ed; margin-right: 20px">
@@ -43,11 +42,7 @@
               <img src="../../assets/souchang.png" alt=""> 2314
             </div>
           </div>
-          <div
-            :class="hoverIndex == index ? 'redirects' : 'redirect'"
-            @mouseover="hoverIndex = index"
-            @mouseleave="hoverIndex = -2"
-          >
+          <div :class="hoverIndex == index ? 'redirects' : 'redirect'">
             Buy now →
           </div>
         </div>
@@ -89,7 +84,7 @@ export default {
   data() {
     return {
       hover: false,
-      hoverIndex: -2,
+      hoverIndex: -1,
       swiperOptions: {
         slidesPerView: 3,
         spaceBetween: 40,
@@ -119,12 +114,8 @@ export default {
     this.getList();
   },
   methods: {
-    onSwiper(swiper) {
-      console.log(swiper);
-    },
-    onSlideChange() {
-      console.log("slide change");
-    },
+    onSwiper(swiper) {},
+    onSlideChange() {},
     async getList() {
       const resp = await $http.get("https://api.lionnft.io/v1/explore/list");
       this.showList = resp.list;

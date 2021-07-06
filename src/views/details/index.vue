@@ -217,7 +217,6 @@ export default {
   },
   created() {},
   mounted() {
-    console.log(this);
     this.getDetails();
   },
   methods: {

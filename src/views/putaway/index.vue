@@ -3,48 +3,50 @@
     <el-form label-position="top" :model="formLabelAlign">
       <!-- 标题 -->
       <p
-        style="font-size: 30px;color: #09090A;font-weight: bold;padding:50px 0;"
+        style="
+          font-size: 30px;
+          color: #09090a;
+          font-weight: bold;
+          padding: 50px 0;
+        "
       >
         Put your product on the shelves
       </p>
       <!-- 价格币种选择 -->
       <el-form-item label="Price">
         <el-input
-          placeholder="Enter price for one piece"
           v-model="formLabelAlign.title"
-        >
-        </el-input>
+          placeholder="Enter price for one piece"
+        />
 
         <el-select
-          style="float: right;margin-top: -40px;"
           v-model="values"
+          style="float: right; margin-top: -40px"
           placeholder="请选择"
         >
           <el-option
             v-for="item in types"
             :key="item.index"
             :label="item.label"
-          >
-          </el-option>
+          />
         </el-select>
       </el-form-item>
       <!-- 分类选择 -->
       <el-form-item label="Classification">
         <el-input
-          placeholder="Please select type"
           v-model="formLabelAlign.Description"
-        ></el-input>
+          placeholder="Please select type"
+        />
         <el-select
-          style="float: right;margin-top: -40px;"
           v-model="value"
+          style="float: right; margin-top: -40px"
           placeholder="请选择"
         >
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
-          >
-          </el-option>
+          />
         </el-select>
       </el-form-item>
       <!-- 时间选择 -->
@@ -56,19 +58,21 @@
             range-separator="go"
             start-placeholder="Starting Date"
             end-placeholder="Expiration Date"
-          >
-          </el-date-picker>
+          />
         </div>
       </el-form-item>
       <el-button
-        style="width: 180px;
-        height: 45px;
-        background: #2081E2;
-        border-radius: 22px;
-        margin-top:20px"
+        style="
+          width: 180px;
+          height: 45px;
+          background: #2081e2;
+          border-radius: 22px;
+          margin-top: 20px;
+        "
         type="primary"
-        >Create item</el-button
       >
+        Create item
+      </el-button>
     </el-form>
   </div>
 </template>
@@ -86,68 +90,68 @@ export default {
       formLabelAlign: {
         title: "",
         Description: "",
-        type: ""
+        type: "",
       },
       options: [
         {
           value: "1",
-          label: "New"
+          label: "New",
         },
         {
           value: "2",
-          label: "Art"
+          label: "Art",
         },
         {
           value: "3",
-          label: "Domain Names"
+          label: "Domain Names",
         },
         {
           value: "4",
-          label: "Virtual Worlds"
+          label: "Virtual Worlds",
         },
         {
           value: "5",
-          label: "Collectibles"
+          label: "Collectibles",
         },
         {
           value: "6",
-          label: "Sports"
+          label: "Sports",
         },
         {
           value: "7",
-          label: "Utility"
-        }
+          label: "Utility",
+        },
       ],
       value: "",
       types: [
         {
           index: "1",
-          label: "ETH"
+          label: "ETH",
         },
         {
           index: "2",
-          label: "DAI"
+          label: "DAI",
         },
         {
           index: "3",
-          label: "DAI"
+          label: "DAI",
         },
         {
           index: "4",
-          label: "DAI"
+          label: "DAI",
         },
         {
           index: "5",
-          label: "DAI"
-        }
+          label: "DAI",
+        },
       ],
       values: "",
-      value1: ""
+      value1: "",
     };
   },
   created() {},
   mounted() {},
-  methods: {}
+  methods: {},
 };
 </script>
 

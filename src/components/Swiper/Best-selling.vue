@@ -51,7 +51,7 @@ import SwiperCore, { Autoplay, Navigation } from "swiper";
 SwiperCore.use([Navigation, Autoplay]);
 
 // import Http from "../../utils/http";
-import $http from '../../utils/request';
+import $http from "../../utils/request";
 
 export default {
   components: {
@@ -88,18 +88,13 @@ export default {
     this.getUserInfo();
   },
   methods: {
-    onSwipers(swiper) {
-      console.log(swiper);
-    },
-    onSlideChanges() {
-      console.log("slide change");
-    },
-    ggs() {
-      console.log("click");
-    },
+    onSwipers(swiper) {},
+    onSlideChanges() {},
+    ggs() {},
     async getUserInfo() {
-      const resp = await $http.get("https://api.lionnft.io/v1/user/top?user=seller");
-      console.log(resp);
+      const resp = await $http.get(
+        "https://api.lionnft.io/v1/user/top?user=seller"
+      );
       this.userInfoList = resp.list;
       this.userInfoList.forEach((item) => {
         item.headPortrait = require("../../assets/head.png");

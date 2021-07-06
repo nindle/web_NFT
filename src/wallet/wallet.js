@@ -2,6 +2,7 @@ import Vue from 'vue';
 import ERC721 from './VVMERC721.json';
 import ERC1155 from './VVMToken1155.json';
 import { ethers } from 'ethers';
+import { Message } from 'element-ui';
 
 export function getProvider() {
   let provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -28,7 +29,7 @@ export function Contracts1155() {
 export async function initWallet() {
   if (typeof window.ethereum === 'undefined') {
     // alert('您未安装BSC钱包！');
-    this.$message.error('您未安装BSC钱包！');
+    Message.error('您未安装BSC钱包！');
     return '';
   }
   const accounts = await window.ethereum.request({
@@ -37,7 +38,7 @@ export async function initWallet() {
   });
   if (!accounts || accounts.length == 0) {
     // alert('您未解锁BSC钱包！');
-    this.$message.error('您未解锁BSC钱包！');
+    Message.error('您未安装BSC钱包！');
 
     return '';
   }
@@ -47,8 +48,7 @@ export async function initWallet() {
   console.log('networkVersion=>', window.ethereum.networkVersion);
   if (window.ethereum.networkVersion != 97) {
     // alert('请切换到BSCTestnet网络！');
-    this.$message.error('请切换到BSCTestnet网络！');
-
+    Message.error('请切换到BSCTestnet网络！');
     return '';
   }
   // if (ethereum.networkVersion != 56) {

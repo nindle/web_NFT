@@ -70,8 +70,12 @@
               <el-divider />
               <p class="popoverstyle_d">My items</p>
               <p class="popoverstyle_d">Edit profile</p>
-              <el-button slot="reference" style="background-color: #d7e8fe">
-                {{ userInfo.user_name || '未设置' }}
+              <el-button
+                id="userstyle"
+                slot="reference"
+                style="background-color: #d7e8fe"
+              >
+                {{ userInfo.user_name || "未设置" }}
               </el-button>
             </el-popover>
           </p>
@@ -155,7 +159,7 @@ export default {
       success: "",
       drawer: false,
       toRouter: "",
-      userInfo: {}
+      userInfo: {},
     };
   },
   computed: {
@@ -183,7 +187,8 @@ export default {
       this.success = 200;
       this.address = this.SubStr(address);
       this.balance = await getBalance();
-      this.userInfo = await userInfoApi(address);
+      const { data: data } = await userInfoApi(address);
+      this.userInfo = data;
     }
   },
   mounted() {},
@@ -211,12 +216,12 @@ export default {
       this.a += 3;
     },
     async open() {
-      const address = await initWallet();
-      if (address != "") {
-        this.success = 200;
-        this.address = this.SubStr(address);
-        this.balance = await getBalance();
-      }
+      // const address = await initWallet();
+      // if (address != "") {
+      //   this.success = 200;
+      //   this.address = this.SubStr(address);
+      //   this.balance = await getBalance();
+      // }
       this.$alert(
         `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
         "Please connect the wallet",
@@ -237,6 +242,25 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+#userstyle {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 0;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  transition: 0.1s;
+  font-weight: 500;
+  padding: 7px 9px;
+  font-size: 14px;
+  border-radius: 4px;
+}
 .bottom_b tr td {
   width: 200px;
   cursor: pointer;
@@ -307,6 +331,7 @@ export default {
   color: #0066ed;
   font-family: Source Han Sans CN;
   font-weight: 400;
+  font-size: 13px;
 }
 .loginSuccessful {
   width: 245px;
@@ -387,10 +412,6 @@ export default {
   font-size: 12px;
   border-radius: 20px;
   border-radius: 50%;
-}
-/deep/.el-button {
-  padding: 0;
-  border: 0;
 }
 
 .el-header {
