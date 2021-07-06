@@ -89,7 +89,7 @@
                 @mouseout="hoverIndex = -1"
               />
               <h3 class="username">{{ item.prop_name }}</h3>
-              <p class="usermessage">{{ item.message }}</p>
+              <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
                   {{ item.price }} BNB
@@ -149,7 +149,7 @@
                 @mouseout="hoverIndex = -1"
               />
               <h3 class="username">{{ item.prop_name }}</h3>
-              <p class="usermessage">{{ item.message }}</p>
+              <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
                   {{ item.price }} BNB
@@ -209,7 +209,7 @@
                 @mouseout="hoverIndex = -1"
               />
               <h3 class="username">{{ item.prop_name }}</h3>
-              <p class="usermessage">{{ item.message }}</p>
+              <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
                   {{ item.price }} BNB
@@ -269,7 +269,7 @@
                 @mouseout="hoverIndex = -1"
               />
               <h3 class="username">{{ item.prop_name }}</h3>
-              <p class="usermessage">{{ item.message }}</p>
+              <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
                 <span style="float: left; color: #0066ed; margin-right: 20px">
                   {{ item.price }} BNB

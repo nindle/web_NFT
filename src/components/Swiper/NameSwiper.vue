@@ -7,28 +7,27 @@
       @swiper="onSwiper"
       @slideChange="onSlideChange"
     >
-      <swiper-slide v-for="(item, index) in showList.slice(0, 5)" :key="index">
-        <div
-          class="neirong"
-          @mouseover="hoverIndex = index"
-          @mouseout="hoverIndex = -1"
-          @click="
-            $router.push({
-              name: 'details',
-              params: { id: item.token_id, token: item.token },
-            })
-          "
-        >
-          <img
-            :src="
-              item.prop_image.replace(
-                'ipfs://ipfs/',
-                'https://api.lionnft.io/v1/upload/view?hash='
-              )
-            "
-            :class="{ hoverBg: index == hoverIndex }"
-            alt=""
-          >
+      <swiper-slide v-for="(item, index) in showList.slice(0, 7)" :key="index">
+        <div class="neirong">
+          <div class="img-hover">
+            <img
+              :src="
+                item.prop_image.replace(
+                  'ipfs://ipfs/',
+                  'https://api.lionnft.io/v1/upload/view?hash='
+                )
+              "
+              class="hoverBg"
+              alt=""
+            />
+
+            <div
+              @click="onClickGoToDetail(item.token_id, item.token)"
+              class="redirects"
+            >
+              Buy now →
+            </div>
+          </div>
           <h3 class="username">
             {{ item.prop_name }}
           </h3>
@@ -39,21 +38,21 @@
             </span>
             <span> {{ item.supply_sell }}/{{ item.supply }}</span>
             <div class="userpriceimg" style="float: right; margin-right: 40px">
-              <img src="../../assets/souchang.png" alt=""> 2314
+              <img src="../../assets/souchang.png" alt="" /> 2314
             </div>
           </div>
-          <div :class="hoverIndex == index ? 'redirects' : 'redirect'">
+          <!-- <div :class="hoverIndex == index ? 'redirects' : 'redirect'">
             Buy now →
-          </div>
+          </div> -->
         </div>
       </swiper-slide>
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev NameSwiperleft">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next NameSwiperright">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -84,13 +83,13 @@ export default {
   data() {
     return {
       hover: false,
-      hoverIndex: -1,
       swiperOptions: {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 1,
-        loop: true,
+        // loop: true,
         loopFillGroupWithBlank: true,
+        slideToClickedSlide: false,
         pagination: {
           el: ".swiper-pagination",
           // type: "fraction",
@@ -129,18 +128,31 @@ export default {
         }
       });
     },
+
+    onClickGoToDetail(id, token) {
+      console.log("text", id, token);
+      this.$router.push({
+        name: "details",
+        params: { id, token },
+      });
+    },
   },
 };
 </script>
 <style lang="less" scoped>
-.hoverBg {
-  filter: blur(8px);
+.img-hover:hover {
+  .hoverBg {
+    filter: blur(8px);
+  }
+  .redirects {
+    display: block;
+  }
 }
 .redirect {
   display: none;
 }
 .redirects {
-  display: block;
+  display: none;
   position: absolute;
   top: 150px;
   left: 70px;

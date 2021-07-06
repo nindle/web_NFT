@@ -31,8 +31,7 @@ a {
 button,
 input {
   /* "\5B8B\4F53" 就是宋体的意思 这样浏览器兼容性比较好 */
-  font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB,
-    "\5B8B\4F53", sans-serif;
+  font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
   /* 默认有灰色边框我们需要手动去掉 */
   border: 0;
   outline: none;
@@ -41,8 +40,7 @@ body {
   /* CSS3 抗锯齿形 让文字显示的更加清晰 */
   -webkit-font-smoothing: antialiased;
   background-color: #fff;
-  font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB,
-    "\5B8B\4F53", sans-serif;
+  font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
   color: #666;
 }
 .hide,
@@ -81,8 +79,9 @@ body,
 .el-popover {
   width: 279px;
   height: 270px;
+  left: 0;
   top: 45px !important;
-  left: 1623px !important;
+  right: 1% !important;
   box-shadow: 0px 0px 15px 1px rgba(51, 51, 51, 0.13);
   border-radius: 7px;
   padding: 17px;
