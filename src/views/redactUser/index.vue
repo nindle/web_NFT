@@ -10,19 +10,20 @@
             border: 1px solid #0066ed;
             border-radius: 18px;
           "
-          >Choose file</el-button
         >
+          Choose file
+        </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
         </div>
       </el-upload>
-      <div class="preview"></div>
+      <div class="preview" />
       <div class="uploading_a">
         We recommend an image of at least 400x400. Gifs work too.
       </div>
     </div>
     <div class="rollback" @click="$router.go(-1)">
-      <i class="el-icon-arrow-left"></i>Go back
+      <i class="el-icon-arrow-left" />Go back
     </div>
     <!-- 标题简介 -->
     <div class="redactUser-a">
@@ -54,27 +55,27 @@
     <el-form label-position="top" :model="formLabelAlign">
       <el-form-item label="Display name">
         <el-input
+          v-model="formLabelAlign.username"
           class="el-input-a"
           placeholder="Enter yuor display name"
-          v-model="formLabelAlign.username"
-        ></el-input>
+        />
       </el-form-item>
       <el-form-item label="Custom URL">
         <el-input
+          v-model="formLabelAlign.short_url"
           width:400px
           class="el-input-a"
           placeholder="Enter your custom URL"
-          v-model="formLabelAlign.short_url"
         >
-          <template slot="prepend">rarible.com/</template>
+          <template slot="prepend">lionnft.com/</template>
         </el-input>
       </el-form-item>
       <el-form-item label="Bio">
         <el-input
+          v-model="formLabelAlign.desc"
           class="el-input-a"
           placeholder="Tell about yourself in a few words"
-          v-model="formLabelAlign.desc"
-        ></el-input>
+        />
       </el-form-item>
       <el-button
         style="
@@ -86,8 +87,9 @@
         "
         type="primary"
         @click="postUserEdit()"
-        >Update profile</el-button
       >
+        Update profile
+      </el-button>
     </el-form>
   </div>
 </template>

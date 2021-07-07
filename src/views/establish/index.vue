@@ -1,7 +1,7 @@
 <template>
   <div class="cast">
     <div class="rollback" @click="$router.go(-1)">
-      <i class="el-icon-arrow-left"></i>Go back
+      <i class="el-icon-arrow-left" />Go back
     </div>
     <div class="create">Create collectible</div>
     <div class="create_a">
@@ -10,11 +10,11 @@
     </div>
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="" />
+        <img src="../../assets/single.png" alt="">
         <p>Single</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="" />
+        <img src="../../assets/Multiple.png" alt="">
         <p>Multiple</p>
       </div>
     </div>
@@ -30,6 +30,7 @@ export default {
   data() {
     return {};
   },
+  computed: {},
   mounted() {},
   methods: {
     Single() {
@@ -39,7 +40,6 @@ export default {
       this.$router.push({ name: "multiple", params: { userId: "123" } });
     },
   },
-  computed: {},
 };
 </script>
 

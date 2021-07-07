@@ -197,6 +197,7 @@ import {
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 
+
 let currCont = null;
 export default {
   name: "Establish",
@@ -374,8 +375,13 @@ export default {
       console.log("createOrderResp=>", createOrderResp);
       this.ordLoading = false;
       this.changes = 3;
-      alert("创建完成");
+      // alert("创建完成");
+      this.$message({
+          message: '创建完成',
+          type: 'success'
+        });
       this.dialogVisible = false;
+      this.$router.replace("/personalCenter");
     },
   },
 };

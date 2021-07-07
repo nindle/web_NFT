@@ -84,15 +84,6 @@
         >
           <template slot="append">BNB</template>
         </el-input>
-        <!-- <el-select v-model="valuename" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select> -->
       </el-form-item>
 
       <div style="position: relative; margin-bottom: 10px;">
@@ -214,7 +205,6 @@
 import contracts from '../../wallet/contracts';
 import {
   initWallet,
-  getBalance,
   Contracts1155,
   getProvider,
   randomHex,
@@ -228,30 +218,8 @@ export default {
   data() {
     return {
       changes: '',
-      dialogVisible: true,
+      // dialogVisible: true,
       propertiesList: [1],
-      options: [
-        {
-          value: '选项1',
-          label: 'BNB',
-        },
-        {
-          value: '选项2',
-          label: 'DAI',
-        },
-        {
-          value: '选项3',
-          label: 'BNB',
-        },
-        {
-          value: '选项4',
-          label: 'DAI',
-        },
-        {
-          value: '选项5',
-          label: 'BNB',
-        },
-      ],
       valuename: '',
       activeName: 'first',
       value: true,
@@ -420,9 +388,14 @@ export default {
       const createOrderResp = await contracts.createOrder(createOrder, signResp);
       console.log('createOrderResp=>', createOrderResp);
       this.ordLoading = false;
-      this.changes = 3;
-      alert('创建完成');
+     this.changes = 3;
+      // alert("创建完成");
+      this.$message({
+          message: '创建完成',
+          type: 'success'
+        });
       this.dialogVisible = false;
+      this.$router.replace("/personalCenter");
     },
   },
 };
