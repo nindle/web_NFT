@@ -60,8 +60,8 @@
         <p class="establish-img-p">Upload file to preview your brand new NFT</p>
       </div>
 
-      <div style="position: relative; margin-bottom: 10px;">
-        <span style="font-size: 20px; font-weight: bold; color: #333333;">
+      <div style="position: relative; margin-bottom: 10px">
+        <span style="font-size: 20px; font-weight: bold; color: #333333">
           Put on marketplace
         </span>
         <el-switch v-model="value" />
@@ -84,19 +84,10 @@
         >
           <template slot="append">BNB</template>
         </el-input>
-        <!-- <el-select v-model="valuename" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select> -->
       </el-form-item>
 
-      <div style="position: relative; margin-bottom: 10px;">
-        <span style="font-size: 20px; font-weight: bold; color: #333333;">
+      <div style="position: relative; margin-bottom: 10px">
+        <span style="font-size: 20px; font-weight: bold; color: #333333">
           Unlock once purchased
         </span>
         <el-switch v-model="values" />
@@ -167,7 +158,7 @@
           :class="changes == '' ? 'Approve_c' : 'Approve_cc'"
           @click="setApproveAll"
         >
-          {{ changes >= 1 ? 'Done' : aprLoading ? 'In Progress...' : 'Start' }}
+          {{ changes >= 1 ? "Done" : aprLoading ? "In Progress..." : "Start" }}
         </el-button>
       </div>
       <div class="Approve">
@@ -178,7 +169,7 @@
           :class="changes == '1' ? 'Approve_c' : 'Approve_cc'"
           @click="uploadFile"
         >
-          {{ changes >= 2 ? 'Done' : upLoading ? 'In Progress...' : 'Start' }}
+          {{ changes >= 2 ? "Done" : upLoading ? "In Progress..." : "Start" }}
         </el-button>
       </div>
       <div class="Approve">
@@ -189,7 +180,7 @@
           :class="changes == '2' ? 'Approve_c' : 'Approve_cc'"
           @click="createOrder"
         >
-          {{ changes == 3 ? 'Done' : ordLoading ? 'In Progress...' : 'Start' }}
+          {{ changes == 3 ? "Done" : ordLoading ? "In Progress..." : "Start" }}
         </el-button>
       </div>
     </el-dialog>
@@ -197,63 +188,40 @@
 </template>
 
 <script>
-import contracts from '../../wallet/contracts';
+import contracts from "../../wallet/contracts";
 import {
   initWallet,
-  getBalance,
   Contracts721,
   getProvider,
   randomHex,
-} from '../../wallet/wallet';
-import { BigNumber } from '@ethersproject/bignumber';
+} from "../../wallet/wallet";
+import { BigNumber } from "@ethersproject/bignumber";
 
 let currCont = null;
 export default {
-  name: 'Establish',
+  name: "Establish",
   props: {},
   data() {
     return {
-      changes: '',
-      dialogVisible: true,
+      changes: "",
+      // dialogVisible: true,
       propertiesList: [1],
-      options: [
-        {
-          value: '选项1',
-          label: 'BNB',
-        },
-        {
-          value: '选项2',
-          label: 'DAI',
-        },
-        {
-          value: '选项3',
-          label: 'BNB',
-        },
-        {
-          value: '选项4',
-          label: 'DAI',
-        },
-        {
-          value: '选项5',
-          label: 'BNB',
-        },
-      ],
-      valuename: '',
-      activeName: 'first',
+      valuename: "",
+      activeName: "first",
       value: true,
       values: true,
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: '0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38',
-        image: '',
-        title: '',
-        price: '',
-        description: '',
-        type: '',
-        royalties: '',
+        token: "0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38",
+        image: "",
+        title: "",
+        price: "",
+        description: "",
+        type: "",
+        royalties: "",
         properties: [],
         propertiess: [],
       },
@@ -269,7 +237,7 @@ export default {
   async mounted() {
     const address = await initWallet();
     console.log(address);
-    if (address != '') {
+    if (address != "") {
       const cont721 = Contracts721();
       currCont = cont721;
       await this.whiteList(cont721);
@@ -315,8 +283,8 @@ export default {
     async whiteList(cont) {
       const res = await contracts.isWhitelist(cont, this.$address);
       if (res == false) {
-        alert('不在白名单，无法创建NFT');
-        this.$router.push('/');
+        alert("不在白名单，无法创建NFT");
+        this.$router.push("/");
         return;
       }
     },
@@ -327,7 +295,7 @@ export default {
     },
     // 上传成功
     async uploadSuccess(resp) {
-      console.log('uploadSuccess=>', resp);
+      console.log("uploadSuccess=>", resp);
       this.formLabelAlign.image = resp.ipfs;
 
       let props = {};
@@ -341,12 +309,12 @@ export default {
         this.formLabelAlign.image,
         this.formLabelAlign.title,
         this.formLabelAlign.description,
-        props,
+        props
       );
-      console.log('jsonResp=>', jsonResp);
+      console.log("jsonResp=>", jsonResp);
 
       const tokenResp = await contracts.newTokenId(this.formLabelAlign.token);
-      console.log('tokenResp=>', tokenResp);
+      console.log("tokenResp=>", tokenResp);
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;
 
       const mintResp = await contracts.mintErc721(
@@ -354,12 +322,12 @@ export default {
         tokenResp.data.tokenid,
         tokenResp.data.signature,
         [],
-        jsonResp.ipfs.replace('ipfs://ipfs', ''),
+        jsonResp.ipfs.replace("ipfs://ipfs", "")
       );
-      console.log('mintResp=>', mintResp);
+      console.log("mintResp=>", mintResp);
 
       const addResp = await contracts.addItem(mintResp.hash, 4);
-      console.log('addResp=>', addResp);
+      console.log("addResp=>", addResp);
       this.upLoading = false;
       this.changes = 2;
     },
@@ -376,34 +344,37 @@ export default {
             assetType: 4,
           },
           buyAsset: {
-            token: '0x0000000000000000000000000000000000000000',
-            tokenId: BigNumber.from('0'),
+            token: "0x0000000000000000000000000000000000000000",
+            tokenId: BigNumber.from("0"),
             assetType: 1,
           },
         },
-        selling: BigNumber.from('1'),
-        buying: this.$parseEther(this.formLabelAlign.price || '0.1'),
-        sellerFee: BigNumber.from(this.formLabelAlign.royalties || '100'),
+        selling: BigNumber.from("1"),
+        buying: this.$parseEther(this.formLabelAlign.price || "0.1"),
+        sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
       };
       console.log(order);
       const provider = getProvider();
       const signResp = await contracts.orderSigner(provider.getSigner(), order);
-      console.log('signResp=>', signResp);
+      console.log("signResp=>", signResp);
 
       const saleResp = await contracts.changeSale(
         order.key.sellAsset.token,
         order.key.sellAsset.tokenId.toString(),
-        1,
+        1
       );
-      console.log('saleResp=>', saleResp);
+      console.log("saleResp=>", saleResp);
 
       const createOrder = contracts.sequence(order);
 
-      const createOrderResp = await contracts.createOrder(createOrder, signResp);
-      console.log('createOrderResp=>', createOrderResp);
+      const createOrderResp = await contracts.createOrder(
+        createOrder,
+        signResp
+      );
+      console.log("createOrderResp=>", createOrderResp);
       this.ordLoading = false;
       this.changes = 3;
-      alert('创建完成');
+      alert("创建完成");
       this.dialogVisible = false;
     },
   },

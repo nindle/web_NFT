@@ -307,7 +307,6 @@
 </template>
 
 <script>
-import Http from "../../utils/http";
 import $http from "../../utils/request";
 
 import { ethers } from "ethers";
@@ -356,7 +355,7 @@ export default {
       });
     },
 
-    handleClick(tab, event) {
+    handleClick(tab) {
       console.log(tab.label);
       if (tab.label == "SOLD") {
         this.filters = "onsale";
@@ -364,6 +363,7 @@ export default {
       } else if (tab.label == "BOUGHT") {
         this.filters = "liked";
         this.getCreated();
+        // eslint-disable-next-line no-constant-condition
       } else if ((tab.label = "COLLECTION")) {
         this.filters = "collection";
         this.getCreated();
@@ -400,27 +400,21 @@ export default {
       return subStr;
     },
 
-    getCreated() {
-      Http.httpGet(
-        "v1/item/list",
-        {
-          address: this.user_id,
-          filter: this.filters,
-        },
-        (resp) => {
-          this.createdList = resp.list;
-          this.createdList.forEach((item, index) => {
-            if (this.createdList[index].price === "") {
-              this.createdList[index].price = "暂无价格";
-            } else {
-              this.createdList[index].price = ethers.utils.formatUnits(
-                this.createdList[index].price
-              );
-            }
-          });
-          this.loading = false;
-        }
+    async getCreated() {
+      const resp = await $http.get(
+        `https://api.lionnft.io/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
+      this.createdList = resp.list;
+      this.createdList.forEach((item, index) => {
+        if (this.createdList[index].price === "") {
+          this.createdList[index].price = "暂无价格";
+        } else {
+          this.createdList[index].price = ethers.utils.formatUnits(
+            this.createdList[index].price
+          );
+        }
+      });
+      this.loading = false;
     },
   },
 };
