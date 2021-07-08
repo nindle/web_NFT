@@ -376,19 +376,31 @@ export default {
       const signResp = await contracts.orderSigner(provider.getSigner(), order);
       console.log('signResp=>', signResp);
 
-      const saleResp = await contracts.changeSale(
-        order.key.sellAsset.token,
-        order.key.sellAsset.tokenId.toString(),
-        1,
-      );
-      console.log('saleResp=>', saleResp);
+      try {
+        const saleResp = await contracts.changeSale(
+          order.key.sellAsset.token,
+          order.key.sellAsset.tokenId.toString(),
+          1,
+        );
+        console.log('saleResp=>', saleResp);
+      } catch(err) {
+        this.ordLoading = false;
+        alert(err.data ? err.data.message : err.message);
+        return;
+      }
 
       const createOrder = contracts.sequence(order);
 
-      const createOrderResp = await contracts.createOrder(createOrder, signResp);
-      console.log('createOrderResp=>', createOrderResp);
+      try {
+        const createOrderResp = await contracts.createOrder(createOrder, signResp);
+        console.log('createOrderResp=>', createOrderResp);
+      } catch(err) {
+        this.ordLoading = false;
+        alert(err.data ? err.data.message : err.message);
+        return;
+      }
       this.ordLoading = false;
-     this.changes = 3;
+      this.changes = 3;
       // alert("创建完成");
       this.$message({
           message: '创建完成',

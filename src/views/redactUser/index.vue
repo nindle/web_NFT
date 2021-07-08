@@ -95,7 +95,8 @@
 </template>
 
 <script>
-import Http from "../../utils/http";
+import $http from "../../utils/request";
+import { initWallet } from "../../wallet/wallet";
 
 export default {
   name: "RedactUser",
@@ -118,25 +119,28 @@ export default {
     };
   },
   created() {},
-  mounted() {
+  async mounted() {
     this.formLabelAlign.address = this.$route.params.userId;
+    const address = await initWallet();
+    if (address != '') {
+      this.formLabelAlign.address = address;
+    }
   },
   methods: {
-    postUserEdit() {
+    async postUserEdit() {
       const formLabelAlign = this.formLabelAlign;
-      Http.httpPost("v1/user/edit", { ...formLabelAlign }, (resp) => {
-        this.formLabelAlign = {};
-        console.log(resp);
-        if (resp.code == 200) {
-          this.$message({
-            message: "编辑成功",
-            type: "success",
-          });
-          this.$router.go(-1);
-        } else {
-          this.$message.error("编辑失败");
-        }
-      });
+      const resp = await $http.post("https://api.lionnft.io/v1/user/edit", { ...formLabelAlign });      
+      this.formLabelAlign = {};
+      console.log(resp);
+      if (resp.code == 200) {
+        this.$message({
+          message: "编辑成功",
+          type: "success",
+        });
+        this.$router.go(-1);
+      } else {
+        this.$message.error("编辑失败");
+      }
     },
   },
 };
