@@ -44,8 +44,13 @@
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
-        <el-button class="details-button" type="primary" @click="onBuy">
-          Buy Now
+        <el-button
+          class="details-button"
+          type="primary"
+          :disabled="buyLoading == true"
+          @click="onBuy"
+        >
+          {{ buyLoading ? "Buying" : "Buy Now" }}
         </el-button>
       </li>
       <hr style="border: 1px solid #eeeeee; margin: 24px 0">
@@ -227,6 +232,8 @@ export default {
       owner_addr: "",
       order: {},
       fee: {},
+      buyLoading: false,
+      buyErr: false,
     };
   },
   created() {},
@@ -314,6 +321,7 @@ export default {
     },
     // 购买
     async onBuy() {
+      this.buyLoading = true;
       let _order = JSON.parse(JSON.stringify(this.order.order));
       console.log(_order);
       const order2 = {
@@ -337,32 +345,54 @@ export default {
       };
       console.log(order2);
 
-      // let _ord = this.order.order;
-      // let order_data = {
-      //   "buying": _ord.buying,
-      //   "key":{
-      //       "buyAsset": _ord['key']['buyAsset'],
-      //       "sellAsset": _ord['key']['sellAsset'],
-      //   },
-      //   "sellerFee": _ord.sellerFee,
-      //   "selling": _ord.selling
-      // }
-      // console.log(order_data);
-      // console.log(JSON.stringify(order_data));
       console.log(this.order.signature);
       console.log(this.fee.buyFee);
       console.log(this.fee.buyFeeSignature);
       console.log(this.owner_addr);
-      // return
-      const tx = await currCont.exchange(
-        order2,
-        this.order.signature,
-        BigNumber.from(this.fee.buyFee),
-        this.fee.buyFeeSignature,
-        BigNumber.from("1"),
-        addr
-      );
-      console.log(tx);
+
+      const sign = ethers.utils.splitSignature(this.order.signature);
+      const feeSign = ethers.utils.splitSignature(this.fee.buyFeeSignature);
+
+      const amount = BigNumber.from(1);
+      const paying = order2.buying
+        .mul(amount)
+        .div(order2.selling)
+        .mul(BigNumber.from(10000).add(BigNumber.from(this.fee.buyFee)))
+        .div(BigNumber.from(10000));
+
+      let tx = null;
+      try {
+        tx = await currCont.exchange(
+          order2,
+          { v: sign.v, r: sign.r, s: sign.s },
+          BigNumber.from(this.fee.buyFee),
+          { v: feeSign.v, r: feeSign.r, s: feeSign.s },
+          amount,
+          addr,
+          { value: paying }
+        );
+        console.log(tx);
+      } catch (err) {
+        this.buyLoading = false;
+        console.log("exchange.err=>", err);
+        alert(err.data ? err.data.message : err.message);
+        return;
+      }
+
+      try {
+        const buyResp = await exchange.buyApi(tx.hash);
+        console.log("buyResp=>", buyResp);
+      } catch (err) {
+        this.buyLoading = false;
+        console.log("buyApi.err=>", err);
+        alert(err);
+        return;
+      }
+
+      const receipt = await tx.wait();
+      console.log("receipt=>", receipt);
+      this.buyLoading = false;
+      alert("购买成功");
     },
   },
 };

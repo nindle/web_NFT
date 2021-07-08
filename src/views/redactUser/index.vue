@@ -100,9 +100,8 @@
 </template>
 
 <script>
-// import Http from "../../utils/http";
 import $http from "../../utils/request";
-// import { initWallet } from "../../wallet/wallet";
+import { initWallet } from "../../wallet/wallet";
 
 export default {
   name: "RedactUser",
@@ -125,8 +124,12 @@ export default {
     };
   },
   created() {},
-  mounted() {
-    this.ifAddress();
+  async mounted() {
+    this.formLabelAlign.address = this.$route.params.userId;
+    const address = await initWallet();
+    if (address != "") {
+      this.formLabelAlign.address = address;
+    }
   },
 
   methods: {
