@@ -32,12 +32,7 @@
           color: #09090a;
           font-weight: 500;
         "
-        @click="
-          $router.push({
-            name: 'redactUser',
-            params: { userId: user_id },
-          })
-        "
+        @click="open"
       >
         Edit profile
       </el-button>
@@ -62,7 +57,7 @@
     <div class="personalCenter-Tabs">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="CREATED" name="first">
-          <ul class="exhibition">
+          <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
@@ -120,9 +115,10 @@
 
             <div v-else class="loadMore">没有更多了</div>
           </ul>
+          <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
         <el-tab-pane label="SOLD" name="second">
-          <ul class="exhibition">
+          <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
@@ -180,9 +176,10 @@
 
             <div v-else class="loadMore">没有更多了</div>
           </ul>
+          <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
         <el-tab-pane label="BOUGHT" name="third">
-          <ul class="exhibition">
+          <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
@@ -240,9 +237,10 @@
 
             <div v-else class="loadMore">没有更多了</div>
           </ul>
+          <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
         <el-tab-pane label="COLLECTION" name="fourth">
-          <ul class="exhibition">
+          <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
               :key="index"
@@ -300,6 +298,7 @@
 
             <div v-else class="loadMore">没有更多了</div>
           </ul>
+          <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -310,8 +309,9 @@
 import $http from "../../utils/request";
 
 import { ethers } from "ethers";
-
-import { initWallet } from "../../wallet/wallet";
+import imgUrl from "../../assets/xiaohuli.png";
+import { initWallet, getBalance } from "../../wallet/wallet";
+import { userInfoApi } from "../../api/user";
 
 export default {
   name: "PersonalCenter",
@@ -333,15 +333,46 @@ export default {
     };
   },
   async created() {
-    const addres = await initWallet();
-    if (addres != "") {
-      this.user_id = addres;
-      this.getUserInfo();
-      this.getCreated();
-    }
+    this.user_id = sessionStorage.getItem("address");
+    this.getUserInfo();
+    this.getCreated();
   },
   mounted() {},
   methods: {
+    open() {
+      if (this.user_id !== null) {
+        this.$router.push({
+          name: "redactUser",
+          params: { userId: this.user_id, userName: this.userinfo.user_name },
+        });
+      } else {
+        this.$alert(
+          `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
+          "Please connect the wallet",
+          {
+            confirmButtonText: "Connecting Wallet",
+            center: true,
+            dangerouslyUseHTMLString: true,
+            confirmButtonClass: "btnstyle",
+          }
+        ).then(async () => {
+          const address = await initWallet();
+          if (address != "") {
+            this.success = 200;
+            sessionStorage.setItem("address", address);
+            this.addres = address;
+            this.address = this.SubStr(address);
+            sessionStorage.setItem("showAddress", this.address);
+            this.balance = await getBalance();
+            sessionStorage.setItem("balance", await getBalance());
+            const { data: data } = await userInfoApi(address);
+            sessionStorage.setItem("userInfo", data.user_name);
+            this.userInfo = data;
+          }
+        });
+      }
+    },
+
     copyText() {
       var input = document.createElement("input"); // js创建一个input输入框
       input.value = this.userinfo.user_address; // 将需要复制的文本赋值到创建的input输入框中
@@ -363,8 +394,7 @@ export default {
       } else if (tab.label == "BOUGHT") {
         this.filters = "liked";
         this.getCreated();
-        // eslint-disable-next-line no-constant-condition
-      } else if ((tab.label = "COLLECTION")) {
+      } else if (tab.label == "COLLECTION") {
         this.filters = "collection";
         this.getCreated();
       } else {
@@ -386,9 +416,6 @@ export default {
       if (this.userinfo.user_cover !== "") {
         this.userpic = this.userinfo.user_cover;
       }
-
-      console.log(this.userinfo);
-
       this.str = this.userinfo.user_address;
       this.subStr = this.SubStr(this.str);
     },
@@ -404,6 +431,7 @@ export default {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
+      console.log(resp);
       this.createdList = resp.list;
       this.createdList.forEach((item, index) => {
         if (this.createdList[index].price === "") {
@@ -421,6 +449,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.createdStyle {
+  text-align: center;
+  margin: 100px 0;
+}
 .personalCenter-bgc {
   width: 100%;
   height: 224px;

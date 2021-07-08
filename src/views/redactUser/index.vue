@@ -1,7 +1,12 @@
 <template>
   <div class="redactUser">
     <div class="uploading">
-      <el-upload action="#" list-type="picture-card" :auto-upload="false">
+      <el-upload
+        action="#"
+        list-type="picture-card"
+        :auto-upload="false"
+        :on-change="handlePictureCardPreview"
+      >
         <el-button
           round
           style="
@@ -95,7 +100,9 @@
 </template>
 
 <script>
-import Http from "../../utils/http";
+// import Http from "../../utils/http";
+import $http from "../../utils/request";
+// import { initWallet } from "../../wallet/wallet";
 
 export default {
   name: "RedactUser",
@@ -109,7 +116,7 @@ export default {
         username: "",
         short_url: "",
         desc: "",
-        address: "",
+        address: this.$route.params.userId,
         cover: "",
         website: "",
         twitter: "",
@@ -119,24 +126,61 @@ export default {
   },
   created() {},
   mounted() {
-    this.formLabelAlign.address = this.$route.params.userId;
+    this.ifAddress();
   },
+  beforeUpdate() {},
   methods: {
-    postUserEdit() {
-      const formLabelAlign = this.formLabelAlign;
-      Http.httpPost("v1/user/edit", { ...formLabelAlign }, (resp) => {
-        this.formLabelAlign = {};
-        console.log(resp);
-        if (resp.code == 200) {
-          this.$message({
-            message: "编辑成功",
-            type: "success",
-          });
-          this.$router.go(-1);
-        } else {
-          this.$message.error("编辑失败");
-        }
+    handlePictureCardPreview(fileList) {
+      this.formLabelAlign.cover = fileList.url;
+    },
+
+    async ifAddress() {
+      if (this.$route.params.userName == undefined) {
+        this.postAdduser();
+      } else {
+        this.postUserEdit();
+      }
+    },
+
+    async postAdduser() {
+      const formLabelAlign = { ...this.formLabelAlign };
+      console.log(formLabelAlign);
+      const resp = await $http.post("https://api.lionnft.io/v1/user/add", {
+        ...formLabelAlign,
       });
+      console.log(resp);
+      if (resp.code == 200) {
+        this.$message({
+          message: "创建成功",
+          type: "success",
+        });
+        this.formLabelAlign = {};
+        this.$router.replace("/personalCenter");
+      } else {
+        this.$message.error("创建失败");
+      }
+      sessionStorage.setItem("userInfo", formLabelAlign.username);
+    },
+
+    async postUserEdit() {
+      const formLabelAlign = { ...this.formLabelAlign };
+      console.log(formLabelAlign);
+      const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
+        ...formLabelAlign,
+      });
+      console.log(resp);
+      if (resp.code == 200) {
+        this.$message({
+          message: "更新成功",
+          type: "success",
+        });
+        sessionStorage.setItem("userInfo", formLabelAlign.username);
+        this.formLabelAlign = {};
+        console.log(sessionStorage.getItem("userInfo"));
+        this.$router.replace("/personalCenter");
+      } else {
+        this.$message.error("更新失败");
+      }
     },
   },
 };

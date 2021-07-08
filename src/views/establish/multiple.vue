@@ -60,8 +60,8 @@
         <p class="establish-img-p">Upload file to preview your brand new NFT</p>
       </div>
 
-      <div style="position: relative; margin-bottom: 10px;">
-        <span style="font-size: 20px; font-weight: bold; color: #333333;">
+      <div style="position: relative; margin-bottom: 10px">
+        <span style="font-size: 20px; font-weight: bold; color: #333333">
           Put on marketplace
         </span>
         <el-switch v-model="value" />
@@ -86,8 +86,8 @@
         </el-input>
       </el-form-item>
 
-      <div style="position: relative; margin-bottom: 10px;">
-        <span style="font-size: 20px; font-weight: bold; color: #333333;">
+      <div style="position: relative; margin-bottom: 10px">
+        <span style="font-size: 20px; font-weight: bold; color: #333333">
           Unlock once purchased
         </span>
         <el-switch v-model="values" />
@@ -172,7 +172,7 @@
           :class="changes == '' ? 'Approve_c' : 'Approve_cc'"
           @click="setApproveAll"
         >
-          {{ changes >= 1 ? 'Done' : aprLoading ? 'In Progress...' : 'Start' }}
+          {{ changes >= 1 ? "Done" : aprLoading ? "In Progress..." : "Start" }}
         </el-button>
       </div>
       <div class="Approve">
@@ -183,7 +183,7 @@
           :class="changes == '1' ? 'Approve_c' : 'Approve_cc'"
           @click="uploadFile"
         >
-          {{ changes >= 2 ? 'Done' : upLoading ? 'In Progress...' : 'Start' }}
+          {{ changes >= 2 ? "Done" : upLoading ? "In Progress..." : "Start" }}
         </el-button>
       </div>
       <div class="Approve">
@@ -194,7 +194,7 @@
           :class="changes == '2' ? 'Approve_c' : 'Approve_cc'"
           @click="createOrder"
         >
-          {{ changes == 3 ? 'Done' : ordLoading ? 'In Progress...' : 'Start' }}
+          {{ changes == 3 ? "Done" : ordLoading ? "In Progress..." : "Start" }}
         </el-button>
       </div>
     </el-dialog>
@@ -202,41 +202,47 @@
 </template>
 
 <script>
-import contracts from '../../wallet/contracts';
+import contracts from "../../wallet/contracts";
+
+import { BigNumber } from "@ethersproject/bignumber";
+
+import imgUrl from "../../assets/xiaohuli.png";
+import { userInfoApi } from "../../api/user";
 import {
   initWallet,
   Contracts1155,
   getProvider,
   randomHex,
-} from '../../wallet/wallet';
-import { BigNumber } from '@ethersproject/bignumber';
+  getBalance,
+} from "../../wallet/wallet";
 
 let currCont = null;
 export default {
-  name: 'Establish',
+  name: "Establish",
   props: {},
   data() {
     return {
-      changes: '',
+      user_id: "",
+      changes: "",
       // dialogVisible: true,
       propertiesList: [1],
-      valuename: '',
-      activeName: 'first',
+      valuename: "",
+      activeName: "first",
       value: true,
       values: true,
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: '0xE9285F4Bd13D86Fe4f4b019C6b54cc3f8c6f858C',
-        image: '',
-        title: '',
-        price: '',
-        description: '',
-        type: '',
-        royalties: '',
-        supply: '1',
+        token: "0xE9285F4Bd13D86Fe4f4b019C6b54cc3f8c6f858C",
+        image: "",
+        title: "",
+        price: "",
+        description: "",
+        type: "",
+        royalties: "",
+        supply: "1",
         properties: [],
         propertiess: [],
       },
@@ -248,21 +254,58 @@ export default {
       ordError: false,
     };
   },
-  created() {},
-  async mounted() {
-    const address = await initWallet();
-    if (address != '') {
-      const cont1155 = Contracts1155();
-      currCont = cont1155;
-      await this.whiteList(cont1155);
-      await this.isApprovedAll(cont1155);
-    }
+  async created() {
+    this.user_id = sessionStorage.getItem("address");
+  },
+  mounted() {
+    this.open();
   },
   beforeUpdate() {
     this.editFn();
   },
 
   methods: {
+    async open() {
+      if (this.user_id !== null) {
+        const address = await initWallet();
+        if (address != "") {
+          const cont1155 = Contracts1155();
+          currCont = cont1155;
+          await this.whiteList(cont1155);
+          await this.isApprovedAll(cont1155);
+        }
+      } else {
+        this.$alert(
+          `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
+          "Please connect the wallet",
+          {
+            confirmButtonText: "Connecting Wallet",
+            center: true,
+            dangerouslyUseHTMLString: true,
+            confirmButtonClass: "btnstyle",
+          }
+        ).then(async () => {
+          const address = await initWallet();
+          if (address != "") {
+            const cont1155 = Contracts1155();
+            currCont = cont1155;
+            await this.whiteList(cont1155);
+            await this.isApprovedAll(cont1155);
+            this.success = 200;
+            sessionStorage.setItem("address", address);
+            this.addres = address;
+            this.address = this.SubStr(address);
+            sessionStorage.setItem("showAddress", this.address);
+            this.balance = await getBalance();
+            sessionStorage.setItem("balance", await getBalance());
+            const { data: data } = await userInfoApi(address);
+            sessionStorage.setItem("userInfo", data.user_name);
+            this.userInfo = data;
+          }
+        });
+      }
+    },
+
     editFn() {
       if (this.formLabelAlign.propertiess.length <= 3) {
         this.formLabelAlign.propertiess.forEach((item, index) => {
@@ -276,9 +319,7 @@ export default {
     postFrom() {
       this.dialogVisible = true;
     },
-    handleChange() {
-
-    },
+    handleChange() {},
 
     // 链上开始
     async isApprovedAll(cont) {
@@ -300,8 +341,8 @@ export default {
     async whiteList(cont) {
       const res = await contracts.isWhitelist(cont, this.$address);
       if (res == false) {
-        alert('不在白名单，无法创建NFT');
-        this.$router.push('/');
+        alert("不在白名单，无法创建NFT");
+        this.$router.push("/");
         return;
       }
     },
@@ -312,7 +353,7 @@ export default {
     },
     // 上传成功
     async uploadSuccess(resp) {
-      console.log('uploadSuccess=>', resp);
+      console.log("uploadSuccess=>", resp);
       this.formLabelAlign.image = resp.ipfs;
 
       let props = {};
@@ -326,12 +367,12 @@ export default {
         this.formLabelAlign.image,
         this.formLabelAlign.title,
         this.formLabelAlign.description,
-        props,
+        props
       );
-      console.log('jsonResp=>', jsonResp);
+      console.log("jsonResp=>", jsonResp);
 
       const tokenResp = await contracts.newTokenId(this.formLabelAlign.token);
-      console.log('tokenResp=>', tokenResp);
+      console.log("tokenResp=>", tokenResp);
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;
 
       const mintResp = await contracts.mintErc1155(
@@ -340,12 +381,12 @@ export default {
         tokenResp.data.signature,
         [],
         this.formLabelAlign.supply,
-        jsonResp.ipfs.replace('ipfs://ipfs', ''),
+        jsonResp.ipfs.replace("ipfs://ipfs", "")
       );
-      console.log('mintResp=>', mintResp);
+      console.log("mintResp=>", mintResp);
 
       const addResp = await contracts.addItem(mintResp.hash, 3);
-      console.log('addResp=>', addResp);
+      console.log("addResp=>", addResp);
       this.upLoading = false;
       this.changes = 2;
     },
@@ -362,38 +403,41 @@ export default {
             assetType: 3,
           },
           buyAsset: {
-            token: '0x0000000000000000000000000000000000000000',
-            tokenId: BigNumber.from('0'),
+            token: "0x0000000000000000000000000000000000000000",
+            tokenId: BigNumber.from("0"),
             assetType: 1,
           },
         },
-        selling: BigNumber.from(this.formLabelAlign.supply || '1'),
-        buying: this.$parseEther(this.formLabelAlign.price || '0.1'),
-        sellerFee: BigNumber.from(this.formLabelAlign.royalties || '100'),
+        selling: BigNumber.from(this.formLabelAlign.supply || "1"),
+        buying: this.$parseEther(this.formLabelAlign.price || "0.1"),
+        sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
       };
       console.log(order);
       const provider = getProvider();
       const signResp = await contracts.orderSigner(provider.getSigner(), order);
-      console.log('signResp=>', signResp);
+      console.log("signResp=>", signResp);
 
       const saleResp = await contracts.changeSale(
         order.key.sellAsset.token,
         order.key.sellAsset.tokenId.toString(),
-        1,
+        1
       );
-      console.log('saleResp=>', saleResp);
+      console.log("saleResp=>", saleResp);
 
       const createOrder = contracts.sequence(order);
 
-      const createOrderResp = await contracts.createOrder(createOrder, signResp);
-      console.log('createOrderResp=>', createOrderResp);
+      const createOrderResp = await contracts.createOrder(
+        createOrder,
+        signResp
+      );
+      console.log("createOrderResp=>", createOrderResp);
       this.ordLoading = false;
-     this.changes = 3;
+      this.changes = 3;
       // alert("创建完成");
       this.$message({
-          message: '创建完成',
-          type: 'success'
-        });
+        message: "创建完成",
+        type: "success",
+      });
       this.dialogVisible = false;
       this.$router.replace("/personalCenter");
     },

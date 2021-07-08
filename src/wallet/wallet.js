@@ -47,7 +47,7 @@ export async function initWallet() {
   });
   if (!accounts || accounts.length == 0) {
     // alert('您未解锁BSC钱包！');
-    Message.error('您未安装BSC钱包！');
+    Message.error('您未解锁BSC钱包！');
 
     return '';
   }

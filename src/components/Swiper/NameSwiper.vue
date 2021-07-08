@@ -113,7 +113,9 @@ export default {
     this.getList();
   },
   methods: {
-    onSwiper(swiper) {},
+    onSwiper(swiper) {
+      console.log(swiper);
+    },
     onSlideChange() {},
     async getList() {
       const resp = await $http.get("https://api.lionnft.io/v1/explore/list");

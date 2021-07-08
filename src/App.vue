@@ -88,7 +88,7 @@
                 slot="reference"
                 style="background-color: #d7e8fe"
               >
-                {{ userInfo.user_name || "未设置" }}
+                {{ userName || "未设置" }}
               </el-button>
             </el-popover>
           </p>
@@ -159,7 +159,7 @@
 
 <script>
 import imgUrl from "./assets/xiaohuli.png";
-import { initWallet,  getBalance } from "./wallet/wallet";
+import { initWallet, getBalance } from "./wallet/wallet";
 import { userInfoApi } from "./api/user";
 
 export default {
@@ -174,6 +174,7 @@ export default {
       drawer: false,
       toRouter: "",
       userInfo: {},
+      userName: "",
     };
   },
   computed: {
@@ -196,8 +197,25 @@ export default {
       }
     },
   },
+  // async beforeUpdate() {
+  //   const { data: data } = await userInfoApi(this.addres);
+  //   sessionStorage.setItem("userInfo", data.user_name);
+  //   this.userName = await sessionStorage.getItem("userInfo");
+  // },
   created() {},
-  mounted() {},
+  async mounted() {
+    if (sessionStorage.getItem("address") == null) {
+      console.log(12);
+      this.success = "";
+    } else {
+      this.success = 200;
+      this.userName = await sessionStorage.getItem("userInfo");
+      console.log(this.userName);
+      this.address = await sessionStorage.getItem("showAddress");
+      this.balance = await sessionStorage.getItem("balance");
+      console.log(this.balance);
+    }
+  },
   methods: {
     copyText() {
       var input = document.createElement("input"); // js创建一个input输入框
@@ -222,18 +240,16 @@ export default {
     account() {
       this.$router.replace("/establish");
     },
-    personalCenterFn() {
-      // this.cur = 0;
-      this.$router.push({ name: "personalCenter", params: { userId: "123" } });
-      this.cur = 3;
-    },
+
     goHome() {
       this.cur = 0;
       this.$router.push({ name: "Home", params: { userId: "123" } });
     },
+
     load() {
       this.a += 3;
     },
+
     open() {
       this.$alert(
         `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
@@ -248,10 +264,14 @@ export default {
         const address = await initWallet();
         if (address != "") {
           this.success = 200;
+          sessionStorage.setItem("address", address);
           this.addres = address;
           this.address = this.SubStr(address);
+          sessionStorage.setItem("showAddress", this.address);
           this.balance = await getBalance();
+          sessionStorage.setItem("balance", await getBalance());
           const { data: data } = await userInfoApi(address);
+          sessionStorage.setItem("userInfo", data.user_name);
           this.userInfo = data;
         }
       });
@@ -275,7 +295,7 @@ export default {
   margin: 0;
   transition: 0.1s;
   font-weight: 500;
-  padding: 7px 9px;
+  padding: 0;
   font-size: 14px;
   border-radius: 4px;
 }

@@ -189,14 +189,16 @@
 
 <script>
 import contracts from "../../wallet/contracts";
+import imgUrl from "../../assets/xiaohuli.png";
+import { userInfoApi } from "../../api/user";
 import {
   initWallet,
   Contracts721,
   getProvider,
   randomHex,
+  getBalance,
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
-
 
 let currCont = null;
 export default {
@@ -204,6 +206,7 @@ export default {
   props: {},
   data() {
     return {
+      user_id: "",
       changes: "",
       // dialogVisible: true,
       propertiesList: [1],
@@ -234,22 +237,67 @@ export default {
       ordError: false,
     };
   },
-  created() {},
+  async created() {
+    this.user_id = sessionStorage.getItem("address");
+  },
   async mounted() {
-    const address = await initWallet();
-    console.log(address);
-    if (address != "") {
-      const cont721 = Contracts721();
-      currCont = cont721;
-      await this.whiteList(cont721);
-      await this.isApprovedAll(cont721);
-    }
+    this.open();
+    // const address = await initWallet();
+    // console.log(address);
+    // if (address != "") {
+    //   const cont721 = Contracts721();
+    //   currCont = cont721;
+    //   await this.whiteList(cont721);
+    //   await this.isApprovedAll(cont721);
+    // }
   },
   beforeUpdate() {
     this.editFn();
   },
 
   methods: {
+    async open() {
+      if (this.user_id !== null) {
+        const address = await initWallet();
+        console.log(address);
+        if (address != "") {
+          const cont721 = Contracts721();
+          currCont = cont721;
+          await this.whiteList(cont721);
+          await this.isApprovedAll(cont721);
+        }
+      } else {
+        this.$alert(
+          `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
+          "Please connect the wallet",
+          {
+            confirmButtonText: "Connecting Wallet",
+            center: true,
+            dangerouslyUseHTMLString: true,
+            confirmButtonClass: "btnstyle",
+          }
+        ).then(async () => {
+          const address = await initWallet();
+          if (address != "") {
+            const cont721 = Contracts721();
+            currCont = cont721;
+            await this.whiteList(cont721);
+            await this.isApprovedAll(cont721);
+            this.success = 200;
+            sessionStorage.setItem("address", address);
+            this.addres = address;
+            this.address = this.SubStr(address);
+            sessionStorage.setItem("showAddress", this.address);
+            this.balance = await getBalance();
+            sessionStorage.setItem("balance", await getBalance());
+            const { data: data } = await userInfoApi(address);
+            sessionStorage.setItem("userInfo", data.user_name);
+            this.userInfo = data;
+          }
+        });
+      }
+    },
+
     editFn() {
       if (this.formLabelAlign.propertiess.length <= 3) {
         this.formLabelAlign.propertiess.forEach((item, index) => {
@@ -377,9 +425,9 @@ export default {
       this.changes = 3;
       // alert("创建完成");
       this.$message({
-          message: '创建完成',
-          type: 'success'
-        });
+        message: "创建完成",
+        type: "success",
+      });
       this.dialogVisible = false;
       this.$router.replace("/personalCenter");
     },

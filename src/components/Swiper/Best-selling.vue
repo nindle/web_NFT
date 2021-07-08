@@ -30,7 +30,7 @@
             alt=""
           >
           <h3 class="username">{{ item.user_name }}</h3>
-          <p class="usermessage">{{ item.message }}</p>
+          <p class="usermessage">{{ item.user_desc }}</p>
         </div>
       </swiper-slide>
       <div slot="pagination" class="swiper-pagination" />
@@ -88,7 +88,9 @@ export default {
     this.getUserInfo();
   },
   methods: {
-    onSwipers(swiper) {},
+    onSwipers(swiper) {
+      console.log(swiper);
+    },
     onSlideChanges() {},
     ggs() {},
     async getUserInfo() {
@@ -113,10 +115,10 @@ export default {
           item.user_cover = this.headPortrait;
         }
         //设置默认简介
-        if (item.message == "") {
-          item.message = "暂无简介";
-        } else if (item.message == null) {
-          item.message = "暂无简介";
+        if (item.user_desc == "") {
+          item.user_desc = "暂无简介";
+        } else if (item.user_desc == null) {
+          item.user_desc = "暂无简介";
         }
         // 设置默认名称
         if (item.user_name == "") {

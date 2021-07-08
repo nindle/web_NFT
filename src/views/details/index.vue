@@ -44,7 +44,9 @@
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
-        <el-button class="details-button" type="primary" @click="onBuy">Buy Now</el-button>
+        <el-button class="details-button" type="primary" @click="onBuy">
+          Buy Now
+        </el-button>
       </li>
       <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li>
@@ -191,10 +193,10 @@ import $http from "../../utils/request";
 import { ethers } from "ethers";
 import exchange from "../../wallet/exchange";
 import { initWallet, ContractExchange } from "../../wallet/wallet";
-import { BigNumber } from '@ethersproject/bignumber';
+import { BigNumber } from "@ethersproject/bignumber";
 
 let currCont = null;
-let addr = '';
+let addr = "";
 export default {
   name: "Details",
   props: {},
@@ -221,8 +223,8 @@ export default {
       strs: "",
       creator: "",
       creator_address: "",
-      creator_addr: '',
-      owner_addr: '',
+      creator_addr: "",
+      owner_addr: "",
       order: {},
       fee: {},
     };
@@ -294,7 +296,11 @@ export default {
     },
     // 订单信息
     async orderInfo() {
-      const resp = await exchange.orderInfoApi(this.token_id, this.token, this.creator_addr);
+      const resp = await exchange.orderInfoApi(
+        this.token_id,
+        this.token,
+        this.creator_addr
+      );
       console.log("orderInfo", resp);
       this.order = resp.data.ord_data;
       console.log(this.order);
@@ -354,10 +360,10 @@ export default {
         BigNumber.from(this.fee.buyFee),
         this.fee.buyFeeSignature,
         BigNumber.from("1"),
-        addr,
+        addr
       );
       console.log(tx);
-    }
+    },
   },
 };
 
