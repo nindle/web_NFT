@@ -277,8 +277,8 @@ export default {
       this.details = resp.data;
 
       this.details.price = ethers.utils.formatUnits(this.details.price);
-      this.str = this.details.creator;
-      this.strs = this.details.creator_address;
+      this.str = this.details.creator_address;
+      this.strs = this.details.own_address;
       this.creator = this.SubStr(this.str);
       this.creator_address = this.SubStr(this.strs);
       this.creator_addr = this.details.creator_address;
@@ -321,6 +321,8 @@ export default {
     },
     // 购买
     async onBuy() {
+      this.loading = true;
+
       this.buyLoading = true;
       let _order = JSON.parse(JSON.stringify(this.order.order));
       console.log(_order);
@@ -375,7 +377,19 @@ export default {
       } catch (err) {
         this.buyLoading = false;
         console.log("exchange.err=>", err);
-        alert(err.data ? err.data.message : err.message);
+        if (err.data.code !== 3) {
+          this.$message({
+            message: "余额不足",
+            type: "warning",
+          });
+          this.loading = false;
+        } else {
+          this.$message({
+            message: "库存不足",
+            type: "warning",
+          });
+          this.loading = false;
+        }
         return;
       }
 
@@ -392,7 +406,11 @@ export default {
       const receipt = await tx.wait();
       console.log("receipt=>", receipt);
       this.buyLoading = false;
-      alert("购买成功");
+      this.$message({
+        message: "购买成功",
+        type: "success",
+      });
+      this.loading = false;
     },
   },
 };
