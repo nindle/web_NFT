@@ -128,7 +128,7 @@ export default {
   mounted() {
     this.ifAddress();
   },
-  beforeUpdate() {},
+
   methods: {
     handlePictureCardPreview(fileList) {
       this.formLabelAlign.cover = fileList.url;
