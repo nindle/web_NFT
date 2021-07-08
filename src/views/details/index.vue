@@ -44,7 +44,7 @@
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
-        <el-button class="details-button" type="primary">Buy Now</el-button>
+        <el-button class="details-button" type="primary" @click="onBuy">Buy Now</el-button>
       </li>
       <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li>
@@ -189,6 +189,12 @@
 <script>
 import $http from "../../utils/request";
 import { ethers } from "ethers";
+import exchange from "../../wallet/exchange";
+import { initWallet, ContractExchange } from "../../wallet/wallet";
+import { BigNumber } from '@ethersproject/bignumber';
+
+let currCont = null;
+let addr = '';
 export default {
   name: "Details",
   props: {},
@@ -215,10 +221,20 @@ export default {
       strs: "",
       creator: "",
       creator_address: "",
+      creator_addr: '',
+      owner_addr: '',
+      order: {},
+      fee: {},
     };
   },
   created() {},
-  mounted() {
+  async mounted() {
+    const address = await initWallet();
+    console.log(address);
+    if (address != "") {
+      addr = address;
+      currCont = ContractExchange();
+    }
     this.getDetails();
   },
   methods: {
@@ -256,6 +272,8 @@ export default {
       this.strs = this.details.creator_address;
       this.creator = this.SubStr(this.str);
       this.creator_address = this.SubStr(this.strs);
+      this.creator_addr = this.details.creator_address;
+      this.owner_addr = this.details.own_address;
       this.tableData[0].name = this.details.creator_user_name;
       this.tableData[1].name = this.details.own_user_name;
       this.tableData[0].time = this.$dayjs(this.details.create_time).format(
@@ -264,6 +282,9 @@ export default {
       this.tableData[1].time = this.$dayjs(this.details.create_time).format(
         "YYYY-MM-DD"
       );
+
+      this.orderInfo();
+      this.buyFee();
     },
     SubStr(str) {
       var subStr1 = str.slice(0, 6);
@@ -271,8 +292,83 @@ export default {
       var subStr = subStr1 + "..." + subStr2;
       return subStr;
     },
+    // 订单信息
+    async orderInfo() {
+      const resp = await exchange.orderInfoApi(this.token_id, this.token, this.creator_addr);
+      console.log("orderInfo", resp);
+      this.order = resp.data.ord_data;
+      console.log(this.order);
+    },
+    // 交易手续费
+    async buyFee() {
+      const resp = await exchange.getBuyerFeeApi(this.token_id, this.token);
+      console.log("getBuyerFeeApi", resp);
+      this.fee = resp;
+      console.log(this.fee);
+    },
+    // 购买
+    async onBuy() {
+      let _order = JSON.parse(JSON.stringify(this.order.order));
+      console.log(_order);
+      const order2 = {
+        key: {
+          salt: BigNumber.from(_order.key.salt),
+          owner: _order.key.owner,
+          sellAsset: {
+            token: _order.key.sellAsset.token,
+            tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
+            assetType: _order.key.sellAsset.assetType,
+          },
+          buyAsset: {
+            token: _order.key.buyAsset.token,
+            tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
+            assetType: _order.key.buyAsset.assetType,
+          },
+        },
+        selling: BigNumber.from(_order.selling),
+        buying: BigNumber.from(_order.buying),
+        sellerFee: BigNumber.from(_order.sellerFee),
+      };
+      console.log(order2);
+
+      // let _ord = this.order.order;
+      // let order_data = {
+      //   "buying": _ord.buying,
+      //   "key":{
+      //       "buyAsset": _ord['key']['buyAsset'],
+      //       "sellAsset": _ord['key']['sellAsset'],
+      //   },
+      //   "sellerFee": _ord.sellerFee,
+      //   "selling": _ord.selling
+      // }
+      // console.log(order_data);
+      // console.log(JSON.stringify(order_data));
+      console.log(this.order.signature);
+      console.log(this.fee.buyFee);
+      console.log(this.fee.buyFeeSignature);
+      console.log(this.owner_addr);
+      // return
+      const tx = await currCont.exchange(
+        order2,
+        this.order.signature,
+        BigNumber.from(this.fee.buyFee),
+        this.fee.buyFeeSignature,
+        BigNumber.from("1"),
+        addr,
+      );
+      console.log(tx);
+    }
   },
 };
+
+// exchange(
+//   order, // 交易对象，通过接口获取
+//   props.signature, // 交易对象签名，接口获取
+//   BigNumber.from(buyerFee.buyFee), // 购买手续费，接口获取
+//   buyerFee.buyFeeSignature, // 购买手续费签名，接口获取
+//   BigNumber.from(props.amount), // 购买数量
+//   account.value // 购买的账号，和发送交易的账号是同一个账号
+// )
 </script>
 
 <style lang="less" scoped>
