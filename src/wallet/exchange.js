@@ -13,7 +13,7 @@ async function orderInfoApi(token_id, token, address) {
 async function buyApi(tx_id) {
     const formData = new FormData();
     formData.append('tx_id', tx_id);
-    const resp = await $http.post(`https://api.lionnft.io/v1/buy/tx_id`, formData);
+    const resp = await $http.post("https://api.lionnft.io/v1/buy/tx_id", formData);
     return resp;
 }
 
