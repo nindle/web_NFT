@@ -57,11 +57,7 @@
       <li>
         <div class="productdetails">
           <div style="float: left">
-            <img
-              src="../../assets/19.jpeg"
-              style="margin: 10px 15px 0 0"
-              alt=""
-            >
+            <img :src="creator_cover" style="margin: 10px 15px 0 0" alt="">
           </div>
           <div class="productdetails-a" style="position: relative">
             <p
@@ -105,11 +101,7 @@
       <li>
         <div class="productdetails">
           <div style="float: left">
-            <img
-              src="../../assets/19.jpeg"
-              style="margin: 10px 15px 0 0"
-              alt=""
-            >
+            <img :src="own_user_cover" style="margin: 10px 15px 0 0" alt="">
           </div>
           <div class="productdetails-a" style="position: relative">
             <p
@@ -207,6 +199,8 @@ export default {
   props: {},
   data() {
     return {
+      creator_cover: "",
+      own_user_cover: "",
       loading: true,
       details: {},
       activeName: "first",
@@ -275,6 +269,30 @@ export default {
         this.loading = false;
       }
       this.details = resp.data;
+      // 设置创建者默认头像
+      if (this.details.creator_cover == "") {
+        this.creator_cover = require("../../assets/touxiang.png");
+      } else if (this.details.creator_cover == null) {
+        this.creator_cover = require("../../assets/touxiang.png");
+      } else {
+        this.creator_cover = this.details.creator_cover.replace(
+          "ipfs://ipfs/",
+          "https://api.lionnft.io/v1/upload/view?hash="
+        );
+        console.log(this.creator_cover);
+      }
+      // 设置所有者默认头像
+      if (this.details.own_user_cover == "") {
+        this.own_user_cover = require("../../assets/touxiang.png");
+      } else if (this.details.own_user_cover == null) {
+        this.own_user_cover = require("../../assets/touxiang.png");
+      } else {
+        this.own_user_cover = this.details.own_user_cover.replace(
+          "ipfs://ipfs/",
+          "https://api.lionnft.io/v1/upload/view?hash="
+        );
+        console.log(this.own_user_cover);
+      }
 
       this.details.price = ethers.utils.formatUnits(this.details.price);
       this.str = this.details.creator_address;

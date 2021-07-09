@@ -359,15 +359,13 @@ export default {
           const address = await initWallet();
           if (address != "") {
             this.success = 200;
-            sessionStorage.setItem("address", address);
             this.addres = address;
             this.address = this.SubStr(address);
             sessionStorage.setItem("showAddress", this.address);
             this.balance = await getBalance();
-            sessionStorage.setItem("balance", await getBalance());
             const { data: data } = await userInfoApi(address);
-            sessionStorage.setItem("userInfo", data.user_name);
             this.userInfo = data;
+            location.reload();
           }
         });
       }
@@ -387,7 +385,6 @@ export default {
     },
 
     handleClick(tab) {
-      console.log(tab.label);
       if (tab.label == "SOLD") {
         this.filters = "onsale";
         this.getCreated();
@@ -409,12 +406,16 @@ export default {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/user?address=${this.user_id}`
       );
+
       this.userinfo = resp.data;
       if (this.userinfo.user_pic !== "") {
         this.userBgc = this.userinfo.user_pic;
       }
       if (this.userinfo.user_cover !== "") {
-        this.userpic = this.userinfo.user_cover;
+        this.userpic = this.userinfo.user_cover.replace(
+          "ipfs://ipfs/",
+          "https://api.lionnft.io/v1/upload/view?hash="
+        );
       }
       this.str = this.userinfo.user_address;
       this.subStr = this.SubStr(this.str);
@@ -431,7 +432,6 @@ export default {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
-      console.log(resp);
       this.createdList = resp.list;
       this.createdList.forEach((item, index) => {
         if (this.createdList[index].price === "") {

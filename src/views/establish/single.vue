@@ -284,15 +284,13 @@ export default {
             await this.whiteList(cont721);
             await this.isApprovedAll(cont721);
             this.success = 200;
-            sessionStorage.setItem("address", address);
             this.addres = address;
             this.address = this.SubStr(address);
             sessionStorage.setItem("showAddress", this.address);
             this.balance = await getBalance();
-            sessionStorage.setItem("balance", await getBalance());
             const { data: data } = await userInfoApi(address);
-            sessionStorage.setItem("userInfo", data.user_name);
             this.userInfo = data;
+            location.reload();
           }
         });
       }
@@ -332,7 +330,11 @@ export default {
     async whiteList(cont) {
       const res = await contracts.isWhitelist(cont, this.$address);
       if (res == false) {
-        alert("不在白名单，无法创建NFT");
+        // alert("不在白名单，无法创建NFT");
+        this.$message({
+          message: "不在白名单，无法创建NFT",
+          type: "warning",
+        });
         this.$router.push("/");
         return;
       }

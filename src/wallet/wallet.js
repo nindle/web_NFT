@@ -13,7 +13,7 @@ export function getProvider() {
 // 实例化合约721
 export function Contracts721() {
   const provider = getProvider();
-  console.log(ERC721.address, ERC721.abi);
+  // console.log(ERC721.address, ERC721.abi);
   const erc721 = new ethers.Contract(ERC721.address, ERC721.abi, provider.getSigner());
   return erc721;
 }
@@ -21,7 +21,7 @@ export function Contracts721() {
 // 实例化合约1155
 export function Contracts1155() {
   const provider = getProvider();
-  console.log(ERC1155.address, ERC1155.abi);
+  // console.log(ERC1155.address, ERC1155.abi);
   const erc1155 = new ethers.Contract(ERC1155.address, ERC1155.abi, provider.getSigner());
   return erc1155;
 }
@@ -29,7 +29,7 @@ export function Contracts1155() {
 // 实例化交易合约
 export function ContractExchange() {
   const provider = getProvider();
-  console.log(ExchangeV1.address, ExchangeV1.abi);
+  // console.log(ExchangeV1.address, ExchangeV1.abi);
   const cont = new ethers.Contract(ExchangeV1.address, ExchangeV1.abi, provider.getSigner());
   return cont;
 }
@@ -51,10 +51,10 @@ export async function initWallet() {
 
     return '';
   }
-  console.log('eth_requestAccounts=>', accounts);
+  // console.log('eth_requestAccounts=>', accounts);
   Vue.prototype.$address = accounts[0];
 
-  console.log('networkVersion=>', window.ethereum.networkVersion);
+  // console.log('networkVersion=>', window.ethereum.networkVersion);
   if (window.ethereum.networkVersion != 97) {
     // alert('请切换到BSCTestnet网络！');
     Message.error('请切换到BSCTestnet网络！');
@@ -64,14 +64,16 @@ export async function initWallet() {
   //     alert('请切换到BSCMainnet网络！');
   //     return '';
   // }
+  sessionStorage.setItem("address", Vue.prototype.$address);
   return Vue.prototype.$address;
 }
 
 export async function getBalance() {
   const provider = getProvider();
   const balance = await provider.getBalance(provider.provider.selectedAddress);
-  console.log('balance=>', ethers.utils.formatEther(ethers.BigNumber.from(balance)));
+  // console.log('balance=>', ethers.utils.formatEther(ethers.BigNumber.from(balance)));
   let amount = ethers.utils.formatEther(ethers.BigNumber.from(balance));
+  sessionStorage.setItem("balance", Math.round(amount * 1e4) / 1e4);
   return Math.round(amount * 1e4) / 1e4;
 }
 

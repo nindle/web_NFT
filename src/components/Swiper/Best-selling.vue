@@ -98,10 +98,7 @@ export default {
         "https://api.lionnft.io/v1/user/top?user=seller"
       );
       this.userInfoList = resp.list;
-      console.log(this.userInfoList);
-
       this.userInfoList.forEach((item) => {
-        console.log(item.user_cover);
         //设置默认背景图
         if (item.user_pic == "") {
           item.user_pic = this.userbgc;

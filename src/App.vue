@@ -205,15 +205,22 @@ export default {
   created() {},
   async mounted() {
     if (sessionStorage.getItem("address") == null) {
-      console.log(12);
       this.success = "";
     } else {
       this.success = 200;
       this.userName = await sessionStorage.getItem("userInfo");
-      console.log(this.userName);
       this.address = await sessionStorage.getItem("showAddress");
       this.balance = await sessionStorage.getItem("balance");
-      console.log(this.balance);
+    }
+  },
+  async beforeUpdate() {
+    if (sessionStorage.getItem("address") == null) {
+      this.success = "";
+    } else {
+      this.success = 200;
+      this.userName = await sessionStorage.getItem("userInfo");
+      this.address = await sessionStorage.getItem("showAddress");
+      this.balance = await sessionStorage.getItem("balance");
     }
   },
   methods: {
@@ -264,15 +271,13 @@ export default {
         const address = await initWallet();
         if (address != "") {
           this.success = 200;
-          sessionStorage.setItem("address", address);
           this.addres = address;
           this.address = this.SubStr(address);
           sessionStorage.setItem("showAddress", this.address);
           this.balance = await getBalance();
-          sessionStorage.setItem("balance", await getBalance());
           const { data: data } = await userInfoApi(address);
-          sessionStorage.setItem("userInfo", data.user_name);
           this.userInfo = data;
+          location.reload();
         }
       });
     },

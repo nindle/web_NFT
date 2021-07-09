@@ -31,8 +31,22 @@ export default {
     return {};
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    console.log(sessionStorage.getItem("address"));
+    var timer = setTimeout(this.setTimeoutFn, 500);
+    timer;
+  },
   methods: {
+    setTimeoutFn() {
+      if (sessionStorage.getItem("userInfo") == null) {
+        this.$message.error("个人信息不全");
+        this.$router.push({
+          name: "redactUser",
+          params: { userId: sessionStorage.getItem("address") },
+        });
+      }
+    },
+
     Single() {
       this.$router.push({ name: "single", params: { userId: "123" } });
     },

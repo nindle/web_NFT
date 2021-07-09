@@ -2,10 +2,11 @@
   <div class="redactUser">
     <div class="uploading">
       <el-upload
-        action="#"
+        ref="upload"
+        action="https://api.lionnft.io/v1/upload/file"
         list-type="picture-card"
         :auto-upload="false"
-        :on-change="handlePictureCardPreview"
+        :on-success="uploadSuccess"
       >
         <el-button
           round
@@ -91,7 +92,7 @@
           margin-top: 20px;
         "
         type="primary"
-        @click="postUserEdit()"
+        @click="postUserEdit"
       >
         Update profile
       </el-button>
@@ -133,45 +134,16 @@ export default {
   },
 
   methods: {
-    handlePictureCardPreview(fileList) {
-      this.formLabelAlign.cover = fileList.url;
+    uploadFile() {
+      this.$refs.upload.submit();
     },
 
-    async ifAddress() {
-      if (this.$route.params.userName == undefined) {
-        this.postAdduser();
-      } else {
-        this.postUserEdit();
-      }
-    },
-
-    async postAdduser() {
+    async uploadSuccess(e) {
+      this.formLabelAlign.cover = e.ipfs;
       const formLabelAlign = { ...this.formLabelAlign };
-      console.log(formLabelAlign);
-      const resp = await $http.post("https://api.lionnft.io/v1/user/add", {
-        ...formLabelAlign,
-      });
-      console.log(resp);
-      if (resp.code == 200) {
-        this.$message({
-          message: "创建成功",
-          type: "success",
-        });
-        this.formLabelAlign = {};
-        this.$router.replace("/personalCenter");
-      } else {
-        this.$message.error("创建失败");
-      }
-      sessionStorage.setItem("userInfo", formLabelAlign.username);
-    },
-
-    async postUserEdit() {
-      const formLabelAlign = { ...this.formLabelAlign };
-      console.log(formLabelAlign);
       const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
         ...formLabelAlign,
       });
-      console.log(resp);
       if (resp.code == 200) {
         this.$message({
           message: "更新成功",
@@ -179,11 +151,14 @@ export default {
         });
         sessionStorage.setItem("userInfo", formLabelAlign.username);
         this.formLabelAlign = {};
-        console.log(sessionStorage.getItem("userInfo"));
         this.$router.replace("/personalCenter");
-      } else {
+      } else if (resp.code == 500) {
         this.$message.error("更新失败");
       }
+    },
+
+    async postUserEdit() {
+      await this.uploadFile();
     },
   },
 };

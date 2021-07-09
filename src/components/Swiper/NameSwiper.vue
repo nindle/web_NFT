@@ -132,7 +132,6 @@ export default {
     },
 
     onClickGoToDetail(id, token) {
-      console.log("text", id, token);
       this.$router.push({
         name: "details",
         params: { id, token },
