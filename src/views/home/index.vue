@@ -18,20 +18,10 @@
           on the world's first & largest NFT marketplace
         </div>
         <div class="el-main-d">
-          <!-- <el-button
-            type="primary"
-            style="
-              margin-right: 20px;
-              background-color: #2081e2;
-              padding: 15px 49px;
-            "
-          >
-            Explore
-          </el-button> -->
           <el-button
             id="Createstyle"
             plain
-            @click="$router.push({ name: 'establish', params: { id: index } })"
+            @click="$router.push({ name: 'establish' })"
           >
             Create<i class="el-icon-arrow-right el-icon--right" />
           </el-button>
@@ -137,12 +127,12 @@ export default {
         { url: require("../../assets/19.jpeg") },
       ],
       imgUrl: [
-        { url: require("../../assets/19.jpeg") },
-        { url: require("../../assets/1.jpg") },
-        { url: require("../../assets/5.jpg") },
-        { url: require("../../assets/19.jpeg") },
-        { url: require("../../assets/1.jpg") },
-        { url: require("../../assets/5.jpg") },
+        { url: require("../../assets/bannar7.jpg") },
+        // { url: require("../../assets/bannar2.jpeg") },
+        { url: require("../../assets/bannar3.jpeg") },
+        // { url: require("../../assets/bannar4.jpeg") },
+        { url: require("../../assets/bannar5.jpeg") },
+        // { url: require("../../assets/bannar6.jpeg") },
       ],
 
       selectedLanguage: this.$store.getters.language,
@@ -178,9 +168,6 @@ export default {
   border-radius: 10px;
   padding: 0;
 }
-// /deep/.el-button {
-//   padding: 0;
-// }
 .el-carousel__item h3 {
   color: #475669;
   font-size: 14px;
@@ -228,8 +215,8 @@ export default {
   padding: 0;
 }
 .exhibition {
-  height: 650px;
-  margin-top: 60px;
+  // height: 650px;
+  // margin-top: 60px;
 }
 .exhibition-a {
   background-color: #fff;
@@ -241,8 +228,9 @@ export default {
   text-align: center;
   font-size: 24px;
   color: #09090a;
-  padding-top: 70px;
-  padding-bottom: 60px;
+  // padding-top: 70px;
+  // padding-bottom: 60px;
+  margin: 60px 0;
 }
 .exhibition-c {
   width: 373px;
@@ -274,6 +262,7 @@ hr {
 }
 /deep/ .el-carousel__container {
   height: 540px !important;
+  overflow: hidden;
 }
 
 .el-carousel__indicators {
@@ -338,6 +327,7 @@ hr {
 }
 .introduce {
   height: 450px;
+  margin-top: 60px;
   padding-top: 40px;
   background: #f8fbff;
   // line-height: 118px;

@@ -5,21 +5,30 @@
       style="padding: 0 16px"
       :options="swiperOption"
       @swiper="onSwipers"
-      @click="ggs"
       @slideChange="onSlideChanges"
     >
       <swiper-slide
         v-for="(item, index) in userInfoList.slice(0, 7)"
         :key="index"
       >
-        <div class="neirong">
+        <div class="neirong" @click="goUserFn(item.user_address)">
           <img
-            :src="item.user_pic"
+            :src="
+              item.user_pic.replace(
+                'ipfs://ipfs/',
+                'https://api.lionnft.io/v1/upload/view?hash='
+              )
+            "
             style="width: 371px; height: 186px"
             alt=""
           >
           <img
-            :src="item.user_cover"
+            :src="
+              item.user_cover.replace(
+                'ipfs://ipfs/',
+                'https://api.lionnft.io/v1/upload/view?hash='
+              )
+            "
             style="
               width: 60px;
               height: 60px;
@@ -92,11 +101,19 @@ export default {
       console.log(swiper);
     },
     onSlideChanges() {},
-    ggs() {},
+
+    goUserFn(id) {
+      this.$router.push({
+        name: "personalCenter",
+        params: { id },
+      });
+    },
+
     async getUserInfo() {
       const resp = await $http.get(
         "https://api.lionnft.io/v1/user/top?user=seller"
       );
+      console.log(resp);
       this.userInfoList = resp.list;
       this.userInfoList.forEach((item) => {
         //设置默认背景图

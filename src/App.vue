@@ -1,4 +1,4 @@
-/* eslint-disable vue/this-in-template */
+
 <template>
   <div id="app">
     <el-header>

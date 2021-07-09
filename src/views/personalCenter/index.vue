@@ -23,6 +23,7 @@
       </p>
 
       <el-button
+        v-show="this.$route.params.id == undefined"
         round
         style="
           border-radius: 21px;
@@ -37,6 +38,7 @@
         Edit profile
       </el-button>
       <div
+        v-show="this.$route.params.id == undefined"
         style="
           width: 43px;
           height: 41px;
@@ -333,7 +335,11 @@ export default {
     };
   },
   async created() {
-    this.user_id = sessionStorage.getItem("address");
+    if (this.$route.params.id == undefined) {
+      this.user_id = sessionStorage.getItem("address");
+    } else {
+      this.user_id = this.$route.params.id;
+    }
     this.getUserInfo();
     this.getCreated();
   },

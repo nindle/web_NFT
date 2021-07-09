@@ -56,10 +56,25 @@
       <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li>
         <div class="productdetails">
-          <div style="float: left">
-            <img :src="creator_cover" style="margin: 10px 15px 0 0" alt="">
+          <div style="width: 100%">
+            <img
+              :src="creator_cover"
+              style="margin: 10px 15px 0 0; cursor: pointer"
+              alt=""
+              @click="
+                $router.push({
+                  name: 'personalCenter',
+                  params: { id: str },
+                })
+              "
+            >
           </div>
-          <div class="productdetails-a" style="position: relative">
+
+          <div class="clear" />
+          <div
+            class="productdetails-a"
+            style="position: absolute; left: 65px; top: 0px"
+          >
             <p
               style="
                 font-size: 12px;
@@ -100,10 +115,24 @@
       </li>
       <li>
         <div class="productdetails">
-          <div style="float: left">
-            <img :src="own_user_cover" style="margin: 10px 15px 0 0" alt="">
+          <div style="width: 100%">
+            <img
+              :src="own_user_cover"
+              style="margin: 10px 15px 0 0; cursor: pointer"
+              alt=""
+              @click="
+                $router.push({
+                  name: 'personalCenter',
+                  params: { id: strs },
+                })
+              "
+            >
           </div>
-          <div class="productdetails-a" style="position: relative">
+          <div class="clear" />
+          <div
+            class="productdetails-a"
+            style="position: absolute; left: 65px; top: 0px"
+          >
             <p
               style="
                 font-size: 12px;
@@ -557,6 +586,9 @@ export default {
 .details-b {
   display: flex;
   border-bottom: 1px solid #eceef0;
+}
+.productdetails {
+  position: relative;
 }
 .productdetails img {
   width: 48px;
