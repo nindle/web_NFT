@@ -2,12 +2,24 @@
   <div>
     <!-- 个人中心背景图 -->
     <div class="personalCenter-bgc">
-      <img :src="userBgc" alt="">
+      <img :src="userBgc" alt="" />
+      <el-upload
+        action="https://api.lionnft.io/v1/upload/file"
+        :auto-upload="true"
+        :on-success="uploadSuccessbgcFn"
+      >
+        <el-button
+          id="editBackground"
+          type="primary"
+          icon="el-icon-edit"
+          circle
+        />
+      </el-upload>
     </div>
 
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img :src="userpic" alt="">
+      <img :src="userpic" alt="" />
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
@@ -19,7 +31,7 @@
           style="cursor: pointer"
           alt=""
           @click="copyText"
-        >
+        />
       </p>
 
       <el-button
@@ -52,7 +64,7 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        >
+        />
       </div>
     </div>
     <!-- 产品系列 -->
@@ -84,7 +96,8 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
+
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -96,7 +109,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -145,7 +158,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -157,7 +170,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -206,7 +219,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -218,7 +231,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -267,7 +280,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -279,7 +292,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -303,6 +316,7 @@
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
       </el-tabs>
+      <Sgf />
     </div>
   </div>
 </template>
@@ -314,10 +328,14 @@ import { ethers } from "ethers";
 import imgUrl from "../../assets/xiaohuli.png";
 import { initWallet, getBalance } from "../../wallet/wallet";
 import { userInfoApi } from "../../api/user";
+import sgf from "./sgf";
 
 export default {
   name: "PersonalCenter",
   props: {},
+  components: {
+    sgf,
+  },
   data() {
     return {
       user_id: "",
@@ -332,6 +350,16 @@ export default {
       str: "",
       subStr: "",
       filters: "created",
+      formLabelAlign: {
+        username: sessionStorage.getItem("userInfo"),
+        short_url: "",
+        desc: "",
+        address: sessionStorage.getItem("address"),
+        cover: "",
+        website: "",
+        twitter: "",
+        pic: "",
+      },
     };
   },
   async created() {
@@ -345,6 +373,17 @@ export default {
   },
   mounted() {},
   methods: {
+    async uploadSuccessbgcFn(e) {
+      console.log(e.ipfs);
+      console.log(this.formLabelAlign);
+      this.formLabelAlign.cover = e.ipfs;
+      const edit = this.formLabelAlign;
+      const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
+        ...edit,
+      });
+      console.log(resp);
+    },
+
     open() {
       if (this.user_id !== null) {
         this.$router.push({
@@ -405,23 +444,31 @@ export default {
         this.getCreated();
       }
     },
+
     loadMore() {
       this.a += 6;
     },
+
     async getUserInfo() {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/user?address=${this.user_id}`
       );
 
       this.userinfo = resp.data;
-      if (this.userinfo.user_pic !== "") {
-        this.userBgc = this.userinfo.user_pic;
-      }
+      console.log(this.userinfo);
+      // this.formLabelAlign.pic = this.userinfo.user_desc;
+      // this.formLabelAlign.cover = this.userinfo.user_cover;
+
       if (this.userinfo.user_cover !== "") {
-        this.userpic = this.userinfo.user_cover.replace(
+        this.userBgc = this.userinfo.user_cover;
+        this.formLabelAlign.user_cover = this.userinfo.user_cover;
+      }
+      if (this.userinfo.user_pic !== "") {
+        this.userpic = this.userinfo.user_pic.replace(
           "ipfs://ipfs/",
           "https://api.lionnft.io/v1/upload/view?hash="
         );
+        this.formLabelAlign.pic = this.userinfo.user_desc;
       }
       this.str = this.userinfo.user_address;
       this.subStr = this.SubStr(this.str);
@@ -438,6 +485,7 @@ export default {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
+      console.log(resp);
       this.createdList = resp.list;
       this.createdList.forEach((item, index) => {
         if (this.createdList[index].price === "") {
@@ -455,14 +503,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/deep/.el-upload-list {
+  display: none;
+}
+#editBackground {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 3;
+}
 .createdStyle {
   text-align: center;
   margin: 100px 0;
 }
 .personalCenter-bgc {
+  position: relative;
   width: 100%;
   height: 224px;
-  z-index: 2;
+  // z-index: -2;
 }
 .personalCenter-pic {
   position: absolute;
@@ -576,14 +634,6 @@ export default {
   color: #ffffff;
   cursor: pointer;
 }
-// .exhibition {
-//   display: flex;
-//   position: relative;
-//   width: 1200px;
-//   margin: 0 auto;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// }
 
 .collection {
   width: 24px;

@@ -20,7 +20,7 @@
           Choose file
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
       <div class="preview" />
@@ -139,7 +139,7 @@ export default {
     },
 
     async uploadSuccess(e) {
-      this.formLabelAlign.cover = e.ipfs;
+      this.formLabelAlign.pic = e.ipfs;
       const formLabelAlign = { ...this.formLabelAlign };
       const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
         ...formLabelAlign,

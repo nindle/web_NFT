@@ -5,17 +5,17 @@
       <template>
         <el-carousel indicator-position="outside">
           <el-carousel-item v-for="(item, index) in imgUrl" :key="index">
-            <img :src="item.url" alt="">
+            <img :src="item.url" alt="" />
           </el-carousel-item>
         </el-carousel>
       </template>
       <!-- 轮播图中的定位 搜索创建 -->
       <div class="el-main-a">
         <div class="el-main-b">
-          {{ $t("home.test") }}
+          {{ $t("home.title") }}
         </div>
         <div class="el-main-c">
-          on the world's first & largest NFT marketplace
+          {{ $t("home.content") }}
         </div>
         <div class="el-main-d">
           <el-button
@@ -23,14 +23,17 @@
             plain
             @click="$router.push({ name: 'establish' })"
           >
-            Create<i class="el-icon-arrow-right el-icon--right" />
+            {{ $t("home.buttons") }}
+            <i class="el-icon-arrow-right el-icon--right" />
           </el-button>
         </div>
       </div>
       <!-- 热门商品展示 -->
       <div class="exhibition">
         <div class="exhibition-a">
-          <div class="exhibition-b">Exclusive Meta World drops</div>
+          <div class="exhibition-b">
+            {{ $t("home.NameSwiper") }}
+          </div>
           <div style="height: 300px, width:100%">
             <NameSwiper />
           </div>
@@ -38,50 +41,51 @@
       </div>
       <div class="exhibition">
         <div class="exhibition-a">
-          <div class="exhibition-b">Best-selling author</div>
+          <div class="exhibition-b">
+            {{ $t("home.author") }}
+          </div>
           <div style="height: 300px, width:100%">
             <Bestselling />
           </div>
         </div>
       </div>
       <div class="introduce">
-        <p>Create and sell your NFTs</p>
-
+        <p>{{ $t("home.introduce") }}</p>
         <ul>
           <li>
-            <img src="../../assets/qb@2x.png" alt="">
-            <p class="introduce_title">Best-selling author</p>
+            <img src="../../assets/qb@2x.png" alt="" />
+            <p class="introduce_title">
+              {{ $t("home.wallet") }}
+            </p>
             <p class="introduce_content">
-              Once you’ve set up your wallet of choice, connect it to Meta World
-              by clicking the wallet icon in the top right corner. Learn about
-              the
+              {{ $t("home.walletintroduce") }}
             </p>
           </li>
           <li>
-            <img src="../../assets/cz@2x.png" alt="">
-            <p class="introduce_title">Create your collection</p>
+            <img src="../../assets/cz@2x.png" alt="" />
+            <p class="introduce_title">
+              {{ $t("home.collect") }}
+            </p>
             <p class="introduce_content">
-              Click Create and set up your collection. Add social links, a
-              description, profile & banner images, and set a secondary sales
-              fee.
+              {{ $t("home.collectintroduce") }}
             </p>
           </li>
           <li>
-            <img src="../../assets/tp@2x.png" alt="">
-            <p class="introduce_title">Add your NFTs</p>
+            <img src="../../assets/tp@2x.png" alt="" />
+            <p class="introduce_title">
+              {{ $t("home.establish") }}
+            </p>
             <p class="introduce_content">
-              Upload your work (image, video, audio, or 3D art), add a title and
-              description, and customize your NFTs with propeties, stats, and
-              unlockable content.
+              {{ $t("home.establishintroduce") }}
             </p>
           </li>
           <li>
-            <img src="../../assets/sm@2x.png" alt="">
-            <p class="introduce_title">List them for saler</p>
+            <img src="../../assets/sm@2x.png" alt="" />
+            <p class="introduce_title">
+              {{ $t("home.sale") }}
+            </p>
             <p class="introduce_content">
-              Choose between auctions, fixed-price listings, and declining-price
-              listings. You choose how you want to sell your NFTs, and we help
-              you sell them!
+              {{ $t("home.saleintroduce") }}
             </p>
           </li>
         </ul>
@@ -92,10 +96,10 @@
         type="primary"
         @click="$router.replace('/bazaar')"
       >
-        Explore the Browse
+        {{ $t("home.bazaar") }}
       </el-button>
       <div class="sponsor">
-        <img src="../../assets/zanzhushang.png" alt="">
+        <img src="../../assets/zanzhushang.png" alt="" />
       </div>
     </div>
   </div>
@@ -114,18 +118,7 @@ export default {
   data() {
     return {
       a: 3,
-      showList: [
-        { url: require("../../assets/zs.png") },
-        { url: require("../../assets/zs.png") },
-        { url: require("../../assets/zs.png") },
-        { url: require("../../assets/zs.png") },
-      ],
-      showLists: [
-        { url: require("../../assets/19.jpeg") },
-        { url: require("../../assets/19.jpeg") },
-        { url: require("../../assets/19.jpeg") },
-        { url: require("../../assets/19.jpeg") },
-      ],
+
       imgUrl: [
         { url: require("../../assets/bannar7.jpg") },
         // { url: require("../../assets/bannar2.jpeg") },
@@ -145,14 +138,12 @@ export default {
       this.$dayjs.locale(newLang);
     },
   },
-  created() {},
-  mounted() {},
-  methods: {
-    cut(item) {
-      console.log(item.value);
-      this.showList = this.showLists;
-    },
+  created() {
+    console.log(this.$i18n);
+    console.log(this.$store.getters.language);
   },
+  mounted() {},
+  methods: {},
 };
 </script>
 
@@ -214,10 +205,7 @@ export default {
   position: relative;
   padding: 0;
 }
-.exhibition {
-  // height: 650px;
-  // margin-top: 60px;
-}
+
 .exhibition-a {
   background-color: #fff;
   width: 1220px;

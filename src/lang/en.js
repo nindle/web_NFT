@@ -9,6 +9,32 @@ export default {
     dateFormatting: 'Date formatting'
   },
   home: {
-    test: 'Discover, collect, and sell extraordinary NFTs'
+    home: 'Home',
+    Browse: 'Browse',
+    Account: 'Account',
+    Create: 'Create',
+    LAN: 'BBC Mainnet',
+    title: 'Discover, collect, and sell extraordinary NFTs',
+    content: "on the world's first & largest NFT marketplace",
+    buttons: 'Create',
+    NameSwiper: 'Exclusive Meta World drops',
+    author: 'Best-selling author',
+    introduce: 'Create and sell your NFTs',
+    wallet: 'wallet',
+    walletintroduce: 'Once you’ve set up your wallet of choice, connect it to Meta World by clicking the wallet icon in the top right corner',
+    collect: 'Create your collection',
+    collectintroduce: 'Edit your social links, description, profile and background picture, click Create to set up your portfolio, and set the sales fee.',
+    establish: 'Add your NFTs',
+    establishintroduce: 'Upload your work (image, video, audio, or 3D art), add a title and description, and customize your NFTs with propeties, stats, and unlockable content.',
+    sale: 'List for sale',
+    saleintroduce: 'Choose between auctions, fixed-price listings, and declining-price listings. You choose how you want to sell your NFTs, and we help you sell them!',
+    bazaar: 'Explore the Browse',
+    Invitealliance: 'Invite alliance',
+    email: 'If you and your team want to publish and push NFT, please contact nft@Meta World.com',
+    bottom1: 'ABOUT US',
+    bottom2: 'WHITE PAPER',
+    bottom3: 'AUDIT REPORT',
+    bottom4: 'COMPANY VISION',
+    bottom5: 'COMPANY VISIONT',
   }
 };
