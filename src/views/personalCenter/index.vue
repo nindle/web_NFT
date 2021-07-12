@@ -2,7 +2,7 @@
   <div>
     <!-- 个人中心背景图 -->
     <div class="personalCenter-bgc">
-      <img :src="userBgc" alt="" />
+      <img :src="userBgc" alt="">
       <el-upload
         action="https://api.lionnft.io/v1/upload/file"
         :auto-upload="true"
@@ -19,7 +19,7 @@
 
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img :src="userpic" alt="" />
+      <img :src="userpic" alt="">
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
@@ -31,7 +31,7 @@
           style="cursor: pointer"
           alt=""
           @click="copyText"
-        />
+        >
       </p>
 
       <el-button
@@ -64,7 +64,7 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        />
+        >
       </div>
     </div>
     <!-- 产品系列 -->
@@ -96,7 +96,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              />
+              >
 
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
@@ -109,7 +109,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -158,7 +158,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -170,7 +170,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -219,7 +219,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -231,7 +231,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -280,7 +280,7 @@
                 alt=""
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -292,7 +292,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -332,10 +332,10 @@ import sgf from "./sgf";
 
 export default {
   name: "PersonalCenter",
-  props: {},
   components: {
     sgf,
   },
+  props: {},
   data() {
     return {
       user_id: "",

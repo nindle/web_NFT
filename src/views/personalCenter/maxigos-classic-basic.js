@@ -4194,17 +4194,17 @@ if (!mxG.G.prototype.createVariation) {
   };
 }
 // maxiGos v7 > mgosVersion.js
-// if (!mxG.G.prototype.createVersion) {
-//   mxG.G.prototype.createVersion = function() {
-//     var s = "";
-//     this.versionBoxOn = this.setA("versionBoxOn", 0, "bool");
-//     if (this.versionBoxOn) {
-//       s += '<div class="mxVersionDiv" id="' + this.n + 'VersionDiv">';
-//       s += "<span>maxiGos " + mxG.V + "</span></div>";
-//     }
-//     return s;
-//   };
-// }
+if (!mxG.G.prototype.createVersion) {
+  mxG.G.prototype.createVersion = function() {
+    var s = "";
+    this.versionBoxOn = this.setA("versionBoxOn", 0, "bool");
+    if (this.versionBoxOn) {
+      s += '<div class="mxVersionDiv" id="' + this.n + 'VersionDiv">';
+      s += "<span>maxiGos " + mxG.V + "</span></div>";
+    }
+    return s;
+  };
+}
 mxG.K++;
 mxG.B = [["Goban"], "Navigation", "Variation", "Version"];
 mxG.D[mxG.K] = new mxG.G(mxG.K, mxG.B);

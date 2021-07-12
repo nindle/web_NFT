@@ -20,7 +20,7 @@
           Choose file
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
         </div>
       </el-upload>
       <div class="preview" />
