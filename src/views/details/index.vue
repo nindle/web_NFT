@@ -1,7 +1,8 @@
 <template>
-  <div v-loading="loading" class="details">
+  <div id="detailsid" v-loading="loading" class="details">
     <!-- 商品大图zs -->
-    <img
+    <!-- <img
+      id="imgShows"
       :src="
         details.prop_image.replace(
           'ipfs://ipfs/',
@@ -10,9 +11,13 @@
       "
       style="border-radius: 20px"
       alt=""
-    >
-    <div class="clear" />
-
+    /> -->
+    <!-- <iframe
+      id="iframeShow"
+      src="http://192.168.0.101:5501/src/views/details/test.html"
+      style="width: 612px; height: 782px; border: 0"
+    /> -->
+    <div id="clearid" class="clear" />
     <!-- 产品详情 -->
     <ul class="details-a">
       <li class="productTitle">
@@ -28,19 +33,20 @@
           {{ details.supply_sell }} of {{ details.supply }} available
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="">2212
+          <img id="examines" src="../../assets/examine.png" alt="" />2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="">
-          2122</span>
+          <img id="examine" src="../../assets/souchang.png" alt="" />
+          2122</span
+        >
       </li>
       <li class="price">
         <img
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        >
+        />
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
@@ -53,7 +59,7 @@
           {{ buyLoading ? "Buying" : "Buy Now" }}
         </el-button>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li>
         <div class="productdetails">
           <div style="width: 100%">
@@ -67,7 +73,7 @@
                   params: { id: str },
                 })
               "
-            >
+            />
           </div>
 
           <div class="clear" />
@@ -102,14 +108,15 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator }}</span>
+              >{{ creator }}</span
+            >
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
               style="cursor: pointer"
               @click="copyText(1)"
-            >
+            />
           </div>
         </div>
       </li>
@@ -126,7 +133,7 @@
                   params: { id: strs },
                 })
               "
-            >
+            />
           </div>
           <div class="clear" />
           <div
@@ -160,18 +167,19 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator_address }}</span>
+              >{{ creator_address }}</span
+            >
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
               style="cursor: pointer"
               @click="copyText(2)"
-            >
+            />
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li
         style="
           font-size: 15px;
@@ -220,7 +228,8 @@ import { ethers } from "ethers";
 import exchange from "../../wallet/exchange";
 import { initWallet, ContractExchange } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
-
+// import Sgf from "./maxigos-classic-basic";
+// import sss from "./sgf.vue";
 let currCont = null;
 let addr = "";
 export default {
@@ -259,17 +268,42 @@ export default {
       buyErr: false,
     };
   },
-  created() {},
+  created() {
+    // location.reload();
+  },
   async mounted() {
     const address = await initWallet();
-    console.log(address);
     if (address != "") {
       addr = address;
       currCont = ContractExchange();
     }
     this.getDetails();
+    setTimeout(() => {
+      this.sgf();
+    }, 600);
+
+    // console.log(sgff);
   },
   methods: {
+    sgf() {
+      const mas_symbol = document.getElementById("d1GlobalBoxDiv");
+      if (mas_symbol === null) {
+        location.reload();
+        // this.loading = true;
+        // this.reload();
+      }
+      this.loading = false;
+      // mas_symbol.setAttribute("src", "./src/assets/weiqi/123.js");
+      // mas_symbol.setAttribute(
+      //   "data-maxigos-sgf",
+      //   "./src/assets/weiqi/blood-vomit-en.sgf"
+      // );
+      // mas_symbol.setAttribute("data-maxigos-l", "en");
+      // // debugger;
+      // console.log("heliyi");
+      // window.document.body.children[2].children[1].appendChild(mas_symbol);
+    },
+
     copyText(id) {
       var input = document.createElement("input"); // js创建一个input输入框
       if (id == 1) {
@@ -291,12 +325,10 @@ export default {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
-      console.log(resp);
       // eslint-disable-next-line no-empty
-      if (resp.code !== 200) {
-      } else {
-        this.loading = false;
-      }
+      // if (resp.code !== 200) {
+      // } else {
+      // }
       this.details = resp.data;
       // 设置创建者默认头像
       if (this.details.creator_cover == "") {
@@ -308,7 +340,6 @@ export default {
           "ipfs://ipfs/",
           "https://api.lionnft.io/v1/upload/view?hash="
         );
-        console.log(this.creator_cover);
       }
       // 设置所有者默认头像
       if (this.details.own_user_cover == "") {
@@ -320,7 +351,6 @@ export default {
           "ipfs://ipfs/",
           "https://api.lionnft.io/v1/upload/view?hash="
         );
-        console.log(this.own_user_cover);
       }
 
       this.details.price = ethers.utils.formatUnits(this.details.price);
@@ -355,16 +385,14 @@ export default {
         this.token,
         this.creator_addr
       );
-      console.log("orderInfo", resp);
+
       this.order = resp.data.ord_data;
-      console.log(this.order);
     },
     // 交易手续费
     async buyFee() {
       const resp = await exchange.getBuyerFeeApi(this.token_id, this.token);
-      console.log("getBuyerFeeApi", resp);
+
       this.fee = resp;
-      console.log(this.fee);
     },
     // 购买
     async onBuy() {
@@ -372,7 +400,7 @@ export default {
 
       this.buyLoading = true;
       let _order = JSON.parse(JSON.stringify(this.order.order));
-      console.log(_order);
+
       const order2 = {
         key: {
           salt: BigNumber.from(_order.key.salt),
@@ -392,12 +420,12 @@ export default {
         buying: BigNumber.from(_order.buying),
         sellerFee: BigNumber.from(_order.sellerFee),
       };
-      console.log(order2);
+      // console.log(order2);
 
-      console.log(this.order.signature);
-      console.log(this.fee.buyFee);
-      console.log(this.fee.buyFeeSignature);
-      console.log(this.owner_addr);
+      // console.log(this.order.signature);
+      // console.log(this.fee.buyFee);
+      // console.log(this.fee.buyFeeSignature);
+      // console.log(this.owner_addr);
 
       const sign = ethers.utils.splitSignature(this.order.signature);
       const feeSign = ethers.utils.splitSignature(this.fee.buyFeeSignature);
@@ -420,10 +448,10 @@ export default {
           addr,
           { value: paying }
         );
-        console.log(tx);
+        // console.log(tx);
       } catch (err) {
         this.buyLoading = false;
-        console.log("exchange.err=>", err);
+        // console.log("exchange.err=>", err);
         if (err.data.code !== 3) {
           this.$message({
             message: "余额不足",
@@ -445,7 +473,7 @@ export default {
         console.log("buyResp=>", buyResp);
       } catch (err) {
         this.buyLoading = false;
-        console.log("buyApi.err=>", err);
+        // console.log("buyApi.err=>", err);
         alert(err);
         return;
       }
@@ -461,15 +489,6 @@ export default {
     },
   },
 };
-
-// exchange(
-//   order, // 交易对象，通过接口获取
-//   props.signature, // 交易对象签名，接口获取
-//   BigNumber.from(buyerFee.buyFee), // 购买手续费，接口获取
-//   buyerFee.buyFeeSignature, // 购买手续费签名，接口获取
-//   BigNumber.from(props.amount), // 购买数量
-//   account.value // 购买的账号，和发送交易的账号是同一个账号
-// )
 </script>
 
 <style lang="less" scoped>

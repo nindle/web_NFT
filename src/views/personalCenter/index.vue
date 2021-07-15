@@ -316,7 +316,6 @@
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
       </el-tabs>
-      <Sgf />
     </div>
   </div>
 </template>
@@ -328,13 +327,10 @@ import { ethers } from "ethers";
 import imgUrl from "../../assets/xiaohuli.png";
 import { initWallet, getBalance } from "../../wallet/wallet";
 import { userInfoApi } from "../../api/user";
-import sgf from "./sgf";
 
 export default {
   name: "PersonalCenter",
-  components: {
-    sgf,
-  },
+
   props: {},
   data() {
     return {

@@ -7,7 +7,7 @@
         class="header-login"
         replace
         @click="goHome"
-      >
+      />
       <div class="header-input">
         <el-input placeholder="Search by creator collectible or collection " />
         <img
@@ -20,7 +20,7 @@
             width: 27px;
             height: 27px;
           "
-        >
+        />
       </div>
 
       <div class="header-icon">
@@ -55,13 +55,13 @@
 
         <div v-if="success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px">
+            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
             <span>
               {{ $t("home.LAN") }}
             </span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
                 {{ address }}
@@ -70,11 +70,11 @@
                   style="cursor: pointer"
                   alt=""
                   @click="copyText"
-                >
+                />
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="">
+                <img src="./assets/tx1.png" alt="" />
                 <p class="popoverstyle_c_a">Balance</p>
                 <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
@@ -104,7 +104,7 @@
           src="./assets/language.png"
           alt=""
           @click="changeLanguage"
-        >
+        />
 
         <!-- <el-dropdown trigger="click">
           <el-dropdown-menu slot="dropdown">
@@ -115,11 +115,11 @@
       </div>
     </el-header>
 
-    <router-view />
+    <router-view v-if="isRouterAlive" />
 
-    <div :class="toRouter == 1 ? 'bottoms' : 'bottom'">
+    <div id="apptest" :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="">
+        <img src="./assets/login.png" alt="" />
         <p
           style="
             font-size: 24px;
@@ -172,8 +172,14 @@ import { initWallet, getBalance } from "./wallet/wallet";
 import { userInfoApi } from "./api/user";
 
 export default {
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
   data() {
     return {
+      isRouterAlive: true,
       address: "",
       addres: "",
       balance: 0,
@@ -206,11 +212,6 @@ export default {
       }
     },
   },
-  // async beforeUpdate() {
-  //   const { data: data } = await userInfoApi(this.addres);
-  //   sessionStorage.setItem("userInfo", data.user_name);
-  //   this.userName = await sessionStorage.getItem("userInfo");
-  // },
   created() {},
   async mounted() {
     if (sessionStorage.getItem("address") == null) {
@@ -233,6 +234,13 @@ export default {
     }
   },
   methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    },
+
     changeLanguage() {
       if (this.$i18n.locale == "en-us") {
         this.$i18n.locale = "zh-cn";

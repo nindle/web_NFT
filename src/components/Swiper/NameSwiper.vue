@@ -17,9 +17,10 @@
                   'https://api.lionnft.io/v1/upload/view?hash='
                 )
               "
+              @error="setDefaultImage"
               class="hoverBg"
               alt=""
-            >
+            />
 
             <div
               class="redirects"
@@ -38,7 +39,7 @@
             </span>
             <span> {{ item.supply_sell }}/{{ item.supply }}</span>
             <div class="userpriceimg" style="float: right; margin-right: 40px">
-              <img src="../../assets/souchang.png" alt=""> 2314
+              <img src="../../assets/souchang.png" alt="" /> 2314
             </div>
           </div>
           <!-- <div :class="hoverIndex == index ? 'redirects' : 'redirect'">
@@ -49,10 +50,10 @@
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev NameSwiperleft">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next NameSwiperright">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -113,6 +114,10 @@ export default {
     this.getList();
   },
   methods: {
+    setDefaultImage(e) {
+      e.target.src = require("../../assets/weiqifm.jpg");
+    },
+
     onSwiper(swiper) {
       console.log(swiper);
     },

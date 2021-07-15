@@ -2911,6 +2911,7 @@ if (!mxG.G) {
     cls = "mxGlobalBoxDiv";
     cls += this.config ? " mx" + this.config + "Config" : "";
     cls += this.theme ? " mx" + this.theme + "Theme" : "";
+
     cls += this.in3dOn ? " mxIn3d" : " mxIn2d";
     e = document.createElement("div");
     e.id = this.n + "GlobalBoxDiv";
@@ -2919,11 +2920,20 @@ if (!mxG.G) {
     if (!mxG.Z[this.lang]) mxG.Z[this.lang] = [];
     e.innerHTML = this.createBoxes(this.b);
     this.addParentClasses(e, e);
-    if (this.t == this.j)
+    if (this.t == this.j) {
       // insert global box tag in DOM just after current script tag
-      this.j.parentNode.insertBefore(e, this.j.nextSibling);
-    // insert global box tag in DOM in target element
-    else this.t.appendChild(e);
+      setTimeout(() => {
+        // this.j.parentNode.children[2].children[1].insertBefore(e, clearid);
+        this.j.parentNode.children[2].children[1].insertBefore(e, clearid);
+        // location.reload();
+      }, 100);
+      // location.reload();
+      // console.log(this.j.parentNode.children[2].children.length);
+      // this.j.parentNode.children[2].children[1].insertBefore(e, clearid);
+      // this.j.parentNode.children[2].children[1].insertBefore(e, clearid);
+      this.j.parentNode.children[2].insertBefore(e, apptest);
+      // insert global box tag in DOM in target element
+    } else this.t.appendChild(e);
     this.ig = this.getE("InnerGobanDiv"); // init this.ig as soon as possible
   };
   mxG.G.prototype.appendStyle = function() {
@@ -2938,26 +2948,37 @@ if (!mxG.G) {
       }
     }
   };
-  mxG.G.prototype.afterLoading = function() {
+  mxG.G.prototype.afterLoading = async function() {
     this.appendStyle();
     this.getA();
-    this.createAll();
+
+    console.log(document.getElementById("clearid"));
+    if (document.getElementById("clearid") == null) {
+      console.log(document.getElementById("clearid"));
+    } else {
+      this.createAll();
+    }
+
+    // this.createAll();
+    // this.createAll();
     this.initAll();
     this.getS();
   };
   mxG.G.prototype.start = function() {
     var k = this.k;
-    if (document.readyState == "complete") {
-      this.afterLoading();
-    } else {
-      window.addEventListener(
-        "load",
-        function() {
-          mxG.D[k].afterLoading();
-        },
-        false
-      );
-    }
+
+    this.afterLoading();
+    // if (document.readyState == "complete") {
+    //   this.afterLoading();
+    // } else {
+    //   window.addEventListener(
+    //     "load",
+    //     function() {
+    //       mxG.D[k].afterLoading();
+    //     },
+    //     false
+    //   );
+    // }
   };
 }
 // maxiGos v7 > mgosGoban.js
@@ -4246,4 +4267,11 @@ mxG.D[mxG.K].a.variationBoxOn = 0; // (0,1) default 0
 mxG.D[mxG.K].a.canPlaceVariation = 1; // (0,1) default 0
 // Version
 mxG.D[mxG.K].a.versionBoxOn = 1; // (0,1) default 0
-mxG.D[mxG.K].start();
+
+setTimeout(() => {
+  mxG.D[mxG.K].start();
+}, 500);
+
+// export default {
+//   mxG.D[mxG.K].start();
+// };

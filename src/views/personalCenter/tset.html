@@ -2,16 +2,232 @@
 <html lang="en">
 
 <head>
+  <script>
+    var date1 = new Date();
+    // to compute execution time of the page
+    if (typeof mxG == 'undefined') mxG = {};
+    if (!mxG.ExecutionTime) mxG.ExecutionTime = function () {
+      var e, s;
+      s = "Execution time: ";
+      s += (new Date().getTime() - date1.getTime()) + "ms";
+      s += " (" + (mxG.D ? mxG.D.length - 1 : "0") + " Maxigos)";
+      if (e = document.getElementById("ExecutionTimeId")) e.innerHTML = s;
+      if (e = document.getElementById("ExecutionTimeBisId")) e.innerHTML = s;
+    };
+  </script>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header,
+    footer {
+      padding: 4px;
+      background: #0002;
+    }
+
+    section.sample>nav {
+      background: #0002;
+    }
+
+    header nav a,
+    footer nav a,
+    section.sample>nav a {
+      display: inline-block;
+      padding: 0.5em;
+      color: #000;
+    }
+
+    h1.z {
+      font-size: 2em;
+      margin: 0.25em;
+      padding: 0;
+    }
+
+    div.executionTime {
+      margin: 0.5em;
+    }
+
+    h2.z {
+      font-size: 1.5em;
+      margin: 0;
+      padding: 0.33em;
+      background: #000;
+      color: #fff;
+    }
+
+    h3.z {
+      text-align: center;
+    }
+
+    p.z {
+      margin: 1em 0.5em;
+    }
+
+    div.aloneLink {
+      text-align: center;
+    }
+
+    div.aloneLink a {
+      color: #000;
+    }
+
+    div.mxGlobalBoxDiv {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+  </style>
+  <title>Maxigos</title>
 </head>
 
-<body>
-  <script src="./maxigos-classic-basic.js" data-maxigos-l="en">
-    blood - vomit - en.sgf;
-  </script>
+<body class="MinimalistSample">
+  <main>
+    <div class="z executionTime" id="ExecutionTimeId"></div>
+
+    <section id="basic" class="sample">
+      <section class="sampleBody">
+        <h3 class="z">19x19</h3>
+        <script src="minimalist/_maker/basic.php">
+          _sgf / game / blood - vomit - en.sgf
+        </script>
+        <h3 class="z">9x9</h3>
+        <script src="minimalist/_maker/basic.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+        <h3 class="z">25x25</h3>
+        <script src="minimalist/_maker/basic.php" data-maxigos-points-num-max="0"
+          data-maxigos-sgf="_sgf/game/XY25x25.sgf">
+          </script>
+      </section>
+    </section>
+
+    <section id="comment" class="sample">
+      <section class="sampleBody">
+        <h3 class="z">19x19</h3>
+        <script src="minimalist/_maker/comment.php">
+          _sgf / game / mn - bdg - en.sgf
+        </script>
+        <h3 class="z">9x9</h3>
+        <script src="minimalist/_maker/comment.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="diagram" class="sample">
+      <section class="sampleBody">
+        <script src="minimalist/_maker/diagram.php">
+          _sgf / game / blood - vomit - en.sgf
+        </script>
+        <script src="minimalist/_maker/diagram.php" data-maxigos-points-num-max="19">
+          _sgf / joseki / j1.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="edit" class="sample">
+      <section class="sampleBody">
+        <script src="minimalist/_maker/edit.php">
+        </script>
+      </section>
+    </section>
+
+    <section id="game" class="sample">
+      <section class="sampleBody">
+        <h3 class="z">19x19</h3>
+        <script src="minimalist/_maker/game.php">
+          _sgf / game / blood - vomit - en.sgf
+        </script>
+        <h3 class="z">9x9</h3>
+        <script src="minimalist/_maker/game.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+      </section>
+    </section>
+    <section id="kifu" class="sample">
+      <section class="sampleBody">
+        <script src="minimalist/_maker/kifu.php">
+          _sgf / game / blood - vomit - en.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="lesson" class="sample">
+      <section class="sampleBody">
+        <script src="minimalist/_maker/lesson.php">
+          _sgf / game / mn - bdg - en.sgf
+        </script>
+        <script src="minimalist/_maker/lesson.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="loop" class="sample">
+      <section class="sampleBody">
+        <script src="minimalist/_maker/loop.php">
+          _sgf / joseki / j1.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="problem" class="sample">
+      <section class="sampleBody">
+        <script src="minimalist/_maker/problem.php">
+          _sgf / problem / p3 - en.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="replay" class="sample">
+      <section class="sampleBody">
+        <h3 class="z">19x19</h3>
+        <script src="minimalist/_maker/replay.php">
+          _sgf / game / blood - vomit - en.sgf
+        </script>
+        <h3 class="z">9x9</h3>
+        <script src="minimalist/_maker/replay.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="tree" class="sample">
+      <section class="sampleBody">
+        <h3 class="z">19x19</h3>
+        <script src="minimalist/_maker/tree.php">
+          _sgf / game / mn - bdg - en.sgf
+        </script>
+        <h3 class="z">9x9</h3>
+        <script src="minimalist/_maker/tree.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+      </section>
+    </section>
+
+    <section id="zero" class="sample">
+      <section class="sampleBody">
+        <h3 class="z">19x19</h3>
+        <script src="minimalist/_maker/zero.php">
+          _sgf / game / blood - vomit - en.sgf
+        </script>
+        <h3 class="z">9x9</h3>
+        <script src="minimalist/_maker/zero.php">
+          _sgf / game / TV9x9 - en.sgf
+        </script>
+      </section>
+    </section>
+
+
+    <div class="z aloneLink"><a href="minimalist/minimalist-sample.html">Alone script sample</a></div>
+
+    <div class="z executionTime" id="ExecutionTimeBisId"></div>
+  </main>
+
 </body>
 
 </html>

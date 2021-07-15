@@ -22,11 +22,17 @@
               'https://api.lionnft.io/v1/upload/view?hash='
             )
           "
+          @error="setDefaultImage"
           :class="{ hoverBg: index == hoverIndex }"
           alt=""
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-        >
+        />
+        <!-- <iframe
+          id="iframeShow"
+          src="http://127.0.0.1:5501/src/views/details/test.html"
+          style="width: 612px; height: 782px; border: 0"
+        ></iframe> -->
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
@@ -35,7 +41,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt=""> 2314
+            <img src="../../assets/souchang.png" alt="" /> 2314
           </div>
         </div>
         <div
@@ -84,6 +90,20 @@ export default {
     this.getList();
   },
   methods: {
+    setDefaultImage(e) {
+      e.target.src = require("../../assets/weiqifm.jpg");
+    },
+
+    imgload() {
+      console.log(34);
+      this.imgShow = null;
+      clearInterval(this.imgShow);
+      setTimeout(() => {
+        // document.getElementById("imgShows").style.display = "block";
+        // document.getElementById("iframeShow").style.display = "none";
+      }, 600);
+    },
+
     loadMore() {
       this.a += 3;
     },
