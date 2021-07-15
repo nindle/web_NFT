@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div />
 </template>
 
 <script>
@@ -10,9 +10,9 @@ export default {
       name: "details",
     });
   },
+  computed: {},
   mounted() {},
   methods: {},
-  computed: {},
 };
 </script>
 

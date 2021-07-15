@@ -33,20 +33,19 @@
           {{ details.supply_sell }} of {{ details.supply }} available
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="" />2212
+          <img id="examines" src="../../assets/examine.png" alt="">2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="" />
-          2122</span
-        >
+          <img id="examine" src="../../assets/souchang.png" alt="">
+          2122</span>
       </li>
       <li class="price">
         <img
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        />
+        >
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
@@ -59,7 +58,7 @@
           {{ buyLoading ? "Buying" : "Buy Now" }}
         </el-button>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li>
         <div class="productdetails">
           <div style="width: 100%">
@@ -73,7 +72,7 @@
                   params: { id: str },
                 })
               "
-            />
+            >
           </div>
 
           <div class="clear" />
@@ -108,15 +107,14 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-              >{{ creator }}</span
-            >
+            >{{ creator }}</span>
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
               style="cursor: pointer"
               @click="copyText(1)"
-            />
+            >
           </div>
         </div>
       </li>
@@ -133,7 +131,7 @@
                   params: { id: strs },
                 })
               "
-            />
+            >
           </div>
           <div class="clear" />
           <div
@@ -167,19 +165,18 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-              >{{ creator_address }}</span
-            >
+            >{{ creator_address }}</span>
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
               style="cursor: pointer"
               @click="copyText(2)"
-            />
+            >
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li
         style="
           font-size: 15px;
