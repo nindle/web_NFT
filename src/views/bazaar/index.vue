@@ -29,7 +29,7 @@
           @error="setDefaultImage"
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-        />
+        >
         <!-- <iframe
           id="iframeShow"
           src="http://127.0.0.1:5501/src/views/details/test.html"
@@ -43,7 +43,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt="" /> 2314
+            <img src="../../assets/souchang.png" alt=""> 2314
           </div>
         </div>
         <div

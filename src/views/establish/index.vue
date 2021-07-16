@@ -11,11 +11,11 @@
     </div>
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="" />
+        <img src="../../assets/single.png" alt="">
         <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="" />
+        <img src="../../assets/Multiple.png" alt="">
         <p>{{ $t("establish.duo") }}</p>
       </div>
     </div>

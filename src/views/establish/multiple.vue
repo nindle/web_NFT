@@ -51,7 +51,7 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>Choose file</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
         </div>
       </el-upload>
 
