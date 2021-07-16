@@ -2729,8 +2729,9 @@ if (!mxG.G) {
         this.a[s] = b.match(/^[0-9]+$/) ? parseInt(b) : b;
       }
     }
+    console.log(sessionStorage.getItem("SgfUrl"));
     // sgf and lang parameter are special
-    this.sgf = this.a.sgf || t.innerHTML;
+    this.sgf = sessionStorage.getItem("SgfUrl") || t.innerHTML;
     this.lang = this.a.l || mxG.getLang(t); // look at this.a.l for compatibility reason
     t.innerHTML = ""; // clean t content before creating sgf viewer
   };
@@ -2907,7 +2908,7 @@ if (!mxG.G) {
     this.sgfLoadMainOnly = this.setA("sgfLoadMainOnly", 0, "bool");
     this.sgfSaveCoreOnly = this.setA("sgfSaveCoreOnly", 0, "bool");
     this.sgfSaveMainOnly = this.setA("sgfSaveMainOnly", 0, "bool");
-    this.sourceFilter = this.setA("sourceFilter", "^[^?]+\\.sgf$", "string");
+    this.sourceFilter = this.setA("sourceFilter", "[a-zA-z]+://[^s]*", "string");
     cls = "mxGlobalBoxDiv";
     cls += this.config ? " mx" + this.config + "Config" : "";
     cls += this.theme ? " mx" + this.theme + "Theme" : "";
@@ -2919,9 +2920,27 @@ if (!mxG.G) {
     if (!mxG.Z[this.lang]) mxG.Z[this.lang] = [];
     e.innerHTML = this.createBoxes(this.b);
     this.addParentClasses(e, e);
-    if (this.t == this.j)
+    if (this.t == this.j) {
+      console.log(this);
+      // console.log(this.j.parentNode.children[2].children[1]);
+      setTimeout(() => {
+        this.j.parentNode.children[2].children[1].insertBefore(e, clearid);
+      }, 400);
       // insert global box tag in DOM just after current script tag
       this.j.parentNode.insertBefore(e, this.j.nextSibling);
+
+      // setTimeout(() => {
+      //   console.log(document.getElementById("clearid"));
+
+      //   if (document.getElementById("clearid") == null) {
+      //     console.log(1);
+      //     console.log(document.getElementById("detailsid"));
+      //   } else {
+      //     console.log(2);
+      //     this.j.parentNode.insertBefore(e, this.j.nextSibling);
+      //   }
+      // }, 100);
+    }
     // insert global box tag in DOM in target element
     else this.t.appendChild(e);
     this.ig = this.getE("InnerGobanDiv"); // init this.ig as soon as possible
@@ -2941,7 +2960,9 @@ if (!mxG.G) {
   mxG.G.prototype.afterLoading = function() {
     this.appendStyle();
     this.getA();
+
     this.createAll();
+
     this.initAll();
     this.getS();
   };
@@ -3191,11 +3212,8 @@ if (!mxG.G.prototype.createGoban) {
   };
   mxG.G.prototype.getVisibleMove = function(
     x,
-    y // if(asInBookOn and numberingOn) return the visible move as in book // 		return the move which was on (x,y) when the current first numbered move was played if any
-  ) //		else return the first move played later on (x,y) if any
-  //		else return 0
-  // else return the last move played at (x,y) if any
-  {
+    y // if(asInBookOn and numberingOn) return the visible move as in book // 		return the move which was on (x,y) when the current first numbered move was played if any //		else return the first move played later on (x,y) if any //		else return 0 // else return the last move played at (x,y) if any
+  ) {
     var k, kmin, kmax;
     if (this.asInBookOn && this.numberingOn) {
       kmin = Math.min(this.gor.setup + this.numFrom, this.gor.play);

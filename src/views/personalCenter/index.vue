@@ -95,6 +95,7 @@
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
                 @mouseover="hoverIndex = index"
+                @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
               >
 
@@ -369,6 +370,10 @@ export default {
   },
   mounted() {},
   methods: {
+    setDefaultImage(e) {
+       e.target.src = require("../../assets/weiqifm.jpg");
+    },
+
     async uploadSuccessbgcFn(e) {
       console.log(e.ipfs);
       console.log(this.formLabelAlign);

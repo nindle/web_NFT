@@ -6325,6 +6325,11 @@ listr@^0.14.3:
     p-map "^2.0.0"
     rxjs "^6.3.3"
 
+load-script@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/load-script/download/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
+  integrity sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ=
+
 loader-fs-cache@^1.0.0:
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/loader-fs-cache/download/loader-fs-cache-1.0.3.tgz?cache=0&sync_timestamp=1584820647539&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Floader-fs-cache%2Fdownload%2Floader-fs-cache-1.0.3.tgz"

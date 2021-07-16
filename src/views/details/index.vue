@@ -1,7 +1,7 @@
 <template>
   <div id="detailsid" v-loading="loading" class="details">
     <!-- 商品大图zs -->
-    <!-- <img
+    <img
       id="imgShows"
       :src="
         details.prop_image.replace(
@@ -11,7 +11,8 @@
       "
       style="border-radius: 20px"
       alt=""
-    /> -->
+      @error="setDefaultImage"
+    />
     <!-- <iframe
       id="iframeShow"
       src="http://192.168.0.101:5501/src/views/details/test.html"
@@ -33,19 +34,20 @@
           {{ details.supply_sell }} of {{ details.supply }} available
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="">2212
+          <img id="examines" src="../../assets/examine.png" alt="" />2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="">
-          2122</span>
+          <img id="examine" src="../../assets/souchang.png" alt="" />
+          2122</span
+        >
       </li>
       <li class="price">
         <img
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        >
+        />
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
@@ -58,7 +60,7 @@
           {{ buyLoading ? "Buying" : "Buy Now" }}
         </el-button>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li>
         <div class="productdetails">
           <div style="width: 100%">
@@ -72,7 +74,7 @@
                   params: { id: str },
                 })
               "
-            >
+            />
           </div>
 
           <div class="clear" />
@@ -107,14 +109,15 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator }}</span>
+              >{{ creator }}</span
+            >
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
               style="cursor: pointer"
               @click="copyText(1)"
-            >
+            />
           </div>
         </div>
       </li>
@@ -131,7 +134,7 @@
                   params: { id: strs },
                 })
               "
-            >
+            />
           </div>
           <div class="clear" />
           <div
@@ -165,18 +168,19 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator_address }}</span>
+              >{{ creator_address }}</span
+            >
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
               style="cursor: pointer"
               @click="copyText(2)"
-            >
+            />
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li
         style="
           font-size: 15px;
@@ -220,6 +224,7 @@
 </template>
 
 <script>
+import loadScript from "load-script";
 import $http from "../../utils/request";
 import { ethers } from "ethers";
 import exchange from "../../wallet/exchange";
@@ -275,30 +280,53 @@ export default {
       currCont = ContractExchange();
     }
     this.getDetails();
-    setTimeout(() => {
-      this.sgf();
-    }, 600);
 
     // console.log(sgff);
+
+    // this.sgf();
+    sessionStorage.setItem(
+      "SgfUrl",
+      "https://api.lionnft.io/v1/upload/view?hash=QmVpX3naD43LDTBR5knX9eWpJQXDUzakfodpXEPw3PbfdR"
+    );
+    // this.initSgf();
+    // console.log('data', await $http.get("https://api.lionnft.io/v1/upload/view?hash=QmVpX3naD43LDTBR5knX9eWpJQXDUzakfodpXEPw3PbfdR"));
   },
   methods: {
-    sgf() {
-      const mas_symbol = document.getElementById("d1GlobalBoxDiv");
-      if (mas_symbol === null) {
-        location.reload();
-        // this.loading = true;
-        // this.reload();
+    initSgf() {
+      console.log(3);
+      loadScript(
+        "https://lionnft.io/123.js",
+        {
+          async: false,
+        },
+        function (err, script) {
+          if (err) {
+            // print useful message
+          } else {
+            console.log("fsdaf"); // Prints 'foo'.js'
+            // use script
+            // note that in IE8 and below loading error wouldn't be reported
+          }
+        }
+      );
+    },
+
+    setDefaultImage() {
+      document.getElementById("imgShows").style.display = "none";
+
+      if (this.details.prop_image == "") {
+        console.log(123);
+      } else {
+        console.log(1);
+        sessionStorage.setItem(
+          "SgfUrl",
+          this.details.prop_image.replace(
+            "ipfs://ipfs/",
+            "https://api.lionnft.io/v1/upload/view?hash="
+          )
+        );
       }
-      this.loading = false;
-      // mas_symbol.setAttribute("src", "./src/assets/weiqi/123.js");
-      // mas_symbol.setAttribute(
-      //   "data-maxigos-sgf",
-      //   "./src/assets/weiqi/blood-vomit-en.sgf"
-      // );
-      // mas_symbol.setAttribute("data-maxigos-l", "en");
-      // // debugger;
-      // console.log("heliyi");
-      // window.document.body.children[2].children[1].appendChild(mas_symbol);
+      this.initSgf();
     },
 
     copyText(id) {
@@ -323,9 +351,11 @@ export default {
         `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
       // eslint-disable-next-line no-empty
-      // if (resp.code !== 200) {
-      // } else {
-      // }
+      console.log(resp);
+      if (resp.code !== 200) {
+      } else {
+        this.loading = false;
+      }
       this.details = resp.data;
       // 设置创建者默认头像
       if (this.details.creator_cover == "") {
@@ -349,7 +379,6 @@ export default {
           "https://api.lionnft.io/v1/upload/view?hash="
         );
       }
-
       this.details.price = ethers.utils.formatUnits(this.details.price);
       this.str = this.details.creator_address;
       this.strs = this.details.own_address;
