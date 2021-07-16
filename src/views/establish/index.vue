@@ -1,31 +1,35 @@
 <template>
   <div class="cast">
     <div class="rollback" @click="$router.go(-1)">
-      <i class="el-icon-arrow-left" />Go back
+      <i class="el-icon-arrow-left" />{{ $t("establish.go") }}
     </div>
-    <div class="create">Create collectible</div>
+    <div class="create">
+      {{ $t("establish.Create") }}
+    </div>
     <div class="create_a">
-      Choose “Single” if you want your collectible to be one of a kind or
-      “Multiple” if you want to sell one collectible multiple times
+      {{ $t("establish.jieshao") }}
     </div>
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="">
-        <p>Single</p>
+        <img src="../../assets/single.png" alt="" />
+        <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="">
-        <p>Multiple</p>
+        <img src="../../assets/Multiple.png" alt="" />
+        <p>{{ $t("establish.duo") }}</p>
       </div>
     </div>
     <div class="prompt">
-      We do not own your private keys and cannot access your funds without your
-      confirmation
+      {{ $t("establish.zijin") }}
     </div>
   </div>
 </template>
 
 <script>
+import imgUrl from "../../assets/xiaohuli.png";
+import { initWallet, getBalance } from "../../wallet/wallet";
+import { userInfoApi } from "../../api/user";
+
 export default {
   data() {
     return {};
@@ -38,7 +42,9 @@ export default {
   },
   methods: {
     setTimeoutFn() {
-      if (sessionStorage.getItem("userInfo") == null) {
+      if (sessionStorage.getItem("address") == null) {
+        this.$message.error("未登录");
+      } else if (sessionStorage.getItem("userInfo") == null) {
         this.$message.error("个人信息不全");
         this.$router.push({
           name: "redactUser",

@@ -7,7 +7,7 @@
         class="header-login"
         replace
         @click="goHome"
-      >
+      />
       <div class="header-input">
         <el-input placeholder="Search by creator collectible or collection " />
         <img
@@ -20,7 +20,7 @@
             width: 27px;
             height: 27px;
           "
-        >
+        />
       </div>
 
       <div class="header-icon">
@@ -55,13 +55,13 @@
 
         <div v-if="success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px">
+            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
             <span>
               {{ $t("home.LAN") }}
             </span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
                 {{ address }}
@@ -70,11 +70,11 @@
                   style="cursor: pointer"
                   alt=""
                   @click="copyText"
-                >
+                />
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="">
+                <img src="./assets/tx1.png" alt="" />
                 <p class="popoverstyle_c_a">Balance</p>
                 <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
@@ -97,21 +97,20 @@
           </p>
         </div>
         <el-button v-else type="primary" class="userlogin" round @click="open">
-          Link wallet
+          {{ $t("home.LoginWallet") }}
         </el-button>
-        <img
-          style="margin: 0 10px; height: 26px"
-          src="./assets/language.png"
-          alt=""
-          @click="changeLanguage"
-        >
 
-        <!-- <el-dropdown trigger="click">
+        <el-dropdown trigger="click" @command="handleCommand">
+          <img
+            style="margin: 0 25px 0 20px; height: 26px"
+            src="./assets/language.png"
+            alt=""
+          />
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item> {{ $t("lang.zh") }}</el-dropdown-item>
-            <el-dropdown-item> {{ $t("lang.en") }}</el-dropdown-item>
+            <el-dropdown-item command="a">{{ $t("lang.zh") }}</el-dropdown-item>
+            <el-dropdown-item command="c">{{ $t("lang.en") }}</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown> -->
+        </el-dropdown>
       </div>
     </el-header>
 
@@ -119,7 +118,7 @@
 
     <div id="apptest" :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="">
+        <img src="./assets/login.png" alt="" />
         <p
           style="
             font-size: 24px;
@@ -151,14 +150,14 @@
           </tr>
           <tr>
             <td>{{ $t("home.bottom4") }}</td>
-            <td>COMPANY VISIONT</td>
-            <td>HOW TO BUY</td>
+            <td>{{ $t("home.bottom7") }}</td>
+            <td>{{ $t("home.bottom8") }}</td>
           </tr>
           <tr>
-            <td>CONTACT US</td>
+            <td>{{ $t("home.bottom5") }}</td>
           </tr>
           <tr>
-            <td>BUSINESS COOPERATION</td>
+            <td>{{ $t("home.bottom6") }}</td>
           </tr>
         </div>
       </div>
@@ -234,19 +233,19 @@ export default {
     }
   },
   methods: {
+    handleCommand(command) {
+      if (command == "a") {
+        this.$i18n.locale = "zh-cn";
+      } else {
+        this.$i18n.locale = "en-us";
+      }
+    },
+
     reload() {
       this.isRouterAlive = false;
       this.$nextTick(function () {
         this.isRouterAlive = true;
       });
-    },
-
-    changeLanguage() {
-      if (this.$i18n.locale == "en-us") {
-        this.$i18n.locale = "zh-cn";
-      } else {
-        this.$i18n.locale = "en-us";
-      }
     },
 
     copyText() {
@@ -521,7 +520,7 @@ export default {
 .header-input {
   display: inline-block;
   position: relative;
-  width: 680px;
+  width: 600px;
   margin-left: 210px;
 }
 

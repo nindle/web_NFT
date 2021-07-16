@@ -2729,7 +2729,7 @@ if (!mxG.G) {
         this.a[s] = b.match(/^[0-9]+$/) ? parseInt(b) : b;
       }
     }
-    console.log(sessionStorage.getItem("SgfUrl"));
+    // console.log(sessionStorage.getItem("SgfUrl"));
     // sgf and lang parameter are special
     this.sgf = sessionStorage.getItem("SgfUrl") || t.innerHTML;
     this.lang = this.a.l || mxG.getLang(t); // look at this.a.l for compatibility reason
@@ -2908,7 +2908,11 @@ if (!mxG.G) {
     this.sgfLoadMainOnly = this.setA("sgfLoadMainOnly", 0, "bool");
     this.sgfSaveCoreOnly = this.setA("sgfSaveCoreOnly", 0, "bool");
     this.sgfSaveMainOnly = this.setA("sgfSaveMainOnly", 0, "bool");
-    this.sourceFilter = this.setA("sourceFilter", "[a-zA-z]+://[^s]*", "string");
+    this.sourceFilter = this.setA(
+      "sourceFilter",
+      "[a-zA-z]+://[^s]*",
+      "string"
+    );
     cls = "mxGlobalBoxDiv";
     cls += this.config ? " mx" + this.config + "Config" : "";
     cls += this.theme ? " mx" + this.theme + "Theme" : "";
@@ -2921,10 +2925,13 @@ if (!mxG.G) {
     e.innerHTML = this.createBoxes(this.b);
     this.addParentClasses(e, e);
     if (this.t == this.j) {
+      console.log(document.getElementById("divhe"));
       console.log(this);
       // console.log(this.j.parentNode.children[2].children[1]);
       setTimeout(() => {
         this.j.parentNode.children[2].children[1].insertBefore(e, clearid);
+        document.getElementById("divhe").style.display = "none";
+        // document.getElementById("mxNavigationDiv").style.display = "none";
       }, 400);
       // insert global box tag in DOM just after current script tag
       this.j.parentNode.insertBefore(e, this.j.nextSibling);

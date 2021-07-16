@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="bazaar_headline">Browse</h2>
+    <h2 class="bazaar_headline">
+      {{ $t("bazaar.title") }}
+    </h2>
     <ul v-loading="loading" class="exhibition">
       <li
         v-for="(item, index) in showList.slice(0, a)"

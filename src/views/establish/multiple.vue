@@ -2,9 +2,9 @@
   <div class="establish">
     <div class="rollback" @click="$router.go(-1)">
       <i class="el-icon-arrow-left" />
-      Mangae collectible type
+      {{ $t("Single.fanhui") }}
     </div>
-    <el-form label-position="top" :model="formLabelAlign">
+    <el-form label-position="top" :model="formLabelAlign" :rules="rules">
       <!-- 标题 -->
       <p
         style="
@@ -14,7 +14,7 @@
           padding: 20px 0;
         "
       >
-        Create single collectible
+        {{ $t("Single.duoge") }}
       </p>
       <!-- 小标题 -->
       <div>
@@ -26,7 +26,7 @@
             float: left;
           "
         >
-          Upload file
+          {{ $t("Single.shangchuan") }}
         </p>
         <p
           style="
@@ -36,7 +36,7 @@
             text-align: center;
           "
         >
-          Preview
+          {{ $t("Single.yulan") }}
         </p>
       </div>
 
@@ -51,18 +51,18 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>Choose file</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
 
       <!-- 文件预览区 -->
       <div class="establish-img">
-        <p class="establish-img-p">Upload file to preview your brand new NFT</p>
+        <p class="establish-img-p">{{ $t("Single.yulan1") }}</p>
       </div>
 
       <div style="position: relative; margin-bottom: 10px">
         <span style="font-size: 20px; font-weight: bold; color: #333333">
-          Put on marketplace
+          {{ $t("Single.toufang") }}
         </span>
         <el-switch v-model="value" />
         <p
@@ -73,14 +73,14 @@
             margin-top: 5px;
           "
         >
-          Enter price to allow users instantly purchase your NFT
+          {{ $t("Single.shurujiage") }}
         </p>
       </div>
 
-      <el-form-item v-show="value" label="Price">
+      <el-form-item v-show="value" label="Price" prop="price">
         <el-input
           v-model="formLabelAlign.price"
-          placeholder="e.g.Redeemable T-Shirt with logo"
+          placeholder="Please enter the price"
         >
           <template slot="append">BNB</template>
         </el-input>
@@ -88,22 +88,22 @@
 
       <div style="position: relative; margin-bottom: 10px">
         <span style="font-size: 20px; font-weight: bold; color: #333333">
-          Unlock once purchased
+          {{ $t("Single.jiesuo") }}
         </span>
         <el-switch v-model="values" />
       </div>
 
-      <el-form-item label="Title">
+      <el-form-item label="Title" prop="title">
         <el-input
           v-model="formLabelAlign.title"
-          placeholder="e.g. “Redeemable T-Shirt with logo”"
+          placeholder="Please enter a name"
         />
       </el-form-item>
 
-      <el-form-item label="Description(Optional)">
+      <el-form-item label="Description" prop="description">
         <el-input
           v-model="formLabelAlign.description"
-          placeholder="e.g.”After purchasing you”ll be able to get the real T-Shirt”"
+          placeholder="Please enter a description"
         />
       </el-form-item>
 
@@ -160,7 +160,7 @@
         type="primary"
         @click="postFrom"
       >
-        Create item
+        {{ $t("Single.tijiao") }}
       </el-button>
     </el-form>
     <el-dialog title="Create NFT steps" :visible.sync="dialogVisible" center>
@@ -222,6 +222,25 @@ export default {
   props: {},
   data() {
     return {
+      rules: {
+        title: [
+          { required: true, message: "请输入商品名称", trigger: "blur" },
+          { min: 3, max: 8, message: "长度在 3 到 8 个字符", trigger: "blur" },
+        ],
+        price: [
+          { required: true, message: "价格不能为空" },
+          { type: "number", message: "价格必须为数字值" },
+        ],
+        description: [
+          { required: true, message: "请输入商品介绍", trigger: "blur" },
+          {
+            min: 3,
+            max: 15,
+            message: "长度在 3 到 15 个字符",
+            trigger: "blur",
+          },
+        ],
+      },
       user_id: "",
       changes: "",
       // dialogVisible: true,

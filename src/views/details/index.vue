@@ -13,11 +13,6 @@
       alt=""
       @error="setDefaultImage"
     />
-    <!-- <iframe
-      id="iframeShow"
-      src="http://192.168.0.101:5501/src/views/details/test.html"
-      style="width: 612px; height: 782px; border: 0"
-    /> -->
     <div id="clearid" class="clear" />
     <!-- 产品详情 -->
     <ul class="details-a">
@@ -230,8 +225,6 @@ import { ethers } from "ethers";
 import exchange from "../../wallet/exchange";
 import { initWallet, ContractExchange } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
-// import Sgf from "./maxigos-classic-basic";
-// import sss from "./sgf.vue";
 let currCont = null;
 let addr = "";
 export default {
@@ -270,30 +263,12 @@ export default {
       buyErr: false,
     };
   },
-  created() {
-    // location.reload();
-  },
+  created() {},
   async mounted() {
-    const address = await initWallet();
-    if (address != "") {
-      addr = address;
-      currCont = ContractExchange();
-    }
     this.getDetails();
-
-    // console.log(sgff);
-
-    // this.sgf();
-    sessionStorage.setItem(
-      "SgfUrl",
-      "https://api.lionnft.io/v1/upload/view?hash=QmVpX3naD43LDTBR5knX9eWpJQXDUzakfodpXEPw3PbfdR"
-    );
-    // this.initSgf();
-    // console.log('data', await $http.get("https://api.lionnft.io/v1/upload/view?hash=QmVpX3naD43LDTBR5knX9eWpJQXDUzakfodpXEPw3PbfdR"));
   },
   methods: {
     initSgf() {
-      console.log(3);
       loadScript(
         "https://lionnft.io/123.js",
         {
@@ -301,11 +276,10 @@ export default {
         },
         function (err, script) {
           if (err) {
-            // print useful message
           } else {
-            console.log("fsdaf"); // Prints 'foo'.js'
-            // use script
-            // note that in IE8 and below loading error wouldn't be reported
+            console.log(123);
+            // document.getElementById("d1NavigationDiv").style.display = "none";
+            document.getElementById("d1VersionDiv").style.display = "none";
           }
         }
       );
@@ -313,11 +287,14 @@ export default {
 
     setDefaultImage() {
       document.getElementById("imgShows").style.display = "none";
+      const divhe = document.createElement("div");
+      divhe.id = "divhe";
+      divhe.style = " width: 612px;height: 782px;";
 
+      window.document.body.children[2].children[1].insertBefore(divhe, clearid);
       if (this.details.prop_image == "") {
         console.log(123);
       } else {
-        console.log(1);
         sessionStorage.setItem(
           "SgfUrl",
           this.details.prop_image.replace(
@@ -422,6 +399,11 @@ export default {
     },
     // 购买
     async onBuy() {
+      const address = await initWallet();
+      if (address != "") {
+        addr = address;
+        currCont = ContractExchange();
+      }
       this.loading = true;
 
       this.buyLoading = true;
@@ -611,6 +593,7 @@ export default {
   // box-shadow: 0px 0px 8px 1px rgba(140, 140, 140, 0.26);
   border-radius: 36px;
 }
+
 .clear {
   clear: both;
 }
