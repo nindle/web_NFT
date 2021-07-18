@@ -656,6 +656,10 @@ export default {
         alert('请填写正确的竞拍价格');
         return;
       }
+      if (parseFloat(this.bid_price) > parseFloat(this.wbnb_balance)) {
+        alert('账号WBNB余额不足');
+        return;
+      }
 
       console.log(this.order.order);
       let _order = JSON.parse(JSON.stringify(this.order.order));
@@ -697,6 +701,9 @@ export default {
           message: '参加竞拍成功',
           type: 'success',
         });
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
       }
     },
 
@@ -704,6 +711,9 @@ export default {
     async bidApprove() {
       const resp = await Erc20Approve('0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F');
       console.log('Erc20Approve', resp);
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
     },
 
     // 竞拍交易
@@ -815,6 +825,9 @@ export default {
         type: 'success',
       });
       this.loading = false;
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
     },
   },
 };
