@@ -124,7 +124,7 @@
             >
               {{ v.bid_user_address | faddr }}
             </span>
-            <span style="margin: 0 10px;">{{ v.bid_price | feth }} BNB</span>
+            <span style="margin: 0 10px;">{{ v.bid_price | feth }} WBNB</span>
             <span style="margin: 0 10px;">
               {{
                 v.bid_result == 0
