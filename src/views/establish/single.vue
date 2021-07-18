@@ -425,7 +425,7 @@ export default {
           },
         },
         selling: BigNumber.from("1"),
-        buying: this.$parseEther(this.formLabelAlign.price || "0.1"),
+        buying: this.$parseEther(this.formLabelAlign.price || "0"),
         sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
       };
       console.log(order);

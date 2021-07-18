@@ -28,6 +28,15 @@ Vue.filter("faddr", function(val) {
   return val.substr(0, 12) + "..." + val.substr(30, 12);
 });
 
+Vue.filter("fwei", function(res) {
+  return ethers.utils.parseEther(res).toString();
+});
+
+Vue.filter("feth", function(res) {
+  let amount = ethers.utils.formatEther(res);
+  return Math.round(amount * 1e4) / 1e4;
+});
+
 Vue.prototype.$formatEther = function(res) {
   let amount = ethers.utils.formatEther(res);
   return Math.round(amount * 1e4) / 1e4;

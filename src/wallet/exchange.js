@@ -24,6 +24,33 @@ async function getBuyerFeeApi(token_id, token) {
   return resp;
 }
 
+// bid create
+async function bidCreateApi(order) {
+  const resp = await $http.post("https://api.lionnft.io/v1/item/bids/create", order);
+  return resp;
+}
+
+// bid list
+async function bidListApi(token, token_id, page) {
+  const url = `https://api.lionnft.io/v1/item/bids/list?token=${token}&token_id=${token_id}&page=${page}`;
+  const resp = await $http.get(url);
+  return resp;
+}
+
+// bid order fee sign
+async function bidOrderFeeApi(order) {
+  const resp = await $http.post("https://api.lionnft.io/v1/chain/prepare/ordermessage", order);
+  return resp;
+}
+
+// bid txid
+async function bidTxidApi(tx_id) {
+  const formData = new FormData();
+  formData.append('tx_id', tx_id);
+  const resp = await $http.post("https://api.lionnft.io/v1/bids/tx_id", formData);
+  return resp;
+}
+
 export default {
   // order
   orderInfoApi,
@@ -31,4 +58,13 @@ export default {
   buyApi,
   // buyer fee
   getBuyerFeeApi,
+
+  // bid create
+  bidCreateApi,
+  // bid list
+  bidListApi,
+  // bid order fee sign
+  bidOrderFeeApi,
+  // bid txid
+  bidTxidApi,
 };

@@ -6,10 +6,10 @@
       :src="
         details.prop_image.replace(
           'ipfs://ipfs/',
-          'https://api.lionnft.io/v1/upload/view?hash='
+          'https://api.lionnft.io/v1/upload/view?hash=',
         )
       "
-      style="border-radius: 20px"
+      style="border-radius: 20px;"
       alt=""
       @error="setDefaultImage"
     >
@@ -22,45 +22,73 @@
       <li class="attestation">Meta World Certification</li>
       <li>
         <span class="browse">Owned by</span>
-        <span style="color: #0066ed; margin: 0 13px 0 -12px">
+        <span style="color: #0066ed; margin: 0 13px 0 -12px;">
           {{ details.creator_user_name }}
         </span>
         <span class="browse">
           {{ details.supply_sell }} of {{ details.supply }} available
         </span>
-        <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="">2212
+        <span class="browse" style="position: relative; margin-left: 20px;">
+          <img id="examines" src="../../assets/examine.png" alt="">
+          2212
           <!-- <div class="clear"></div> -->
         </span>
-        <span class="browse" style="position: relative; margin-left: 20px">
+        <span class="browse" style="position: relative; margin-left: 20px;">
           <img id="examine" src="../../assets/souchang.png" alt="">
-          2122</span>
+          2122
+        </span>
       </li>
       <li class="price">
         <img
           src="../../assets/price.png"
-          style="width: 47px; height: 47px; margin: 5px 15px 0 0"
+          style="width: 47px; height: 47px; margin: 5px 15px 0 0;"
           alt=""
         >
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
         <el-button
+          v-if="details.price && details.price > 0"
           class="details-button"
           type="primary"
           :disabled="buyLoading == true"
           @click="onBuy"
         >
-          {{ buyLoading ? "Buying" : "Buy Now" }}
+          {{ buyLoading ? 'Buying' : 'Buy Now' }}
         </el-button>
+        <template v-else>
+          <div>
+            <el-input v-model="bid_price" type="text" placeholder="竞拍价格(WBNB)" />
+            WBNB
+          </div>
+          <div>余额 {{ wbnb_balance }} WBNB</div>
+          <div>
+            <el-button
+              class="danger-button"
+              type="danger"
+              :disabled="isApproved == true"
+              @click="bidApprove"
+            >
+              {{ isApproved == true ? 'Approved' : 'Approve Now' }}
+            </el-button>
+          </div>
+          <el-button
+            class="danger-button"
+            type="danger"
+            :disabled="bidLoading == true"
+            @click="onBid"
+          >
+            {{ bidLoading ? 'Biding' : 'Bid Now' }}
+          </el-button>
+        </template>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
-      <li>
+
+      <li v-for="(v, k) in bid_list" :key="k">
         <div class="productdetails">
-          <div style="width: 100%">
+          <div style="width: 100%;">
             <img
-              :src="creator_cover"
-              style="margin: 10px 15px 0 0; cursor: pointer"
+              :src="v.bid_user_cover"
+              style="margin: 10px 15px 0 0; cursor: pointer;"
               alt=""
               @click="
                 $router.push({
@@ -74,7 +102,72 @@
           <div class="clear" />
           <div
             class="productdetails-a"
-            style="position: absolute; left: 65px; top: 0px"
+            style="position: absolute; left: 65px; top: 0px;"
+          >
+            <p
+              style="
+                font-size: 12px;
+                font-family: Source Han Sans CN;
+                font-weight: 400;
+                color: #aaaaaa;
+              "
+            >
+              bider
+            </p>
+            <span
+              style="
+                color: #0066ed;
+                font-size: 14px;
+                font-family: Source Han Sans CN;
+                font-weight: 400;
+              "
+            >
+              {{ v.bid_user_address | faddr }}
+            </span>
+            <span style="margin: 0 10px;">{{ v.bid_price | feth }} BNB</span>
+            <span style="margin: 0 10px;">
+              {{
+                v.bid_result == 0
+                  ? '竞拍中'
+                  : v.bid_result == 1
+                    ? '竞拍成功'
+                    : '竞拍失败'
+              }}
+            </span>
+            <el-button
+              v-if="v.bid_result == 0"
+              type="danger"
+              size="small"
+              :disabled="bidLoading == true"
+              @click="bidAccept(v.bid_id)"
+            >
+              Accept
+            </el-button>
+          </div>
+        </div>
+      </li>
+
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0;">
+      <li>
+        <div class="productdetails">
+          <div style="width: 100%;">
+            <img
+              :src="creator_cover"
+              style="margin: 10px 15px 0 0; cursor: pointer;"
+              alt=""
+              @click="
+                $router.push({
+                  name: 'personalCenter',
+                  params: { id: str },
+                })
+              "
+            >
+          </div>
+
+          <div class="clear" />
+          <div
+            class="productdetails-a"
+            style="position: absolute; left: 65px; top: 0px;"
           >
             <p
               style="
@@ -103,12 +196,14 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator }}</span>
+            >
+              {{ creator }}
+            </span>
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
-              style="cursor: pointer"
+              style="cursor: pointer;"
               @click="copyText(1)"
             >
           </div>
@@ -116,10 +211,10 @@
       </li>
       <li>
         <div class="productdetails">
-          <div style="width: 100%">
+          <div style="width: 100%;">
             <img
               :src="own_user_cover"
-              style="margin: 10px 15px 0 0; cursor: pointer"
+              style="margin: 10px 15px 0 0; cursor: pointer;"
               alt=""
               @click="
                 $router.push({
@@ -132,7 +227,7 @@
           <div class="clear" />
           <div
             class="productdetails-a"
-            style="position: absolute; left: 65px; top: 0px"
+            style="position: absolute; left: 65px; top: 0px;"
           >
             <p
               style="
@@ -161,18 +256,20 @@
                 font-family: Source Han Sans CN;
                 font-weight: 400;
               "
-            >{{ creator_address }}</span>
+            >
+              {{ creator_address }}
+            </span>
             <img
               id="replicator"
               src="../../assets/replicator.png"
               alt=""
-              style="cursor: pointer"
+              style="cursor: pointer;"
               @click="copyText(2)"
             >
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0;">
       <li
         style="
           font-size: 15px;
@@ -184,7 +281,7 @@
         Transaction Record
       </li>
       <li>
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" style="width: 100%;">
           <el-table-column prop="name" label="user" />
           <el-table-column prop="perating" label="perating" />
           <el-table-column prop="time" label="time" />
@@ -216,58 +313,108 @@
 </template>
 
 <script>
-import loadScript from "load-script";
-import $http from "../../utils/request";
-import { ethers } from "ethers";
-import exchange from "../../wallet/exchange";
-import { initWallet, ContractExchange } from "../../wallet/wallet";
-import { BigNumber } from "@ethersproject/bignumber";
+import loadScript from 'load-script';
+import $http from '../../utils/request';
+import { ethers } from 'ethers';
+import exchange from '../../wallet/exchange';
+import {
+  initWallet,
+  ContractExchange,
+  randomHex,
+  getBalance,
+  getProvider,
+  ContractsErc20,
+  Erc20Balance,
+  Erc20Allowance,
+  Erc20IsApproved,
+  Erc20Approve,
+} from '../../wallet/wallet';
+import { BigNumber } from '@ethersproject/bignumber';
+import contracts from '../../wallet/contracts';
+
 let currCont = null;
-let addr = "";
+let addr = '';
+
 export default {
-  name: "Details",
+  name: 'Details',
   props: {},
   data() {
     return {
-      creator_cover: "",
-      own_user_cover: "",
+      creator_cover: '',
+      own_user_cover: '',
       loading: true,
       details: {},
-      activeName: "first",
+      activeName: 'first',
       tableData: [
         {
-          time: "",
-          name: "",
-          perating: "",
+          time: '',
+          name: '',
+          perating: '',
         },
         {
-          time: "",
-          name: "",
-          perating: "",
+          time: '',
+          name: '',
+          perating: '',
         },
       ],
       token_id: this.$route.params.id,
       token: this.$route.params.token,
-      str: "",
-      strs: "",
-      creator: "",
-      creator_address: "",
-      creator_addr: "",
-      owner_addr: "",
+      str: '',
+      strs: '',
+      creator: '',
+      creator_address: '',
+      creator_addr: '',
+      owner_addr: '',
       order: {},
       fee: {},
       buyLoading: false,
       buyErr: false,
+      bid_price: '',
+      bid_list: [],
+      bidLoading: false,
+      bidErr: false,
+      wbnb_balance: 0,
+      isApproved: false,
     };
   },
   created() {},
   async mounted() {
     this.getDetails();
+
+    // 竞拍列表
+    const bid_resp = await exchange.bidListApi(this.token, this.token_id, 1);
+    if (bid_resp.code == 200) {
+      let _bid_list = bid_resp.list;
+      for (let k in _bid_list) {
+        console.log(_bid_list[k]);
+        if (!_bid_list[k].bid_user_cover || _bid_list[k].bid_user_cover == '') {
+          _bid_list[k].bid_user_cover = require('../../assets/touxiang.png');
+        } else {
+          _bid_list[k].bid_user_cover = _bid_list[k].bid_user_cover.replace(
+            'ipfs://ipfs/',
+            'https://api.lionnft.io/v1/upload/view?hash=',
+          );
+        }
+      }
+      this.bid_list = _bid_list;
+    }
+
+    // wbnb余额
+    const account = await initWallet();
+    const erc20_balance = await Erc20Balance(account);
+    console.log('wbnb_balance', this.$formatEther(erc20_balance.toString()));
+    this.wbnb_balance = this.$formatEther(erc20_balance.toString());
+
+    // approve
+    const isApproved = await Erc20IsApproved(account, '0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F');
+    console.log('isApproved', isApproved);
+    this.isApproved = isApproved;
+
   },
   methods: {
     initSgf() {
       loadScript(
-        "https://lionnft.io/123.js",
+        'https://lionnft.io/123.js',
         {
           async: false,
         },
@@ -276,35 +423,35 @@ export default {
           } else {
             console.log(123);
             // document.getElementById("d1NavigationDiv").style.display = "none";
-            document.getElementById("d1VersionDiv").style.display = "none";
+            document.getElementById('d1VersionDiv').style.display = 'none';
           }
-        }
+        },
       );
     },
 
     setDefaultImage() {
-      document.getElementById("imgShows").style.display = "none";
-      const divhe = document.createElement("div");
-      divhe.id = "divhe";
-      divhe.style = " width: 612px;height: 782px;";
+      document.getElementById('imgShows').style.display = 'none';
+      const divhe = document.createElement('div');
+      divhe.id = 'divhe';
+      divhe.style = ' width: 612px;height: 782px;';
 
       window.document.body.children[2].children[1].insertBefore(divhe, clearid);
-      if (this.details.prop_image == "") {
+      if (this.details.prop_image == '') {
         console.log(123);
       } else {
         sessionStorage.setItem(
-          "SgfUrl",
+          'SgfUrl',
           this.details.prop_image.replace(
-            "ipfs://ipfs/",
-            "https://api.lionnft.io/v1/upload/view?hash="
-          )
+            'ipfs://ipfs/',
+            'https://api.lionnft.io/v1/upload/view?hash=',
+          ),
         );
       }
       this.initSgf();
     },
 
     copyText(id) {
-      var input = document.createElement("input"); // js创建一个input输入框
+      var input = document.createElement('input'); // js创建一个input输入框
       if (id == 1) {
         input.value = this.str;
       } else {
@@ -313,16 +460,16 @@ export default {
       // 将需要复制的文本赋值到创建的input输入框中
       document.body.appendChild(input); // 将输入框暂时创建到实例里面
       input.select(); // 选中输入框中的内容
-      document.execCommand("Copy"); // 执行复制操作
+      document.execCommand('Copy'); // 执行复制操作
       document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
       this.$message({
-        message: "复制成功",
-        type: "success",
+        message: '复制成功',
+        type: 'success',
       });
     },
     async getDetails() {
       const resp = await $http.get(
-        `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
+        `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`,
       );
       // eslint-disable-next-line no-empty
       console.log(resp);
@@ -332,25 +479,25 @@ export default {
       }
       this.details = resp.data;
       // 设置创建者默认头像
-      if (this.details.creator_cover == "") {
-        this.creator_cover = require("../../assets/touxiang.png");
+      if (this.details.creator_cover == '') {
+        this.creator_cover = require('../../assets/touxiang.png');
       } else if (this.details.creator_cover == null) {
-        this.creator_cover = require("../../assets/touxiang.png");
+        this.creator_cover = require('../../assets/touxiang.png');
       } else {
         this.creator_cover = this.details.creator_cover.replace(
-          "ipfs://ipfs/",
-          "https://api.lionnft.io/v1/upload/view?hash="
+          'ipfs://ipfs/',
+          'https://api.lionnft.io/v1/upload/view?hash=',
         );
       }
       // 设置所有者默认头像
-      if (this.details.own_user_cover == "") {
-        this.own_user_cover = require("../../assets/touxiang.png");
+      if (this.details.own_user_cover == '') {
+        this.own_user_cover = require('../../assets/touxiang.png');
       } else if (this.details.own_user_cover == null) {
-        this.own_user_cover = require("../../assets/touxiang.png");
+        this.own_user_cover = require('../../assets/touxiang.png');
       } else {
         this.own_user_cover = this.details.own_user_cover.replace(
-          "ipfs://ipfs/",
-          "https://api.lionnft.io/v1/upload/view?hash="
+          'ipfs://ipfs/',
+          'https://api.lionnft.io/v1/upload/view?hash=',
         );
       }
       this.details.price = ethers.utils.formatUnits(this.details.price);
@@ -363,10 +510,10 @@ export default {
       this.tableData[0].name = this.details.creator_user_name;
       this.tableData[1].name = this.details.own_user_name;
       this.tableData[0].time = this.$dayjs(this.details.create_time).format(
-        "YYYY-MM-DD"
+        'YYYY-MM-DD',
       );
       this.tableData[1].time = this.$dayjs(this.details.create_time).format(
-        "YYYY-MM-DD"
+        'YYYY-MM-DD',
       );
 
       this.orderInfo();
@@ -375,7 +522,7 @@ export default {
     SubStr(str) {
       var subStr1 = str.slice(0, 6);
       var subStr2 = str.slice(str.length - 5, 42);
-      var subStr = subStr1 + "..." + subStr2;
+      var subStr = subStr1 + '...' + subStr2;
       return subStr;
     },
     // 订单信息
@@ -383,7 +530,7 @@ export default {
       const resp = await exchange.orderInfoApi(
         this.token_id,
         this.token,
-        this.creator_addr
+        this.creator_addr,
       );
 
       this.order = resp.data.ord_data;
@@ -391,13 +538,12 @@ export default {
     // 交易手续费
     async buyFee() {
       const resp = await exchange.getBuyerFeeApi(this.token_id, this.token);
-
       this.fee = resp;
     },
     // 购买
     async onBuy() {
       const address = await initWallet();
-      if (address != "") {
+      if (address != '') {
         addr = address;
         currCont = ContractExchange();
       }
@@ -451,7 +597,7 @@ export default {
           { v: feeSign.v, r: feeSign.r, s: feeSign.s },
           amount,
           addr,
-          { value: paying }
+          { value: paying },
         );
         // console.log(tx);
       } catch (err) {
@@ -459,14 +605,14 @@ export default {
         // console.log("exchange.err=>", err);
         if (err.data.code !== 3) {
           this.$message({
-            message: "余额不足",
-            type: "warning",
+            message: '余额不足',
+            type: 'warning',
           });
           this.loading = false;
         } else {
           this.$message({
-            message: "库存不足",
-            type: "warning",
+            message: '库存不足',
+            type: 'warning',
           });
           this.loading = false;
         }
@@ -475,7 +621,7 @@ export default {
 
       try {
         const buyResp = await exchange.buyApi(tx.hash);
-        console.log("buyResp=>", buyResp);
+        console.log('buyResp=>', buyResp);
       } catch (err) {
         this.buyLoading = false;
         // console.log("buyApi.err=>", err);
@@ -484,11 +630,189 @@ export default {
       }
 
       const receipt = await tx.wait();
-      console.log("receipt=>", receipt);
+      console.log('receipt=>', receipt);
       this.buyLoading = false;
       this.$message({
-        message: "购买成功",
-        type: "success",
+        message: '购买成功',
+        type: 'success',
+      });
+      this.loading = false;
+    },
+
+    // 竞拍
+    async onBid() {
+      const address = await initWallet();
+      if (address != '') {
+        addr = address;
+        currCont = ContractExchange();
+      }
+
+      console.log(parseFloat(this.bid_price));
+      if (
+        this.bid_price == '' ||
+        isNaN(this.bid_price) ||
+        parseFloat(this.bid_price) <= 0
+      ) {
+        alert('请填写正确的竞拍价格');
+        return;
+      }
+
+      console.log(this.order.order);
+      let _order = JSON.parse(JSON.stringify(this.order.order));
+      const order2 = {
+        key: {
+          salt: BigNumber.from(randomHex(32)),
+          owner: addr,
+          sellAsset: {
+            token: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+            tokenId: BigNumber.from('0'),
+            assetType: 2,
+          },
+          buyAsset: {
+            token: _order.key.sellAsset.token,
+            tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
+            assetType: _order.key.sellAsset.assetType,
+          },
+        },
+        selling: this.$parseEther(this.bid_price),
+        buying: BigNumber.from(_order.selling),
+        sellerFee: BigNumber.from(_order.sellerFee),
+      };
+
+      console.log(order2);
+
+      const provider = getProvider();
+      const signResp = await contracts.orderSigner(provider.getSigner(), order2);
+      console.log('signResp=>', signResp);
+
+      const bidOrder = contracts.sequence(order2);
+
+      const resp = await exchange.bidCreateApi({
+        order: bidOrder,
+        signature: signResp,
+      });
+      console.log(resp);
+      if (resp.code == 200) {
+        this.$message({
+          message: '参加竞拍成功',
+          type: 'success',
+        });
+      }
+    },
+
+    // Approve
+    async bidApprove() {
+      const resp = await Erc20Approve('0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F');
+      console.log('Erc20Approve', resp);
+    },
+
+    // 竞拍交易
+    async bidAccept(bid_id) {
+      const address = await initWallet();
+      if (address != '') {
+        addr = address;
+        currCont = ContractExchange();
+      }
+
+      let _order = null;
+      let _signature = null;
+      for (let k in this.bid_list) {
+        if (this.bid_list[k]['bid_id'] == bid_id) {
+          const bid_data = JSON.parse(this.bid_list[k]['bid_data']);
+          _order = bid_data['order'];
+          _signature = bid_data['signature'];
+          break;
+        }
+      }
+
+      console.log('_order', _order);
+      if (!_order) {
+        alert('订单不正确');
+        return;
+      }
+
+      const order2 = {
+        key: {
+          salt: BigNumber.from(_order.key.salt),
+          owner: _order.key.owner,
+          sellAsset: {
+            token: _order.key.sellAsset.token,
+            tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
+            assetType: _order.key.sellAsset.assetType,
+          },
+          buyAsset: {
+            token: _order.key.buyAsset.token,
+            tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
+            assetType: _order.key.buyAsset.assetType,
+          },
+        },
+        selling: BigNumber.from(_order.selling),
+        buying: BigNumber.from(_order.buying),
+        sellerFee: BigNumber.from(_order.sellerFee),
+      };
+      console.log('order2', order2);
+
+      this.bidLoading = true;
+      const fee_resp = await exchange.bidOrderFeeApi({ order: _order });
+      console.log('fee_resp', fee_resp);
+
+      const sign = ethers.utils.splitSignature(_signature);
+      console.log('sign', sign);
+      const feeSign = ethers.utils.splitSignature(fee_resp.signature);
+      console.log('feeSign', feeSign);
+
+      // todo
+      console.log('order2.buying', order2.buying);
+      console.log('order2.selling', order2.selling);
+      console.log('fee.buyFee', this.fee.buyFee);
+      const amount = order2.selling;
+
+      let tx = null;
+      try {
+        tx = await currCont.exchange(
+          order2,
+          { v: sign.v, r: sign.r, s: sign.s },
+          BigNumber.from(this.fee.buyFee),
+          { v: feeSign.v, r: feeSign.r, s: feeSign.s },
+          amount,
+          addr,
+        );
+        console.log(tx);
+      } catch (err) {
+        this.bidLoading = false;
+        console.log('exchange.err=>', err);
+        if (err.data.code !== 3) {
+          this.$message({
+            message: '余额不足',
+            type: 'warning',
+          });
+          this.loading = false;
+        } else {
+          this.$message({
+            message: '库存不足',
+            type: 'warning',
+          });
+          this.loading = false;
+        }
+        return;
+      }
+
+      try {
+        const bidResp = await exchange.bidTxidApi(tx.hash);
+        console.log('bidResp=>', bidResp);
+      } catch (err) {
+        this.bidLoading = false;
+        console.log('bidTxidApi.err=>', err);
+        alert(err);
+        return;
+      }
+
+      const receipt = await tx.wait();
+      console.log('receipt=>', receipt);
+      this.bidLoading = false;
+      this.$message({
+        message: '竞拍成功',
+        type: 'success',
       });
       this.loading = false;
     },
@@ -605,6 +929,13 @@ export default {
   width: 504px;
   height: 61px;
   background: #0066ed;
+  box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
+  border-radius: 10px;
+}
+.danger-button {
+  margin-top: 30px;
+  width: 504px;
+  height: 61px;
   box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
   border-radius: 10px;
 }
