@@ -10,6 +10,7 @@ export default {
   },
   home: {
     home: "Home",
+    search: "Search by creator collectible or collection",
     Browse: "Browse",
     Account: "Account",
     Create: "Create",
@@ -48,11 +49,16 @@ export default {
     bottom8: "Site navigation"
   },
   bazaar: {
-    title: "Browse"
+    title: "Browse",
+    jiazai: "Load More",
+    meiyou: "No More"
   },
   personalCenter: {
-    edit: "Edit information",
-    creaTed: "CREATED"
+    edit: "Edit",
+    creaTed: "CREATED",
+    sold: "SOLD",
+    bought: "BOUGHT",
+    collection: "COLLECTION"
   },
   establish: {
     go: "Go back",
@@ -75,6 +81,59 @@ export default {
     yulan1: "Upload file to preview your brand new NFT",
     shurujiage: "Enter price to allow users instantly purchase your NFT",
     jiesuo: "Unlock once purchased",
-    tijiao: "Create item"
+    tijiao: "Create item",
+    price: "price",
+    PleasePrice: "Please enter the price",
+    Title: "Title",
+    PleaseTitle: "Please enter a name",
+    Description: "Description",
+    PleaseDescription: "Please enter a description",
+    Royalties: "Royalties",
+    Properties: "Properties (Optional)",
+    Supply: "Supply",
+    Approve: "Approve",
+    Create: "Create NFT steps",
+    Checking: "Checking balance and approving",
+    Done: "Done",
+    Progress: "In Progress...",
+    Start: "Start",
+    toKen: "Upload files & Mint token",
+    method: "Call contract method",
+    order: "Sign sell order",
+    orderusing: "sign sell order using your wallet"
+  },
+  redactUser: {
+    fanhui: "Go back",
+    xuanze: "Choose file",
+    recommend: "We recommend an image of at least 400x400. Gifs work too.",
+    Edit: "Edit profile",
+    EditDescription:
+      "You can set preferred display name, create your branded profile URL and manage other personal settings",
+    name: "Display name",
+    PleaseName: "Enter yuor display name",
+    URL: "Custom URL",
+    PleaseURL: "Enter your custom URL",
+    Bio: "self introduction",
+    PleaseBio: "Tell about yourself in a few words",
+    Update: "Update profile"
+  },
+  details: {
+    approve: "Meta World Certification",
+    Owned: "Owned by",
+    available: "available",
+    creator: "creator",
+    own: "own",
+    Transaction: "Transaction Record",
+    user: "user",
+    time: "time",
+    perating: "perating",
+    product: "product description",
+    About: "About NFT",
+    Approved: "Approved",
+    approvedNoW: "Approve Now",
+    Biding: "Biding",
+    BidNow: "Bid Now",
+    Buying: "Buying",
+    BuyNow: "Buy Now"
   }
 };

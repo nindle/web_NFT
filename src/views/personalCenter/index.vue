@@ -2,7 +2,7 @@
   <div>
     <!-- 个人中心背景图 -->
     <div class="personalCenter-bgc">
-      <img :src="userBgc" alt="">
+      <img :src="userBgc" class="personalCenter-img" alt="" />
       <el-upload
         action="https://api.lionnft.io/v1/upload/file"
         :auto-upload="true"
@@ -19,7 +19,7 @@
 
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img :src="userpic" alt="">
+      <img :src="userpic" alt="" />
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
@@ -33,7 +33,7 @@
           style="cursor: pointer"
           alt=""
           @click="copyText"
-        >
+        />
       </p>
 
       <el-button
@@ -66,13 +66,13 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        >
+        />
       </div>
     </div>
     <!-- 产品系列 -->
     <div class="personalCenter-Tabs">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="CREATED" name="first">
+        <el-tab-pane :label="$t('personalCenter.creaTed')" name="first">
           <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
@@ -99,7 +99,7 @@
                 @mouseover="hoverIndex = index"
                 @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
-              >
+              />
 
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
@@ -112,7 +112,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -128,14 +128,14 @@
               class="loadMore"
               @click="loadMore"
             >
-              Load More
+              {{ $t("bazaar.jiazai") }}
             </div>
 
-            <div v-else class="loadMore">没有更多了</div>
+            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
-        <el-tab-pane label="SOLD" name="second">
+        <el-tab-pane :label="$t('personalCenter.sold')" name="second">
           <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
@@ -162,7 +162,7 @@
                 @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -174,7 +174,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -190,14 +190,14 @@
               class="loadMore"
               @click="loadMore"
             >
-              Load More
+              {{ $t("bazaar.jiazai") }}
             </div>
 
-            <div v-else class="loadMore">没有更多了</div>
+            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
-        <el-tab-pane label="BOUGHT" name="third">
+        <el-tab-pane :label="$t('personalCenter.bought')" name="third">
           <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
@@ -224,7 +224,7 @@
                 @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -236,7 +236,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -252,14 +252,14 @@
               class="loadMore"
               @click="loadMore"
             >
-              Load More
+              {{ $t("bazaar.jiazai") }}
             </div>
 
-            <div v-else class="loadMore">没有更多了</div>
+            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
-        <el-tab-pane label="COLLECTION" name="fourth">
+        <el-tab-pane :label="$t('personalCenter.collection')" name="fourth">
           <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
@@ -286,7 +286,7 @@
                 @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -298,7 +298,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -314,10 +314,10 @@
               class="loadMore"
               @click="loadMore"
             >
-              Load More
+              {{ $t("bazaar.jiazai") }}
             </div>
 
-            <div v-else class="loadMore">没有更多了</div>
+            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
@@ -381,13 +381,20 @@ export default {
 
     async uploadSuccessbgcFn(e) {
       console.log(e.ipfs);
-      console.log(this.formLabelAlign);
-      this.formLabelAlign.cover = e.ipfs;
-      const edit = this.formLabelAlign;
+      const edit = {
+        username: sessionStorage.getItem("userInfo"),
+        address: sessionStorage.getItem("address"),
+        desc: this.userinfo.user_desc,
+        cover: e.ipfs,
+        short_url: this.userinfo.user_short_url,
+        website: this.userinfo.user_website,
+        twitter: this.userinfo.user_twitter,
+        pic: this.userinfo.user_pic,
+      };
       const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
         ...edit,
       });
-      console.log(resp);
+      this.getUserInfo();
     },
 
     open() {
@@ -436,13 +443,13 @@ export default {
     },
 
     handleClick(tab) {
-      if (tab.label == "SOLD") {
+      if (tab.label == "SOLD" || tab.label == "售卖") {
         this.filters = "onsale";
         this.getCreated();
-      } else if (tab.label == "BOUGHT") {
+      } else if (tab.label == "BOUGHT" || tab.label == "购买") {
         this.filters = "liked";
         this.getCreated();
-      } else if (tab.label == "COLLECTION") {
+      } else if (tab.label == "COLLECTION" || tab.label == "收藏品") {
         this.filters = "collection";
         this.getCreated();
       } else {
@@ -465,16 +472,21 @@ export default {
       // this.formLabelAlign.pic = this.userinfo.user_desc;
       // this.formLabelAlign.cover = this.userinfo.user_cover;
 
-      if (this.userinfo.user_cover !== "") {
-        this.userBgc = this.userinfo.user_cover;
-        this.formLabelAlign.user_cover = this.userinfo.user_cover;
+      if (this.userinfo.user_cover == "") {
+        this.userBgc = require("../../assets/bj.png");
+      } else {
+        this.userBgc = this.userinfo.user_cover.replace(
+          "ipfs://ipfs/",
+          "https://api.lionnft.io/v1/upload/view?hash="
+        );
       }
-      if (this.userinfo.user_pic !== "") {
+      if (this.userinfo.user_pic == "") {
+        this.userpic = require("../../assets/touxiang.png");
+      } else {
         this.userpic = this.userinfo.user_pic.replace(
           "ipfs://ipfs/",
           "https://api.lionnft.io/v1/upload/view?hash="
         );
-        this.formLabelAlign.pic = this.userinfo.user_desc;
       }
       this.str = this.userinfo.user_address;
       this.subStr = this.SubStr(this.str);
@@ -509,6 +521,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.personalCenter-img {
+  width: 100%;
+  height: 224px;
+}
 /deep/.el-upload-list {
   display: none;
 }

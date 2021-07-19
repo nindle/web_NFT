@@ -1,5 +1,8 @@
 <template>
   <div class="redactUser">
+    <div class="rollback" @click="$router.go(-1)">
+      <i class="el-icon-arrow-left" />{{ $t("redactUser.fanhui") }}
+    </div>
     <div class="uploading">
       <el-upload
         ref="upload"
@@ -17,20 +20,18 @@
             border-radius: 18px;
           "
         >
-          Choose file
+          {{ $t("redactUser.xuanze") }}
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
       <div class="preview" />
       <div class="uploading_a">
-        We recommend an image of at least 400x400. Gifs work too.
+        {{ $t("redactUser.recommend") }}
       </div>
     </div>
-    <div class="rollback" @click="$router.go(-1)">
-      <i class="el-icon-arrow-left" />Go back
-    </div>
+
     <!-- 标题简介 -->
     <div class="redactUser-a">
       <p
@@ -41,7 +42,7 @@
           margin-bottom: 20px;
         "
       >
-        Edit profile
+        {{ $t("redactUser.Edit") }}
       </p>
       <p
         style="
@@ -53,34 +54,33 @@
           color: #84858b;
         "
       >
-        You can set preferred display name, create your branded profile URL and
-        manage other personal settings
+        {{ $t("redactUser.EditDescription") }}
       </p>
     </div>
     <!-- 编辑表单 -->
     <el-form label-position="top" :model="formLabelAlign">
-      <el-form-item label="Display name">
+      <el-form-item :label="$t('redactUser.name')">
         <el-input
           v-model="formLabelAlign.username"
           class="el-input-a"
-          placeholder="Enter yuor display name"
+          :placeholder="$t('redactUser.PleaseName')"
         />
       </el-form-item>
-      <el-form-item label="Custom URL">
+      <el-form-item :label="$t('redactUser.URL')">
         <el-input
           v-model="formLabelAlign.short_url"
           width:400px
           class="el-input-a"
-          placeholder="Enter your custom URL"
+          :placeholder="$t('redactUser.PleaseURL')"
         >
           <template slot="prepend">lionnft.com/</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="Bio">
+      <el-form-item :label="$t('redactUser.Bio')">
         <el-input
           v-model="formLabelAlign.desc"
           class="el-input-a"
-          placeholder="Tell about yourself in a few words"
+          :placeholder="$t('redactUser.PleaseBio')"
         />
       </el-form-item>
       <el-button
@@ -94,7 +94,7 @@
         type="primary"
         @click="postUserEdit"
       >
-        Update profile
+        {{ $t("redactUser.Update") }}
       </el-button>
     </el-form>
   </div>

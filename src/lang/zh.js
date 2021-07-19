@@ -10,6 +10,7 @@ export default {
   },
   home: {
     home: "首页",
+    search: "搜索由创建者收集或收集",
     Browse: "市场",
     Account: "帐户",
     Create: "创造",
@@ -46,11 +47,16 @@ export default {
     bottom8: "网站导航"
   },
   bazaar: {
-    title: "浏览"
+    title: "浏览",
+    jiazai: "加载更多",
+    meiyou: "没有更多了"
   },
   personalCenter: {
     edit: "编辑信息",
-    creaTed: "创造"
+    creaTed: "创造",
+    sold: "售卖",
+    bought: "购买",
+    collection: "收藏品"
   },
   establish: {
     go: "回退",
@@ -72,6 +78,59 @@ export default {
     yulan1: "上传文件以预览您全新的 NFT",
     shurujiage: "输入价格 允许用户立即购买您的NFT",
     jiesuo: "购买后解锁",
-    tijiao: "提交"
+    tijiao: "提交",
+    price: "价格",
+    PleasePrice: "价格不可为空",
+    Title: "标题",
+    PleaseTitle: "标题不可为空",
+    Description: "描述",
+    PleaseDescription: "描述不可为空",
+    Royalties: "版权税",
+    Properties: "属性(可选)",
+    Supply: "供给",
+    Approve: "批准",
+    Create: "创建 NFT 步骤",
+    Checking: "检查余额和批准",
+    Done: "完毕",
+    Progress: "进行中...",
+    Start: "开始",
+    toKen: "上传文件和 Mint 令牌",
+    method: "调用合约方法",
+    order: "签署卖单",
+    orderusing: "使用您的钱包签署卖单"
+  },
+  redactUser: {
+    fanhui: "返回上一级",
+    xuanze: "选择文件",
+    recommend: "我们推荐至少400x400的图像。",
+    Edit: "编辑资料",
+    EditDescription:
+      "您可以设置首选的显示名称，创建您的品牌档案URL和管理其他个人设置",
+    name: "显示名称",
+    PleaseName: "输入您的显示名称",
+    URL: "自定义URL",
+    PleaseURL: "输入自定义URL",
+    Bio: "个人介绍",
+    PleaseBio: "用几句话介绍一下你自己",
+    Update: "更新个人资料"
+  },
+  details: {
+    approve: "元世界认证",
+    Owned: "拥有者",
+    available: "可用的",
+    creator: "创造者",
+    own: "所有者",
+    Transaction: "交易记录",
+    user: "用户",
+    time: "时间",
+    perating: "操作",
+    product: "商品描述",
+    About: "关于 NFT",
+    Approved: "认可的",
+    approvedNoW: "立即批准",
+    Biding: "投标",
+    BidNow: "现在出价",
+    Buying: "购买",
+    BuyNow: "立即购买"
   }
 };

@@ -8,23 +8,23 @@
       @slideChange="onSlideChanges"
     >
       <swiper-slide
-        v-for="(item, index) in userInfoList.slice(0, 7)"
+        v-for="(item, index) in userInfoList.slice(0, 5)"
         :key="index"
       >
         <div class="neirong" @click="goUserFn(item.user_address)">
           <img
             :src="
-              item.user_pic.replace(
+              item.user_cover.replace(
                 'ipfs://ipfs/',
                 'https://api.lionnft.io/v1/upload/view?hash='
               )
             "
             style="width: 371px; height: 186px"
             alt=""
-          >
+          />
           <img
             :src="
-              item.user_cover.replace(
+              item.user_pic.replace(
                 'ipfs://ipfs/',
                 'https://api.lionnft.io/v1/upload/view?hash='
               )
@@ -35,9 +35,10 @@
               position: absolute;
               top: 156px;
               left: 154px;
+              border-radius: 30px;
             "
             alt=""
-          >
+          />
           <h3 class="username">{{ item.user_name }}</h3>
           <p class="usermessage">{{ item.user_desc }}</p>
         </div>
@@ -45,10 +46,10 @@
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev bestSelling-left">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next bestSelling-right">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -117,16 +118,16 @@ export default {
       this.userInfoList = resp.list;
       this.userInfoList.forEach((item) => {
         //设置默认背景图
-        if (item.user_pic == "") {
-          item.user_pic = this.userbgc;
-        } else if (item.user_pic == null) {
-          item.user_pic = this.userbgc;
+        if (item.user_cover == "") {
+          item.user_cover = this.userbgc;
+        } else if (item.user_cover == null) {
+          item.user_cover = this.userbgc;
         }
         //设置默认头像
-        if (item.user_cover == "") {
-          item.user_cover = this.headPortrait;
-        } else if (item.user_cover == null) {
-          item.user_cover = this.headPortrait;
+        if (item.user_pic == "") {
+          item.user_pic = this.headPortrait;
+        } else if (item.user_pic == null) {
+          item.user_pic = this.headPortrait;
         }
         //设置默认简介
         if (item.user_desc == "") {

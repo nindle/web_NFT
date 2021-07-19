@@ -7,9 +7,9 @@
         class="header-login"
         replace
         @click="goHome"
-      >
+      />
       <div class="header-input">
-        <el-input placeholder="Search by creator collectible or collection " />
+        <el-input :placeholder="$t('home.search')" />
         <img
           src="./assets/search.png"
           alt=""
@@ -20,7 +20,7 @@
             width: 27px;
             height: 27px;
           "
-        >
+        />
       </div>
 
       <div class="header-icon">
@@ -55,13 +55,13 @@
 
         <div v-if="success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px">
+            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
             <span>
               {{ $t("home.LAN") }}
             </span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
                 {{ address }}
@@ -70,11 +70,11 @@
                   style="cursor: pointer"
                   alt=""
                   @click="copyText"
-                >
+                />
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="">
+                <img src="./assets/tx1.png" alt="" />
                 <p class="popoverstyle_c_a">Balance</p>
                 <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
@@ -105,7 +105,7 @@
             style="margin: 0 25px 0 20px; height: 26px"
             src="./assets/language.png"
             alt=""
-          >
+          />
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="a">{{ $t("lang.zh") }}</el-dropdown-item>
             <el-dropdown-item command="c">{{ $t("lang.en") }}</el-dropdown-item>
@@ -118,7 +118,7 @@
 
     <div id="apptest" :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="">
+        <img src="./assets/login.png" alt="" />
         <p
           style="
             font-size: 24px;
@@ -235,9 +235,12 @@ export default {
   methods: {
     handleCommand(command) {
       if (command == "a") {
-        this.$i18n.locale = "zh-cn";
+        localStorage.setItem("language", "zh-cn");
+        this.$i18n.locale = localStorage.getItem("language");
+        console.log(this.$i18n.locale);
       } else {
-        this.$i18n.locale = "en-us";
+        localStorage.setItem("language", "en-us");
+        this.$i18n.locale = localStorage.getItem("language");
       }
     },
 

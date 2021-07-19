@@ -49,9 +49,9 @@
         :on-success="uploadSuccess"
       >
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
-        <el-button plain round>Choose file</el-button>
+        <el-button plain round>{{ $t("Single.xuanze") }}</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
 
@@ -77,10 +77,11 @@
         </p>
       </div>
 
-      <el-form-item v-show="value" label="Price" prop="price">
+      <el-form-item v-show="value" :label="$t('Single.price')" prop="price">
         <el-input
-          v-model="formLabelAlign.price"
-          placeholder="Please enter the price"
+          type="number"
+          v-model.number="formLabelAlign.price"
+          :placeholder="$t('Single.PleasePrice')"
         >
           <template slot="append">BNB</template>
         </el-input>
@@ -93,31 +94,27 @@
         <el-switch v-model="values" />
       </div>
 
-      <el-form-item label="Title" prop="title">
+      <el-form-item :label="$t('Single.Title')" prop="title">
         <el-input
           v-model="formLabelAlign.title"
-          placeholder="Please enter a name"
+          :placeholder="$t('Single.PleaseTitle')"
         />
       </el-form-item>
 
-      <el-form-item label="Description" prop="description">
+      <el-form-item :label="$t('Single.Description')" prop="description">
         <el-input
           v-model="formLabelAlign.description"
-          placeholder="Please enter a description"
+          :placeholder="$t('Single.PleaseDescription')"
         />
       </el-form-item>
 
-      <el-form-item label="Royalties">
+      <el-form-item :label="$t('Single.Royalties')">
         <el-input v-model="formLabelAlign.royalties" placeholder="E.g. 10%">
           <template slot="append">%</template>
         </el-input>
       </el-form-item>
 
-      <el-form-item label="Supply">
-        <!-- <el-input placeholder="E.g. 10%" v-model="formLabelAlign.royalties">
-          <template slot="append">%</template>
-        </el-input> -->
-
+      <el-form-item :label="$t('Single.Supply')">
         <el-input-number
           v-model="formLabelAlign.supply"
           controls-position="right"
@@ -127,7 +124,7 @@
         />
       </el-form-item>
 
-      <el-form-item label="Properties (Optional)">
+      <el-form-item :label="$t('Single.Properties')">
         <div
           v-for="(item, index) in propertiesList"
           :key="index"
@@ -163,38 +160,60 @@
         {{ $t("Single.tijiao") }}
       </el-button>
     </el-form>
-    <el-dialog title="Create NFT steps" :visible.sync="dialogVisible" center>
+    <el-dialog
+      :title="$t('Single.Create')"
+      :visible.sync="dialogVisible"
+      center
+    >
       <div class="Approve">
-        <p class="Approve_a">Approve</p>
-        <p class="Approve_b">Checking balance and approving</p>
+        <p class="Approve_a">{{ $t("Single.Approve") }}</p>
+        <p class="Approve_b">{{ $t("Single.Checking") }}</p>
         <el-button
           :disabled="aprLoading == true || changes == 1"
           :class="changes == '' ? 'Approve_c' : 'Approve_cc'"
           @click="setApproveAll"
         >
-          {{ changes >= 1 ? "Done" : aprLoading ? "In Progress..." : "Start" }}
+          {{
+            changes >= 1
+              ? $t("Single.Done")
+              : aprLoading
+              ? $t("Single.Progress")
+              : $t("Single.Start")
+          }}
         </el-button>
       </div>
       <div class="Approve">
-        <p class="Approve_a">Upload files & Mint token</p>
-        <p class="Approve_b">Call contract method</p>
+        <p class="Approve_a">{{ $t("Single.toKen") }}</p>
+        <p class="Approve_b">{{ $t("Single.method") }}</p>
         <el-button
           :disabled="upLoading == true || changes == 2"
           :class="changes == '1' ? 'Approve_c' : 'Approve_cc'"
           @click="uploadFile"
         >
-          {{ changes >= 2 ? "Done" : upLoading ? "In Progress..." : "Start" }}
+          {{
+            changes >= 2
+              ? $t("Single.Done")
+              : upLoading
+              ? $t("Single.Progress")
+              : $t("Single.Start")
+          }}
         </el-button>
       </div>
       <div class="Approve">
-        <p class="Approve_a">Sign sell order</p>
-        <p class="Approve_b">sign sell order using your wallet</p>
+        <p class="Approve_a">{{ $t("Single.order") }}</p>
+        <p class="Approve_b">{{ $t("Single.orderusing") }}</p>
         <el-button
           :disabled="ordLoading == true || changes == 3"
           :class="changes == '2' ? 'Approve_c' : 'Approve_cc'"
           @click="createOrder"
         >
-          {{ changes == 3 ? "Done" : ordLoading ? "In Progress..." : "Start" }}
+          {{
+            changes == 3
+              ? $t("Single.Done")
+              : ordLoading
+              ? $t("Single.Progress")
+              : $t("Single.Start")
+          }}
         </el-button>
       </div>
     </el-dialog>
@@ -427,7 +446,7 @@ export default {
           },
         },
         selling: BigNumber.from(this.formLabelAlign.supply || "1"),
-        buying: this.$parseEther(this.formLabelAlign.price || "0.1"),
+        buying: this.$parseEther(this.formLabelAlign.price || "0"),
         sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
       };
       console.log(order);
