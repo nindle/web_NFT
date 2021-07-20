@@ -7,7 +7,7 @@
         class="header-login"
         replace
         @click="goHome"
-      >
+      />
       <div class="header-input">
         <el-input :placeholder="$t('home.search')" />
         <img
@@ -20,7 +20,7 @@
             width: 27px;
             height: 27px;
           "
-        >
+        />
       </div>
 
       <div class="header-icon">
@@ -42,7 +42,10 @@
         </router-link>
         <router-link
           class="header-icon-a"
-          :to="'/personalCenter'"
+          :to="{
+            name: 'personalCenter',
+            params: { address: addres },
+          }"
           :class="{ active: cur === 3 ? true : false }"
           @click.native="cur = 3"
         >
@@ -55,13 +58,13 @@
 
         <div v-if="success == 200" class="loginSuccessful">
           <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px">
+            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
             <span>
               {{ $t("home.LAN") }}
             </span>
           </p>
           <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px">
+            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
             <el-popover placement="bottom" trigger="click">
               <p class="popoverstyle_a">
                 {{ address }}
@@ -70,21 +73,16 @@
                   style="cursor: pointer"
                   alt=""
                   @click="copyText"
-                >
+                />
               </p>
               <p class="popoverstyle_b">Set display name</p>
               <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="">
+                <img src="./assets/tx1.png" alt="" />
                 <p class="popoverstyle_c_a">Balance</p>
                 <p class="popoverstyle_c_b">{{ balance }} BNB</p>
               </div>
               <el-divider />
-              <p
-                class="popoverstyle_d"
-                @click="$router.push({ name: 'personalCenter' })"
-              >
-                My items
-              </p>
+              <p class="popoverstyle_d" @click="personalCenterFn">My items</p>
               <p class="popoverstyle_d">Edit profile</p>
               <el-button
                 id="userstyle"
@@ -105,7 +103,7 @@
             style="margin: 0 25px 0 20px; height: 26px"
             src="./assets/language.png"
             alt=""
-          >
+          />
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="a">{{ $t("lang.zh") }}</el-dropdown-item>
             <el-dropdown-item command="c">{{ $t("lang.en") }}</el-dropdown-item>
@@ -118,7 +116,7 @@
 
     <div id="apptest" :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/login.png" alt="">
+        <img src="./assets/login.png" alt="" />
         <p
           style="
             font-size: 24px;
@@ -180,7 +178,7 @@ export default {
     return {
       isRouterAlive: true,
       address: "",
-      addres: "",
+      addres: sessionStorage.getItem("address"),
       balance: 0,
       cur: 1,
       a: 5,
@@ -233,6 +231,12 @@ export default {
     }
   },
   methods: {
+    personalCenterFn() {
+      this.$router.push({
+        name: "personalCenter",
+        params: { address: this.addres },
+      });
+    },
     handleCommand(command) {
       if (command == "a") {
         localStorage.setItem("language", "zh-cn");

@@ -9,19 +9,32 @@
     <div class="create_a">
       {{ $t("establish.jieshao") }}
     </div>
+    <el-button style="margin-top: 20px" @click="dialogVisible = true">
+      制作棋谱
+    </el-button>
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="">
+        <img src="../../assets/single.png" alt="" />
         <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="">
+        <img src="../../assets/Multiple.png" alt="" />
         <p>{{ $t("establish.duo") }}</p>
       </div>
     </div>
     <div class="prompt">
       {{ $t("establish.zijin") }}
     </div>
+
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="50%">
+      <iframe class="iframestyle" src="https://lionnft.io/weiqi.html"> </iframe>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">
+          确 定
+        </el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -32,7 +45,9 @@ import { userInfoApi } from "../../api/user";
 
 export default {
   data() {
-    return {};
+    return {
+      dialogVisible: false,
+    };
   },
   computed: {},
   mounted() {
@@ -64,6 +79,13 @@ export default {
 </script>
 
 <style scoped lang='less'>
+/deep/.el-dialog {
+  margin-top: 8vh !important;
+}
+.iframestyle {
+  width: 100%;
+  height: 600px;
+}
 .cast {
   width: 1200px;
   height: 700px;

@@ -23,7 +23,7 @@
           {{ $t("redactUser.xuanze") }}
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
       <div class="preview" />
@@ -151,7 +151,10 @@ export default {
         });
         sessionStorage.setItem("userInfo", formLabelAlign.username);
         this.formLabelAlign = {};
-        this.$router.replace("/personalCenter");
+        this.$router.push({
+          name: "personalCenter",
+          params: { address: this.formLabelAlign.address },
+        });
       } else if (resp.code == 500) {
         this.$message.error("更新失败");
       }

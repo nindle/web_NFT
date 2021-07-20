@@ -2,7 +2,7 @@
   <div>
     <!-- 个人中心背景图 -->
     <div class="personalCenter-bgc">
-      <img :src="userBgc" class="personalCenter-img" alt="">
+      <img :src="userBgc" class="personalCenter-img" alt="" />
       <el-upload
         action="https://api.lionnft.io/v1/upload/file"
         :auto-upload="true"
@@ -19,7 +19,7 @@
 
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img :src="userpic" alt="">
+      <img :src="userpic" alt="" />
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
@@ -33,11 +33,11 @@
           style="cursor: pointer"
           alt=""
           @click="copyText"
-        >
+        />
       </p>
 
       <el-button
-        v-show="this.$route.params.id == undefined"
+        v-show="userShow != ''"
         round
         style="
           border-radius: 21px;
@@ -52,7 +52,7 @@
         {{ $t("personalCenter.edit") }}
       </el-button>
       <div
-        v-show="this.$route.params.id == undefined"
+        v-show="userShow != ''"
         style="
           width: 43px;
           height: 41px;
@@ -66,7 +66,7 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        >
+        />
       </div>
     </div>
     <!-- 产品系列 -->
@@ -99,7 +99,7 @@
                 @mouseover="hoverIndex = index"
                 @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
-              >
+              />
 
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
@@ -112,7 +112,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -162,7 +162,7 @@
                 @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              >
+              />
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -174,7 +174,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt=""> 2314
+                  <img src="../../assets/souchang.png" alt="" /> 2314
                 </div>
               </div>
               <div
@@ -197,7 +197,73 @@
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
-        <el-tab-pane :label="$t('personalCenter.bought')" name="third">
+        <el-tab-pane
+          v-if="userShow != ''"
+          :label="$t('personalCenter.bought')"
+          name="third"
+        >
+          <ul v-if="createdList.length !== 0" class="exhibition">
+            <li
+              v-for="(item, index) in createdList.slice(0, a)"
+              :key="index"
+              style="position: relative"
+              @click="
+                $router.push({
+                  name: 'details',
+                  params: { id: item.token_id, token: item.token },
+                })
+              "
+              @mouseover="hover = true"
+              @mouseleave="hover = false"
+            >
+              <img
+                :src="
+                  item.prop_image.replace(
+                    'ipfs://ipfs/',
+                    'https://api.lionnft.io/v1/upload/view?hash='
+                  )
+                "
+                :class="{ hoverBg: index == hoverIndex }"
+                alt=""
+                @error="setDefaultImage"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+              />
+              <h3 class="username">{{ item.prop_name }}</h3>
+              <p class="usermessage">{{ item.prop_desc }}</p>
+              <div class="userprice">
+                <span style="float: left; color: #0066ed; margin-right: 20px">
+                  {{ item.price }} BNB
+                </span>
+                <span> 1/1</span>
+                <div
+                  class="userpriceimg"
+                  style="float: right; margin-right: 40px"
+                >
+                  <img src="../../assets/souchang.png" alt="" /> 2314
+                </div>
+              </div>
+              <div
+                :class="hoverIndex == index ? 'redirects' : 'redirect'"
+                @mouseover="hoverIndex = index"
+                @mouseout="hoverIndex = -1"
+              >
+                Buy now →
+              </div>
+            </li>
+            <div
+              v-if="a < createdList.length"
+              class="loadMore"
+              @click="loadMore"
+            >
+              {{ $t("bazaar.jiazai") }}
+            </div>
+
+            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
+          </ul>
+          <div v-else class="createdStyle">暂无商品</div>
+        </el-tab-pane>
+        <!-- <el-tab-pane :label="$t('personalCenter.collection')" name="fourth">
           <ul v-if="createdList.length !== 0" class="exhibition">
             <li
               v-for="(item, index) in createdList.slice(0, a)"
@@ -258,69 +324,7 @@
             <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
-        </el-tab-pane>
-        <el-tab-pane :label="$t('personalCenter.collection')" name="fourth">
-          <ul v-if="createdList.length !== 0" class="exhibition">
-            <li
-              v-for="(item, index) in createdList.slice(0, a)"
-              :key="index"
-              style="position: relative"
-              @click="
-                $router.push({
-                  name: 'details',
-                  params: { id: item.token_id, token: item.token },
-                })
-              "
-              @mouseover="hover = true"
-              @mouseleave="hover = false"
-            >
-              <img
-                :src="
-                  item.prop_image.replace(
-                    'ipfs://ipfs/',
-                    'https://api.lionnft.io/v1/upload/view?hash='
-                  )
-                "
-                :class="{ hoverBg: index == hoverIndex }"
-                alt=""
-                @error="setDefaultImage"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-              >
-              <h3 class="username">{{ item.prop_name }}</h3>
-              <p class="usermessage">{{ item.prop_desc }}</p>
-              <div class="userprice">
-                <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
-                </span>
-                <span> 1/1</span>
-                <div
-                  class="userpriceimg"
-                  style="float: right; margin-right: 40px"
-                >
-                  <img src="../../assets/souchang.png" alt=""> 2314
-                </div>
-              </div>
-              <div
-                :class="hoverIndex == index ? 'redirects' : 'redirect'"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-              >
-                Buy now →
-              </div>
-            </li>
-            <div
-              v-if="a < createdList.length"
-              class="loadMore"
-              @click="loadMore"
-            >
-              {{ $t("bazaar.jiazai") }}
-            </div>
-
-            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
-          </ul>
-          <div v-else class="createdStyle">暂无商品</div>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
     </div>
   </div>
@@ -328,7 +332,6 @@
 
 <script>
 import $http from "../../utils/request";
-
 import { ethers } from "ethers";
 import imgUrl from "../../assets/xiaohuli.png";
 import { initWallet, getBalance } from "../../wallet/wallet";
@@ -336,7 +339,6 @@ import { userInfoApi } from "../../api/user";
 
 export default {
   name: "PersonalCenter",
-
   props: {},
   data() {
     return {
@@ -362,13 +364,23 @@ export default {
         twitter: "",
         pic: "",
       },
+      userShow: "",
     };
   },
+  watch: {
+    $route(to) {
+      console.log("123===>", to);
+      this.getUserInfo();
+
+      location.reload();
+    },
+  },
   async created() {
-    if (this.$route.params.id == undefined) {
+    if (this.$route.params.address == sessionStorage.getItem("address")) {
+      this.userShow = 123;
       this.user_id = sessionStorage.getItem("address");
     } else {
-      this.user_id = this.$route.params.id;
+      this.user_id = this.$route.params.address;
     }
     this.getUserInfo();
     this.getCreated();
@@ -380,7 +392,7 @@ export default {
     },
 
     async uploadSuccessbgcFn(e) {
-      console.log(e.ipfs);
+      // console.log(e.ipfs);
       const edit = {
         username: sessionStorage.getItem("userInfo"),
         address: sessionStorage.getItem("address"),
@@ -443,14 +455,11 @@ export default {
     },
 
     handleClick(tab) {
-      if (tab.label == "SOLD" || tab.label == "售卖") {
+      if (tab.label == "SOLD" || tab.label == "在售") {
         this.filters = "onsale";
         this.getCreated();
-      } else if (tab.label == "BOUGHT" || tab.label == "购买") {
-        this.filters = "liked";
-        this.getCreated();
-      } else if (tab.label == "COLLECTION" || tab.label == "收藏品") {
-        this.filters = "collection";
+      } else if (tab.label == "OFFSHELF" || tab.label == "下架") {
+        this.filters = "unsale";
         this.getCreated();
       } else {
         this.filters = "created";
@@ -468,7 +477,7 @@ export default {
       );
 
       this.userinfo = resp.data;
-      console.log(this.userinfo);
+      // console.log(this.userinfo);
       // this.formLabelAlign.pic = this.userinfo.user_desc;
       // this.formLabelAlign.cover = this.userinfo.user_cover;
 
@@ -503,7 +512,7 @@ export default {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
-      console.log(resp);
+      // console.log(resp);
       this.createdList = resp.list;
       this.createdList.forEach((item, index) => {
         if (this.createdList[index].price === "") {
@@ -675,6 +684,9 @@ export default {
 .usermessage {
   margin-left: 20px;
   margin-top: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 18px;
   font-family: Source Han Sans CN;
   font-weight: 500;

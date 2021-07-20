@@ -12,7 +12,7 @@
       style="border-radius: 20px"
       alt=""
       @error="setDefaultImage"
-    >
+    />
     <div id="clearid" class="clear" />
     <!-- 产品详情 -->
     <ul class="details-a">
@@ -30,12 +30,12 @@
           {{ $t("details.available") }}
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="">
+          <img id="examines" src="../../assets/examine.png" alt="" />
           2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="">
+          <img id="examine" src="../../assets/souchang.png" alt="" />
           2122
         </span>
       </li>
@@ -44,7 +44,7 @@
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        >
+        />
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
@@ -64,7 +64,6 @@
               type="text"
               placeholder="竞拍价格(WBNB)"
             />
-            WBNB
           </div>
           <div>余额 {{ wbnb_balance }} WBNB</div>
           <div>
@@ -75,9 +74,7 @@
               @click="bidApprove"
             >
               {{
-                isApproved == true
-                  ? $t("details.Approved")
-                  : $t("details.approvedNoW")
+                isApproved ? $t("details.Approved") : $t("details.approvedNoW")
               }}
             </el-button>
           </div>
@@ -102,10 +99,10 @@
               @click="
                 $router.push({
                   name: 'personalCenter',
-                  params: { id: str },
+                  params: { address: str },
                 })
               "
-            >
+            />
           </div>
 
           <div class="clear" />
@@ -139,8 +136,8 @@
                 v.bid_result == 0
                   ? "竞拍中"
                   : v.bid_result == 1
-                    ? "竞拍成功"
-                    : "竞拍失败"
+                  ? "竞拍成功"
+                  : "竞拍失败"
               }}
             </span>
             <el-button
@@ -156,21 +153,21 @@
         </div>
       </li>
 
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li>
         <div class="productdetails">
           <div style="width: 100%">
             <img
-              :src="creator_cover"
+              :src="creator_pic"
               style="margin: 10px 15px 0 0; cursor: pointer"
               alt=""
               @click="
                 $router.push({
                   name: 'personalCenter',
-                  params: { id: str },
+                  params: { address: str },
                 })
               "
-            >
+            />
           </div>
 
           <div class="clear" />
@@ -214,7 +211,7 @@
               alt=""
               style="cursor: pointer"
               @click="copyText(1)"
-            >
+            />
           </div>
         </div>
       </li>
@@ -222,16 +219,16 @@
         <div class="productdetails">
           <div style="width: 100%">
             <img
-              :src="own_user_cover"
+              :src="own_user_pic"
               style="margin: 10px 15px 0 0; cursor: pointer"
               alt=""
               @click="
                 $router.push({
                   name: 'personalCenter',
-                  params: { id: strs },
+                  params: { address: strs },
                 })
               "
-            >
+            />
           </div>
           <div class="clear" />
           <div
@@ -274,11 +271,11 @@
               alt=""
               style="cursor: pointer"
               @click="copyText(2)"
-            >
+            />
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li
         style="
           font-size: 15px;
@@ -291,9 +288,9 @@
       </li>
       <li>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="name" :label="$t('details.user')" />
-          <el-table-column prop="perating" :label="$t('details.perating')" />
-          <el-table-column prop="time" :label="$t('details.time')" />
+          <el-table-column prop="user_name" :label="$t('details.user')" />
+          <el-table-column prop="ord_cate" :label="$t('details.perating')" />
+          <el-table-column prop="ord_time" :label="$t('details.time')" />
         </el-table>
       </li>
     </ul>
@@ -350,23 +347,12 @@ export default {
   props: {},
   data() {
     return {
-      creator_cover: "",
-      own_user_cover: "",
+      creator_pic: "",
+      own_user_pic: "",
       loading: true,
       details: {},
       activeName: "first",
-      tableData: [
-        {
-          time: "",
-          name: "",
-          perating: "",
-        },
-        {
-          time: "",
-          name: "",
-          perating: "",
-        },
-      ],
+      tableData: [],
       token_id: this.$route.params.id,
       token: this.$route.params.token,
       str: "",
@@ -390,9 +376,10 @@ export default {
   created() {},
   async mounted() {
     this.getDetails();
-
+    this.getRecord();
     // 竞拍列表
     const bid_resp = await exchange.bidListApi(this.token, this.token_id, 1);
+    console.log(bid_resp);
     if (bid_resp.code == 200) {
       let _bid_list = bid_resp.list;
       for (let k in _bid_list) {
@@ -417,15 +404,15 @@ export default {
       const erc20_balance = await Erc20Balance(account);
       console.log("wbnb_balance", this.$formatEther(erc20_balance.toString()));
       this.wbnb_balance = this.$formatEther(erc20_balance.toString());
+      const isApproved = await Erc20IsApproved(
+        account,
+        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+      );
+      console.log("isApproved", isApproved);
+      this.isApproved = isApproved;
     }
 
     // approve
-    const isApproved = await Erc20IsApproved(
-      account,
-      "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
-    );
-    console.log("isApproved", isApproved);
-    this.isApproved = isApproved;
   },
   methods: {
     open() {
@@ -469,7 +456,6 @@ export default {
         function (err, script) {
           if (err) {
           } else {
-            console.log(123);
             // document.getElementById("d1NavigationDiv").style.display = "none";
             document.getElementById("d1VersionDiv").style.display = "none";
           }
@@ -515,6 +501,21 @@ export default {
         type: "success",
       });
     },
+
+    async getRecord() {
+      const resp = await $http.get(
+        `https://api.lionnft.io/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
+      );
+      console.log(resp.list);
+      this.tableData = resp.list;
+      this.tableData.forEach((item) => {
+        item.ord_time = this.$dayjs(item.ord_time).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
+        console.log(item.ord_time);
+      });
+    },
+
     async getDetails() {
       const resp = await $http.get(
         `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
@@ -527,23 +528,23 @@ export default {
       }
       this.details = resp.data;
       // 设置创建者默认头像
-      if (this.details.creator_cover == "") {
-        this.creator_cover = require("../../assets/touxiang.png");
-      } else if (this.details.creator_cover == null) {
-        this.creator_cover = require("../../assets/touxiang.png");
+      if (this.details.creator_pic == "") {
+        this.creator_pic = require("../../assets/touxiang.png");
+      } else if (this.details.creator_pic == null) {
+        this.creator_pic = require("../../assets/touxiang.png");
       } else {
-        this.creator_cover = this.details.creator_cover.replace(
+        this.creator_pic = this.details.creator_pic.replace(
           "ipfs://ipfs/",
           "https://api.lionnft.io/v1/upload/view?hash="
         );
       }
       // 设置所有者默认头像
-      if (this.details.own_user_cover == "") {
-        this.own_user_cover = require("../../assets/touxiang.png");
-      } else if (this.details.own_user_cover == null) {
-        this.own_user_cover = require("../../assets/touxiang.png");
+      if (this.details.own_user_pic == "") {
+        this.own_user_pic = require("../../assets/touxiang.png");
+      } else if (this.details.own_user_pic == null) {
+        this.own_user_pic = require("../../assets/touxiang.png");
       } else {
-        this.own_user_cover = this.details.own_user_cover.replace(
+        this.own_user_pic = this.details.own_user_pic.replace(
           "ipfs://ipfs/",
           "https://api.lionnft.io/v1/upload/view?hash="
         );
@@ -555,18 +556,11 @@ export default {
       this.creator_address = this.SubStr(this.strs);
       this.creator_addr = this.details.creator_address;
       this.owner_addr = this.details.own_address;
-      this.tableData[0].name = this.details.creator_user_name;
-      this.tableData[1].name = this.details.own_user_name;
-      this.tableData[0].time = this.$dayjs(this.details.create_time).format(
-        "YYYY-MM-DD"
-      );
-      this.tableData[1].time = this.$dayjs(this.details.create_time).format(
-        "YYYY-MM-DD"
-      );
 
       this.orderInfo();
       this.buyFee();
     },
+
     SubStr(str) {
       var subStr1 = str.slice(0, 6);
       var subStr2 = str.slice(str.length - 5, 42);
@@ -1012,7 +1006,7 @@ export default {
   border-radius: 10px;
 }
 .danger-button {
-  margin-top: 30px;
+  margin-top: 20px;
   width: 504px;
   height: 61px;
   box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);

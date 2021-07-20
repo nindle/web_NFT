@@ -39,7 +39,7 @@ const routes = [
       import(/* webpackChunkName: "purchase" */ "../views/details/purchase")
   },
   {
-    path: "/personalCenter",
+    path: "/personalCenter/:address",
     name: "personalCenter",
     component: () =>
       import(

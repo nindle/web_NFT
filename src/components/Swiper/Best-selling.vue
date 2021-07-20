@@ -8,7 +8,7 @@
       @slideChange="onSlideChanges"
     >
       <swiper-slide
-        v-for="(item, index) in userInfoList.slice(0, 5)"
+        v-for="(item, index) in userInfoList.slice(0, 7)"
         :key="index"
       >
         <div class="neirong" @click="goUserFn(item.user_address)">
@@ -21,7 +21,7 @@
             "
             style="width: 371px; height: 186px"
             alt=""
-          >
+          />
           <img
             :src="
               item.user_pic.replace(
@@ -38,7 +38,7 @@
               border-radius: 30px;
             "
             alt=""
-          >
+          />
           <h3 class="username">{{ item.user_name }}</h3>
           <p class="usermessage">{{ item.user_desc }}</p>
         </div>
@@ -46,10 +46,10 @@
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev bestSelling-left">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next bestSelling-right">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -99,14 +99,14 @@ export default {
   },
   methods: {
     onSwipers(swiper) {
-      console.log(swiper);
+      // console.log(swiper);
     },
     onSlideChanges() {},
 
     goUserFn(id) {
       this.$router.push({
         name: "personalCenter",
-        params: { id },
+        params: { address: id },
       });
     },
 
@@ -114,7 +114,7 @@ export default {
       const resp = await $http.get(
         "https://api.lionnft.io/v1/user/top?user=seller"
       );
-      console.log(resp);
+      // console.log(resp);
       this.userInfoList = resp.list;
       this.userInfoList.forEach((item) => {
         //设置默认背景图

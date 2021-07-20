@@ -14,7 +14,7 @@ export default {
     Browse: "市场",
     Account: "帐户",
     Create: "创造",
-    LAN: "BBC主网",
+    LAN: "BSC 主网",
     LoginWallet: "登录",
     title: "发现、收集和销售非凡的 NFT",
     content: "在世界上第一个也是最大的 NFT 市场上",
@@ -54,8 +54,8 @@ export default {
   personalCenter: {
     edit: "编辑信息",
     creaTed: "创造",
-    sold: "售卖",
-    bought: "购买",
+    sold: "在售",
+    bought: "下架",
     collection: "收藏品"
   },
   establish: {

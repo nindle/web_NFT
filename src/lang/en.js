@@ -14,7 +14,7 @@ export default {
     Browse: "Browse",
     Account: "Account",
     Create: "Create",
-    LAN: "BBC Mainnet",
+    LAN: "BSC Mainnet",
     LoginWallet: "Link wallet",
     title: "Discover, collect, and sell extraordinary NFTs",
     content: "on the world's first & largest NFT marketplace",
@@ -57,7 +57,7 @@ export default {
     edit: "Edit",
     creaTed: "CREATED",
     sold: "SOLD",
-    bought: "BOUGHT",
+    bought: "OFFSHELF",
     collection: "COLLECTION"
   },
   establish: {
