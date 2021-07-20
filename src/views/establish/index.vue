@@ -14,11 +14,11 @@
     </el-button>
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="" />
+        <img src="../../assets/single.png" alt="">
         <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="" />
+        <img src="../../assets/Multiple.png" alt="">
         <p>{{ $t("establish.duo") }}</p>
       </div>
     </div>
@@ -27,7 +27,7 @@
     </div>
 
     <el-dialog title="提示" :visible.sync="dialogVisible" width="50%">
-      <iframe class="iframestyle" src="https://lionnft.io/weiqi.html"> </iframe>
+      <iframe class="iframestyle" src="https://lionnft.io/weiqi.html" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">
