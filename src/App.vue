@@ -116,7 +116,7 @@
 
     <div id="apptest" :class="toRouter == 1 ? 'bottoms' : 'bottom'">
       <div class="bottom_a">
-        <img src="./assets/logo.png" alt="" />
+        <img src="./assets/logo_bottom.jpg" alt="" />
         <p
           style="
             font-size: 24px;
@@ -488,10 +488,7 @@ export default {
   margin: 0 auto;
   padding: 35px 0;
 }
-.bottom_a img {
-  width: 160px;
-  height: 64px;
-}
+
 .bottom_b {
   position: absolute;
   top: 0px;
@@ -526,8 +523,6 @@ export default {
 }
 
 .header-login {
-  width: 104px;
-  height: 41px;
   margin-left: 50px;
 }
 
