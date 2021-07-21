@@ -51,7 +51,7 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>{{ $t("Single.xuanze") }}</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
 
@@ -167,8 +167,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -184,8 +184,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -201,8 +201,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -235,7 +235,7 @@ export default {
           {
             min: 3,
             max: 16,
-            message: "长度在 3 到 16 个字符",
+            message: "长度在 3 到 32 个字符",
             trigger: "blur",
           },
         ],
@@ -449,7 +449,7 @@ export default {
           },
         },
         selling: BigNumber.from("1"),
-        buying: this.$parseEther(this.formLabelAlign.price || "0"),
+        buying: this.$parseEther(this.formLabelAlign.price.toString() || "0"),
         sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
       };
       console.log(order);

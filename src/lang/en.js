@@ -17,7 +17,7 @@ export default {
     LAN: "BSC Mainnet",
     LoginWallet: "Link wallet",
     title: "Discover, collect, and sell extraordinary NFTs",
-    content: "on the world's first & largest NFT marketplace",
+    content: "One of the largest NFT marketplace in the world",
     buttons: "Create",
     NameSwiper: "Exclusive Meta World drops",
     author: "Best-selling author",
@@ -67,12 +67,20 @@ export default {
       "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
     dan: "Single",
     duo: "Multiple",
+    weiqi: "casting Weiqi",
     zijin:
-      "We do not own your private keys and cannot access your funds without your confirmation"
+      "We do not own your private keys and cannot access your funds without your confirmation",
+    tishi: "prompt",
+    tihsi1:
+      "1. After playing chess, click to download the SGF chess record file",
+    tishi2: "2. After downloading the SGF file, click Next",
+    quxiao: "cancel",
+    xiayibu: "Next step"
   },
   Single: {
     fanhui: "Back to previous",
     dan: "Create single collectible",
+    qipu: "Create Weiqi NFT",
     duoge: "Create Multiple collectible",
     shangchuan: "Upload file",
     yulan: "Preview",
@@ -100,7 +108,17 @@ export default {
     toKen: "Upload files & Mint token",
     method: "Call contract method",
     order: "Sign sell order",
-    orderusing: "sign sell order using your wallet"
+    orderusing: "sign sell order using your wallet",
+    weiqiname: "Weiqi Name",
+    heiqiname: "Black chess Name",
+    heiqiduanwei: "Black chess dan grading",
+    baiqiname: "White chess Name",
+    baiqiduanwei: "White chess dan grading",
+    PleaseWeiqiname: "The Weiqi name must not be empty",
+    Pleaseheiqiname: "A Black chess player cannot be empty",
+    Pleaseheiqiduanwei: " Black chess dan grading position cannot be empty",
+    Pleasebaiqiname: "A White chess player cannot be empty",
+    Pleasebaiqiduanwei: "White chess dan grading position cannot be empty"
   },
   redactUser: {
     fanhui: "Go back",

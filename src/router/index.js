@@ -74,6 +74,12 @@ const routes = [
       import(/* webpackChunkName: "Multiple" */ "../views/establish/multiple")
   },
   {
+    path: "/Weiqi",
+    name: "Weiqi",
+    component: () =>
+      import(/* webpackChunkName: "Multiple" */ "../views/establish/weiqi")
+  },
+  {
     path: "/putaway",
     name: "putaway",
     component: () =>

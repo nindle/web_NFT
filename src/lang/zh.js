@@ -17,7 +17,7 @@ export default {
     LAN: "BSC 主网",
     LoginWallet: "登录",
     title: "发现、收集和销售非凡的 NFT",
-    content: "在世界上第一个也是最大的 NFT 市场上",
+    content: "在世界上最大的NFT市场之一",
     buttons: "创造",
     NameSwiper: "独家元世界掉落",
     author: "畅销书作家",
@@ -65,11 +65,18 @@ export default {
       "如果您希望您的收藏品独一无二，请选择“单个”，如果您想多次出售一个收藏品，请选择“多个”",
     dan: "单个",
     duo: "多个",
-    zijin: "我们不拥有您的私钥，未经您的确认无法访问您的资金"
+    weiqi: "铸造围棋",
+    zijin: "我们不拥有您的私钥，未经您的确认无法访问您的资金",
+    tishi: "提示",
+    tihsi1: "1.下完棋点击下载SGF棋谱文件",
+    tishi2: "2.下载完SGF文件点击下一步",
+    quxiao: "取 消",
+    xiayibu: "下一步"
   },
   Single: {
     fanhui: "返回上一级",
     dan: "创建单个收藏",
+    qipu: "创建棋谱NFT",
     duoge: "创建多个收藏",
     shangchuan: "上传文件",
     yulan: "预览",
@@ -97,7 +104,17 @@ export default {
     toKen: "上传文件和 Mint 令牌",
     method: "调用合约方法",
     order: "签署卖单",
-    orderusing: "使用您的钱包签署卖单"
+    orderusing: "使用您的钱包签署卖单",
+    weiqiname: "围棋名称",
+    heiqiname: "黑棋棋手",
+    heiqiduanwei: "黑棋段位",
+    baiqiname: "白棋棋手",
+    baiqiduanwei: "白棋段位",
+    PleaseWeiqiname: "围棋名称不可为空",
+    Pleaseheiqiname: "黑棋棋手不可为空",
+    Pleaseheiqiduanwei: "黑棋段位不可为空",
+    Pleasebaiqiname: "白棋棋手不可为空",
+    Pleasebaiqiduanwei: "白棋段位不可为空"
   },
   redactUser: {
     fanhui: "返回上一级",

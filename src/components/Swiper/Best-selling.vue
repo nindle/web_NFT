@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div style="position: relative">
     <swiper
       ref="bestSelling"
@@ -21,7 +21,7 @@
             "
             style="width: 371px; height: 186px"
             alt=""
-          >
+          />
           <img
             :src="
               item.user_pic.replace(
@@ -38,7 +38,7 @@
               border-radius: 30px;
             "
             alt=""
-          >
+          />
           <h3 class="username">{{ item.user_name }}</h3>
           <p class="usermessage">{{ item.user_desc }}</p>
         </div>
@@ -46,10 +46,10 @@
       <div slot="pagination" class="swiper-pagination" />
     </swiper>
     <div class="swiper-button-prev bestSelling-left">
-      <img src="../../assets/left.png" alt="">
+      <img src="../../assets/left.png" alt="" />
     </div>
     <div class="swiper-button-next bestSelling-right">
-      <img src="../../assets/right.png" alt="">
+      <img src="../../assets/right.png" alt="" />
     </div>
   </div>
 </template>
@@ -114,10 +114,23 @@ export default {
       const resp = await $http.get(
         "https://api.lionnft.io/v1/user/top?user=seller"
       );
-      // console.log(resp);
+      console.log(resp);
+      resp.list.forEach((item, index) => {
+        if (item.user_name == null) {
+          console.log(index);
+          resp.list.splice(index, 1);
+        }
+      });
+      resp.list.forEach((item, index) => {
+        if (item.user_name == null) {
+          console.log(index);
+          resp.list.splice(index, 1);
+        }
+      });
+
       this.userInfoList = resp.list;
-      this.userInfoList.forEach((item) => {
-        //设置默认背景图
+      console.log(this.userInfoList);
+      this.userInfoList.forEach((item, index, arr) => {
         if (item.user_cover == "") {
           item.user_cover = this.userbgc;
         } else if (item.user_cover == null) {

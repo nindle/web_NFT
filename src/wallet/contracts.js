@@ -1,10 +1,35 @@
 // erc721
 // erc1155
 
-import $http from '../utils/request';
-import { ethers } from 'ethers';
-import { defaultAbiCoder, ParamType } from '@ethersproject/abi';
-import { keccak256 } from '@ethersproject/keccak256';
+import $http from "../utils/request";
+import { ethers } from "ethers";
+import { defaultAbiCoder, ParamType } from "@ethersproject/abi";
+import { keccak256 } from "@ethersproject/keccak256";
+
+async function Sgfitem(
+  address,
+  tokenid,
+  meta_name,
+  meta_field1,
+  meta_field2,
+  meta_field3,
+  meta_field4
+) {
+  const json = {};
+  json.address = address;
+  json.tokenid = tokenid;
+  json.meta_name = meta_name;
+  json.meta_field1 = meta_field1;
+  json.meta_field2 = meta_field2;
+  json.meta_field3 = meta_field3;
+  json.meta_field4 = meta_field4;
+
+  const jsonResp = await $http.post(
+    "https://api.lionnft.io/v1/item/metadata",
+    json
+  );
+  return jsonResp;
+}
 
 async function uploadJson(image, title, desc, props) {
   const json = {};
@@ -12,42 +37,65 @@ async function uploadJson(image, title, desc, props) {
   json.description = desc;
   json.image = image;
   json.attributes = props;
-  const blob = new Blob([JSON.stringify(json)], { type: 'application/json;charset=utf-8' });
+  const blob = new Blob([JSON.stringify(json)], {
+    type: "application/json;charset=utf-8"
+  });
   const formData = new FormData();
-  formData.append('file', blob);
-  const jsonResp = await $http.post("https://api.lionnft.io/v1/upload/file", formData);
+  formData.append("file", blob);
+  const jsonResp = await $http.post(
+    "https://api.lionnft.io/v1/upload/file",
+    formData
+  );
   return jsonResp;
 }
 
 async function newTokenId(contract) {
   const formData = new FormData();
-  formData.append('address', contract);
-  const tokenResp = await $http.post("https://api.lionnft.io/v1/tokenid/new", formData);
+  formData.append("address", contract);
+  const tokenResp = await $http.post(
+    "https://api.lionnft.io/v1/tokenid/new",
+    formData
+  );
   return tokenResp;
 }
 
 async function mintErc721(contract721, tokenid, signature, fees, uri) {
-  console.log('mintErc721=>', tokenid, signature, fees, uri);
+  console.log("mintErc721=>", tokenid, signature, fees, uri);
   const id = ethers.BigNumber.from(tokenid).toBigInt();
   console.log(id);
   const sign = ethers.utils.splitSignature(signature);
   const tx = await contract721.mint(id, sign.v, sign.r, sign.s, fees, uri);
-  console.log('transaction=>', tx);
+  console.log("transaction=>", tx);
   const receipt = await tx.wait();
-  console.log('receipt=>', receipt);
+  console.log("receipt=>", receipt);
   return tx;
 }
 
-async function mintErc1155(contract1155, tokenid, signature, fees, supply, uri) {
-  console.log('mintErc1155=>', tokenid, signature, fees, supply, uri);
+async function mintErc1155(
+  contract1155,
+  tokenid,
+  signature,
+  fees,
+  supply,
+  uri
+) {
+  console.log("mintErc1155=>", tokenid, signature, fees, supply, uri);
   const id = ethers.BigNumber.from(tokenid).toBigInt();
   console.log(id);
   const sign = ethers.utils.splitSignature(signature);
   const supp = ethers.BigNumber.from(supply).toBigInt();
-  const tx = await contract1155.mint(id, sign.v, sign.r, sign.s, fees, supp, uri);
-  console.log('transaction=>', tx);
+  const tx = await contract1155.mint(
+    id,
+    sign.v,
+    sign.r,
+    sign.s,
+    fees,
+    supp,
+    uri
+  );
+  console.log("transaction=>", tx);
   const receipt = await tx.wait();
-  console.log('receipt=>', receipt);
+  console.log("receipt=>", receipt);
   return tx;
 }
 
@@ -61,47 +109,61 @@ async function addItem(hash, assetType) {
 }
 
 // order sell
-const AssetTypeComponents = [{
-  name: 'token',
-  type: 'address'
-}, {
-  name: 'tokenId',
-  type: 'uint256'
-}, {
-  name: 'assetType',
-  type: 'uint8'
-}];
+const AssetTypeComponents = [
+  {
+    name: "token",
+    type: "address"
+  },
+  {
+    name: "tokenId",
+    type: "uint256"
+  },
+  {
+    name: "assetType",
+    type: "uint8"
+  }
+];
 
-const OrderKeyComponents = [{
-  name: 'owner',
-  type: 'address'
-}, {
-  name: 'salt',
-  type: 'uint256'
-}, {
-  components: AssetTypeComponents,
-  name: 'sellAsset',
-  type: 'tuple'
-}, {
-  components: AssetTypeComponents,
-  name: 'buyAsset',
-  type: 'tuple'
-}];
+const OrderKeyComponents = [
+  {
+    name: "owner",
+    type: "address"
+  },
+  {
+    name: "salt",
+    type: "uint256"
+  },
+  {
+    components: AssetTypeComponents,
+    name: "sellAsset",
+    type: "tuple"
+  },
+  {
+    components: AssetTypeComponents,
+    name: "buyAsset",
+    type: "tuple"
+  }
+];
 
-const OrderComponents = [{
-  name: 'key',
-  type: 'tuple',
-  components: OrderKeyComponents
-}, {
-  name: 'selling',
-  type: 'uint256'
-}, {
-  name: 'buying',
-  type: 'uint256'
-}, {
-  name: 'sellerFee',
-  type: 'uint256'
-}];
+const OrderComponents = [
+  {
+    name: "key",
+    type: "tuple",
+    components: OrderKeyComponents
+  },
+  {
+    name: "selling",
+    type: "uint256"
+  },
+  {
+    name: "buying",
+    type: "uint256"
+  },
+  {
+    name: "sellerFee",
+    type: "uint256"
+  }
+];
 
 function toJson(order) {
   return {
@@ -114,13 +176,13 @@ function toJson(order) {
 
 function toKeccak256String(orderData) {
   const order = toJson(orderData);
-  console.log('toJson.order=>', order);
+  console.log("toJson.order=>", order);
   const orderParam = ParamType.fromObject({
-    name: 'order',
-    type: 'tuple',
+    name: "order",
+    type: "tuple",
     components: OrderComponents
   });
-  console.log('toJson.orderParam=>', orderParam);
+  console.log("toJson.orderParam=>", orderParam);
 
   return keccak256(defaultAbiCoder.encode([orderParam], [order])).slice(2);
 }
@@ -128,9 +190,9 @@ function toKeccak256String(orderData) {
 async function orderSigner(signer, orderData) {
   console.log(orderData);
   const message = toKeccak256String(orderData);
-  console.log('message=>', message);
+  console.log("message=>", message);
   const signature = await signer.signMessage(message);
-  console.log('signature=>', signature);
+  console.log("signature=>", signature);
   return signature;
 }
 
@@ -173,20 +235,25 @@ function sequence(order) {
   };
 }
 
-
 async function setApproveAll(contract, address) {
-  console.log('approveAll', address, contract);
-  const tx = await contract.setApprovalForAll('0x200e61C267f040c3e00fC86d1fe507247F1b1B26', true);
-  console.log('transaction=>', tx);
+  console.log("approveAll", address, contract);
+  const tx = await contract.setApprovalForAll(
+    "0x200e61C267f040c3e00fC86d1fe507247F1b1B26",
+    true
+  );
+  console.log("transaction=>", tx);
   const receipt = await tx.wait();
-  console.log('receipt=>', receipt);
+  console.log("receipt=>", receipt);
   const res = await isApprovedAll(contract, address);
   return res;
 }
 
 async function isApprovedAll(contract, address) {
-  const res = await contract.isApprovedForAll(address, '0x200e61C267f040c3e00fC86d1fe507247F1b1B26');
-  console.log('isApprovedForAll=>', res);
+  const res = await contract.isApprovedForAll(
+    address,
+    "0x200e61C267f040c3e00fC86d1fe507247F1b1B26"
+  );
+  console.log("isApprovedForAll=>", res);
   return res;
 }
 
@@ -198,6 +265,7 @@ async function isWhitelist(contract, address) {
 export default {
   // mint
   uploadJson,
+  Sgfitem,
   newTokenId,
   mintErc721,
   mintErc1155,
@@ -210,5 +278,5 @@ export default {
   // approve
   setApproveAll,
   isApprovedAll,
-  isWhitelist,
+  isWhitelist
 };

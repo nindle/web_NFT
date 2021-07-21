@@ -51,7 +51,7 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>{{ $t("Single.xuanze") }}</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
 
@@ -177,8 +177,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -194,8 +194,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -211,8 +211,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -244,7 +244,7 @@ export default {
       rules: {
         title: [
           { required: true, message: "请输入商品名称", trigger: "blur" },
-          { min: 3, max: 8, message: "长度在 3 到 8 个字符", trigger: "blur" },
+          { min: 3, max: 8, message: "长度在 3 到 32 个字符", trigger: "blur" },
         ],
         price: [
           { required: true, message: "价格不能为空" },
@@ -446,7 +446,7 @@ export default {
           },
         },
         selling: BigNumber.from(this.formLabelAlign.supply || "1"),
-        buying: this.$parseEther(this.formLabelAlign.price || "0"),
+        buying: this.$parseEther(this.formLabelAlign.price.toString() || "0"),
         sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
       };
       console.log(order);

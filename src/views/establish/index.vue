@@ -9,29 +9,39 @@
     <div class="create_a">
       {{ $t("establish.jieshao") }}
     </div>
-    <el-button style="margin-top: 20px" @click="dialogVisible = true">
-      制作棋谱
-    </el-button>
+
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="">
+        <img src="../../assets/single.png" alt="" />
         <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="">
+        <img src="../../assets/Multiple.png" alt="" />
         <p>{{ $t("establish.duo") }}</p>
+      </div>
+      <div class="weiqi" @click="dialogVisible = true">
+        <img src="../../assets/weiqijinkou.jpg" alt="" />
+        <p>{{ $t("establish.weiqi") }}</p>
       </div>
     </div>
     <div class="prompt">
       {{ $t("establish.zijin") }}
     </div>
 
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="50%">
+    <el-dialog
+      :title="$t('establish.tishi')"
+      :visible.sync="dialogVisible"
+      width="50%"
+    >
+      <p class="tishi">{{ $t("establish.tihsi1") }}</p>
+      <p class="tishi">{{ $t("establish.tishi2") }}</p>
       <iframe class="iframestyle" src="https://lionnft.io/weiqi.html" />
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">
-          确 定
+        <el-button @click="dialogVisible = false"
+          >{{ $t("establish.quxiao") }}
+        </el-button>
+        <el-button type="primary" @click="weiqiFn">
+          {{ $t("establish.xiayibu") }}
         </el-button>
       </span>
     </el-dialog>
@@ -56,6 +66,14 @@ export default {
     timer;
   },
   methods: {
+    weiqiFn() {
+      this.dialogVisible = false;
+      this.$router.push({
+        name: "Weiqi",
+        // params: { userId: sessionStorage.getItem("address") },
+      });
+    },
+
     setTimeoutFn() {
       if (sessionStorage.getItem("address") == null) {
         this.$message.error("未登录");
@@ -79,12 +97,17 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.tishi {
+  color: red;
+  font-family: Source Han Sans CN;
+}
 /deep/.el-dialog {
-  margin-top: 8vh !important;
+  margin-top: 7vh !important;
 }
 .iframestyle {
   width: 100%;
-  height: 600px;
+  height: 620px;
+  border: 0;
 }
 .cast {
   width: 1200px;
@@ -127,7 +150,7 @@ export default {
   color: #333333;
 }
 .Single {
-  width: 516px;
+  width: 353px;
   height: 258px;
   text-align: center;
   cursor: pointer;
@@ -140,8 +163,9 @@ export default {
   width: 189px;
   height: 160px;
 }
+
 .Multiple {
-  width: 516px;
+  width: 353px;
   height: 258px;
   text-align: center;
   cursor: pointer;
@@ -150,6 +174,20 @@ export default {
   border-radius: 10px;
 }
 .Multiple img {
+  margin-top: 50px;
+  width: 189px;
+  height: 160px;
+}
+.weiqi {
+  width: 353px;
+  height: 258px;
+  text-align: center;
+  cursor: pointer;
+  margin-left: 80px;
+  border: 1px solid #e3e3e4;
+  border-radius: 10px;
+}
+.weiqi img {
   margin-top: 50px;
   width: 189px;
   height: 160px;

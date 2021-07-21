@@ -5,7 +5,7 @@
       <template>
         <el-carousel indicator-position="outside">
           <el-carousel-item v-for="(item, index) in imgUrl" :key="index">
-            <img :src="item.url" alt="">
+            <img :src="item.url" alt="" />
           </el-carousel-item>
         </el-carousel>
       </template>
@@ -53,7 +53,7 @@
         <p>{{ $t("home.introduce") }}</p>
         <ul>
           <li>
-            <img src="../../assets/qb@2x.png" alt="">
+            <img src="../../assets/qb@2x.png" alt="" />
             <p class="introduce_title">
               {{ $t("home.wallet") }}
             </p>
@@ -62,7 +62,7 @@
             </p>
           </li>
           <li>
-            <img src="../../assets/cz@2x.png" alt="">
+            <img src="../../assets/cz@2x.png" alt="" />
             <p class="introduce_title">
               {{ $t("home.collect") }}
             </p>
@@ -71,7 +71,7 @@
             </p>
           </li>
           <li>
-            <img src="../../assets/tp@2x.png" alt="">
+            <img src="../../assets/tp@2x.png" alt="" />
             <p class="introduce_title">
               {{ $t("home.establish") }}
             </p>
@@ -80,7 +80,7 @@
             </p>
           </li>
           <li>
-            <img src="../../assets/sm@2x.png" alt="">
+            <img src="../../assets/sm@2x.png" alt="" />
             <p class="introduce_title">
               {{ $t("home.sale") }}
             </p>
@@ -99,7 +99,7 @@
         {{ $t("home.bazaar") }}
       </el-button>
       <div class="sponsor">
-        <img src="../../assets/zanzhushang.png" alt="">
+        <img src="../../assets/zanzhushang.png" alt="" />
       </div>
     </div>
   </div>
@@ -122,9 +122,9 @@ export default {
       imgUrl: [
         { url: require("../../assets/bannar7.jpg") },
         // { url: require("../../assets/bannar2.jpeg") },
-        { url: require("../../assets/bannar3.jpeg") },
+        { url: require("../../assets/bannar3.jpg") },
         // { url: require("../../assets/bannar4.jpeg") },
-        { url: require("../../assets/bannar5.jpeg") },
+        { url: require("../../assets/bannar5.jpg") },
         // { url: require("../../assets/bannar6.jpeg") },
       ],
     };
@@ -259,7 +259,7 @@ hr {
   font-size: 40px;
   font-family: Source Han Sans CN;
   font-weight: bold;
-  color: #09090a;
+  color: #fff;
   line-height: 46px;
 }
 .el-main-d i {
@@ -276,7 +276,7 @@ hr {
   font-size: 20px;
   font-family: Source Han Sans CN;
   font-weight: 400;
-  color: #262b34;
+  color: #bdbdbd;
   line-height: 32px;
   margin: 30px 0;
 }

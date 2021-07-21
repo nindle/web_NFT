@@ -23,7 +23,7 @@
           {{ $t("redactUser.xuanze") }}
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
       <div class="preview" />
@@ -117,7 +117,7 @@ export default {
         short_url: "",
         desc: "",
         address: this.$route.params.userId,
-        cover: "",
+        cover: this.$route.params.cover,
         website: "",
         twitter: "",
         pic: "",
@@ -126,6 +126,7 @@ export default {
   },
   created() {},
   async mounted() {
+    console.log(this.$route.params);
     this.formLabelAlign.address = this.$route.params.userId;
     const address = await initWallet();
     if (address != "") {
@@ -151,9 +152,10 @@ export default {
         });
         sessionStorage.setItem("userInfo", formLabelAlign.username);
         this.formLabelAlign = {};
+
         this.$router.push({
           name: "personalCenter",
-          params: { address: this.formLabelAlign.address },
+          params: { address: this.$route.params.userId },
         });
       } else if (resp.code == 500) {
         this.$message.error("更新失败");
