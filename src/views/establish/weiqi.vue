@@ -5,10 +5,10 @@
       {{ $t("Single.fanhui") }}
     </div>
     <el-form
+      ref="formLabelAlign"
       label-position="top"
       :model="formLabelAlign"
       :rules="rules"
-      ref="formLabelAlign"
     >
       <!-- 标题 -->
       <p
@@ -185,8 +185,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -202,8 +202,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -219,8 +219,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -323,7 +323,7 @@ export default {
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: "0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38",
+        token: "0x4769e82BaC4e7550D9311956fFb945f9eAB66E65",
         image: "",
         title: "",
         price: "",
@@ -489,7 +489,7 @@ export default {
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;
 
       const sgfitem = await contracts.Sgfitem(
-        0x3f1f2eff3a7ef3890b1b91cf1b13e72899bb1a38,
+        0x4769e82BaC4e7550D9311956fFb945f9eAB66E65,
         this.formLabelAlign.tokenid,
         this.formLabelAlign.meta_name,
         this.formLabelAlign.meta_filed1,

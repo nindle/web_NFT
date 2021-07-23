@@ -51,7 +51,7 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>{{ $t("Single.xuanze") }}</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
         </div>
       </el-upload>
 
@@ -177,8 +177,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -194,8 +194,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -211,8 +211,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -273,7 +273,7 @@ export default {
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: "0xE9285F4Bd13D86Fe4f4b019C6b54cc3f8c6f858C",
+        token: "0x10cab0D6aA8A236cddF0249DD602EEF52E7e6630",
         image: "",
         title: "",
         price: "",

@@ -238,7 +238,7 @@ function sequence(order) {
 async function setApproveAll(contract, address) {
   console.log("approveAll", address, contract);
   const tx = await contract.setApprovalForAll(
-    "0x200e61C267f040c3e00fC86d1fe507247F1b1B26",
+    "0x1ff9d91B940d552acE0f1a7A6e3c1c04b87B725d", // TransferProxy
     true
   );
   console.log("transaction=>", tx);
@@ -251,7 +251,7 @@ async function setApproveAll(contract, address) {
 async function isApprovedAll(contract, address) {
   const res = await contract.isApprovedForAll(
     address,
-    "0x200e61C267f040c3e00fC86d1fe507247F1b1B26"
+    "0x1ff9d91B940d552acE0f1a7A6e3c1c04b87B725d" // TransferProxy
   );
   console.log("isApprovedForAll=>", res);
   return res;

@@ -406,7 +406,7 @@ export default {
       this.wbnb_balance = this.$formatEther(erc20_balance.toString());
       const isApproved = await Erc20IsApproved(
         account,
-        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+        "0x03252f5C04f9b4Bc55A9994CbE8Eff5BA8041dF2"
       );
       console.log("isApproved", isApproved);
       this.isApproved = isApproved;
@@ -716,7 +716,7 @@ export default {
           salt: BigNumber.from(randomHex(32)),
           owner: addr,
           sellAsset: {
-            token: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+            token: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", // wbnb
             tokenId: BigNumber.from("0"),
             assetType: 2,
           },
@@ -761,7 +761,7 @@ export default {
     // Approve
     async bidApprove() {
       const resp = await Erc20Approve(
-        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+        "0x03252f5C04f9b4Bc55A9994CbE8Eff5BA8041dF2"
       );
       console.log("Erc20Approve", resp);
       setTimeout(() => {

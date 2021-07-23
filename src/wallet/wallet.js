@@ -97,15 +97,14 @@ export async function initWallet() {
   Vue.prototype.$address = accounts[0];
 
   // console.log('networkVersion=>', window.ethereum.networkVersion);
-  if (window.ethereum.networkVersion != 97) {
-    // alert('请切换到BSCTestnet网络！');
-    Message.error('请切换到BSCTestnet网络！');
+  // if (window.ethereum.networkVersion != 97) {
+  //   Message.error('请切换到BSCTestnet网络！');
+  //   return '';
+  // }
+  if (ethereum.networkVersion != 56) {
+    Message.error('请切换到BSCMainnet网络！');
     return '';
   }
-  // if (ethereum.networkVersion != 56) {
-  //     alert('请切换到BSCMainnet网络！');
-  //     return '';
-  // }
   sessionStorage.setItem("address", Vue.prototype.$address);
   return Vue.prototype.$address;
 }
