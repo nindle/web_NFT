@@ -6,7 +6,7 @@
     <div class="uploading">
       <el-upload
         ref="upload"
-        action="https://api.lionnft.io/v1/upload/file"
+        action="https://api.lionnft.net/v1/upload/file"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
@@ -23,7 +23,7 @@
           {{ $t("redactUser.xuanze") }}
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
         </div>
       </el-upload>
       <div class="preview" />
@@ -142,7 +142,7 @@ export default {
     async uploadSuccess(e) {
       this.formLabelAlign.pic = e.ipfs;
       const formLabelAlign = { ...this.formLabelAlign };
-      const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
+      const resp = await $http.post("https://api.lionnft.net/v1/user/edit", {
         ...formLabelAlign,
       });
       if (resp.code == 200) {

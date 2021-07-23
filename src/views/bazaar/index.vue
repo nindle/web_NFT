@@ -21,7 +21,7 @@
           :src="
             item.prop_image.replace(
               'ipfs://ipfs/',
-              'https://api.lionnft.io/v1/upload/view?hash='
+              'https://api.lionnft.net/v1/upload/view?hash='
             )
           "
           :class="{ hoverBg: index == hoverIndex }"
@@ -100,7 +100,7 @@ export default {
       this.a += 3;
     },
     async getList() {
-      const resp = await $http.get("https://api.lionnft.io/v1/explore/list");
+      const resp = await $http.get("https://api.lionnft.net/v1/explore/list");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
         if (this.showList[index].price === "") {

@@ -2,9 +2,9 @@
   <div>
     <!-- 个人中心背景图 -->
     <div class="personalCenter-bgc">
-      <img :src="userBgc" class="personalCenter-img" alt="" />
+      <img :src="userBgc" class="personalCenter-img" alt="">
       <el-upload
-        action="https://api.lionnft.io/v1/upload/file"
+        action="https://api.lionnft.net/v1/upload/file"
         :auto-upload="true"
         :on-success="uploadSuccessbgcFn"
       >
@@ -19,7 +19,7 @@
 
     <!-- 个人中头像图 -->
     <div class="personalCenter-pic">
-      <img :src="userpic" alt="" />
+      <img :src="userpic" alt="">
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
@@ -33,7 +33,7 @@
           style="cursor: pointer"
           alt=""
           @click="copyText"
-        />
+        >
       </p>
 
       <el-button
@@ -66,7 +66,7 @@
           src="../../assets/share.png"
           alt=""
           style="width: 17px; height: 17px"
-        />
+        >
       </div>
     </div>
     <!-- 产品系列 -->
@@ -91,7 +91,7 @@
                 :src="
                   item.prop_image.replace(
                     'ipfs://ipfs/',
-                    'https://api.lionnft.io/v1/upload/view?hash='
+                    'https://api.lionnft.net/v1/upload/view?hash='
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
@@ -99,7 +99,7 @@
                 @mouseover="hoverIndex = index"
                 @error="setDefaultImage"
                 @mouseout="hoverIndex = -1"
-              />
+              >
 
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
@@ -112,7 +112,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -154,7 +154,7 @@
                 :src="
                   item.prop_image.replace(
                     'ipfs://ipfs/',
-                    'https://api.lionnft.io/v1/upload/view?hash='
+                    'https://api.lionnft.net/v1/upload/view?hash='
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
@@ -162,7 +162,7 @@
                 @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -174,7 +174,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -220,7 +220,7 @@
                 :src="
                   item.prop_image.replace(
                     'ipfs://ipfs/',
-                    'https://api.lionnft.io/v1/upload/view?hash='
+                    'https://api.lionnft.net/v1/upload/view?hash='
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
@@ -228,7 +228,7 @@
                 @error="setDefaultImage"
                 @mouseover="hoverIndex = index"
                 @mouseout="hoverIndex = -1"
-              />
+              >
               <h3 class="username">{{ item.prop_name }}</h3>
               <p class="usermessage">{{ item.prop_desc }}</p>
               <div class="userprice">
@@ -240,7 +240,7 @@
                   class="userpriceimg"
                   style="float: right; margin-right: 40px"
                 >
-                  <img src="../../assets/souchang.png" alt="" /> 2314
+                  <img src="../../assets/souchang.png" alt=""> 2314
                 </div>
               </div>
               <div
@@ -282,7 +282,7 @@
                 :src="
                   item.prop_image.replace(
                     'ipfs://ipfs/',
-                    'https://api.lionnft.io/v1/upload/view?hash='
+                    'https://api.lionnft.net/v1/upload/view?hash='
                   )
                 "
                 :class="{ hoverBg: index == hoverIndex }"
@@ -403,7 +403,7 @@ export default {
         twitter: this.userinfo.user_twitter,
         pic: this.userinfo.user_pic,
       };
-      const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
+      const resp = await $http.post("https://api.lionnft.net/v1/user/edit", {
         ...edit,
       });
       this.getUserInfo();
@@ -477,7 +477,7 @@ export default {
 
     async getUserInfo() {
       const resp = await $http.get(
-        `https://api.lionnft.io/v1/user?address=${this.user_id}`
+        `https://api.lionnft.net/v1/user?address=${this.user_id}`
       );
 
       this.userinfo = resp.data;
@@ -491,7 +491,7 @@ export default {
       } else {
         this.userBgc = this.userinfo.user_cover.replace(
           "ipfs://ipfs/",
-          "https://api.lionnft.io/v1/upload/view?hash="
+          "https://api.lionnft.net/v1/upload/view?hash="
         );
       }
       if (this.userinfo.user_pic == "") {
@@ -499,7 +499,7 @@ export default {
       } else {
         this.userpic = this.userinfo.user_pic.replace(
           "ipfs://ipfs/",
-          "https://api.lionnft.io/v1/upload/view?hash="
+          "https://api.lionnft.net/v1/upload/view?hash="
         );
       }
       this.str = this.userinfo.user_address;
@@ -515,7 +515,7 @@ export default {
 
     async getCreated() {
       const resp = await $http.get(
-        `https://api.lionnft.io/v1/item/list?address=${this.user_id}&filter=${this.filters}`
+        `https://api.lionnft.net/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
       // console.log(resp);
       this.createdList = resp.list;

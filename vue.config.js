@@ -11,7 +11,7 @@ module.exports = {
     proxy: {
       //以'/v1'开头的接口会转接到下面的target的ip
       '/v1': {
-        target: 'https://api.lionnft.io/', // target host
+        target: 'https://api.lionnft.net/', // target host
         changeOrigin: true, // needed for virtual hosted sites
         ws: false, // proxy websockets
         pathRewrite: {

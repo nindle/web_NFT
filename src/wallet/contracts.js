@@ -25,7 +25,7 @@ async function Sgfitem(
   json.meta_field4 = meta_field4;
 
   const jsonResp = await $http.post(
-    "https://api.lionnft.io/v1/item/metadata",
+    "https://api.lionnft.net/v1/item/metadata",
     json
   );
   return jsonResp;
@@ -43,7 +43,7 @@ async function uploadJson(image, title, desc, props) {
   const formData = new FormData();
   formData.append("file", blob);
   const jsonResp = await $http.post(
-    "https://api.lionnft.io/v1/upload/file",
+    "https://api.lionnft.net/v1/upload/file",
     formData
   );
   return jsonResp;
@@ -53,7 +53,7 @@ async function newTokenId(contract) {
   const formData = new FormData();
   formData.append("address", contract);
   const tokenResp = await $http.post(
-    "https://api.lionnft.io/v1/tokenid/new",
+    "https://api.lionnft.net/v1/tokenid/new",
     formData
   );
   return tokenResp;
@@ -100,7 +100,7 @@ async function mintErc1155(
 }
 
 async function addItem(hash, assetType) {
-  const resp = await $http.post("https://api.lionnft.io/v1/item/add", {
+  const resp = await $http.post("https://api.lionnft.net/v1/item/add", {
     tx_id: hash,
     // 721=4 1155=3
     asset_type: assetType
@@ -197,7 +197,7 @@ async function orderSigner(signer, orderData) {
 }
 
 async function changeSale(token, token_id, sale) {
-  const resp = await $http.post("https://api.lionnft.io/v1/item/sale", {
+  const resp = await $http.post("https://api.lionnft.net/v1/item/sale", {
     token: token,
     token_id: token_id,
     sale: sale
@@ -206,7 +206,7 @@ async function changeSale(token, token_id, sale) {
 }
 
 async function createOrder(order, signature) {
-  const resp = await $http.post("https://api.lionnft.io/v1/order/create", {
+  const resp = await $http.post("https://api.lionnft.net/v1/order/create", {
     order: order,
     signature: signature
   });

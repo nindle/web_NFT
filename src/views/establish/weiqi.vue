@@ -5,10 +5,10 @@
       {{ $t("Single.fanhui") }}
     </div>
     <el-form
+      ref="formLabelAlign"
       label-position="top"
       :model="formLabelAlign"
       :rules="rules"
-      ref="formLabelAlign"
     >
       <!-- 标题 -->
       <p
@@ -29,7 +29,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.io/v1/upload/file"
+        action="https://api.lionnft.net/v1/upload/file"
         :auto-upload="false"
         :on-success="uploadSuccess"
       >
@@ -185,8 +185,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -202,8 +202,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -219,8 +219,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
