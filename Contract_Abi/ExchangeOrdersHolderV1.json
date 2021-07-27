@@ -1,0 +1,286 @@
+{
+  "address": "0x8e81E2f40ff2C88676C157308a4a26EDf00D1f92",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "owner",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ExchangeDomainV1.AssetType",
+                      "name": "assetType",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct ExchangeDomainV1.Asset",
+                  "name": "sellAsset",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ExchangeDomainV1.AssetType",
+                      "name": "assetType",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct ExchangeDomainV1.Asset",
+                  "name": "buyAsset",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ExchangeDomainV1.OrderKey",
+              "name": "key",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "selling",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "buying",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "sellerFee",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct ExchangeDomainV1.Order",
+          "name": "order",
+          "type": "tuple"
+        }
+      ],
+      "name": "add",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "owner",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ExchangeDomainV1.AssetType",
+                      "name": "assetType",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct ExchangeDomainV1.Asset",
+                  "name": "sellAsset",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "enum ExchangeDomainV1.AssetType",
+                      "name": "assetType",
+                      "type": "uint8"
+                    }
+                  ],
+                  "internalType": "struct ExchangeDomainV1.Asset",
+                  "name": "buyAsset",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct ExchangeDomainV1.OrderKey",
+              "name": "key",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "selling",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "buying",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "sellerFee",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct ExchangeDomainV1.Order",
+          "name": "order",
+          "type": "tuple"
+        }
+      ],
+      "name": "exists",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x36a7024061bcc1280e3d683b4d214ad4cb775403c8ebe9e8fed29fff5dd81f39",
+  "receipt": {
+    "to": null,
+    "from": "0x8D5BE0CF7a4FA0680AFF798516c259AC0eE57334",
+    "contractAddress": "0x8e81E2f40ff2C88676C157308a4a26EDf00D1f92",
+    "transactionIndex": 153,
+    "gasUsed": "278127",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x75af65bed79c5fb2681dac828901d6689f74ca4db8af2a16fd34364eb82219e3",
+    "transactionHash": "0x36a7024061bcc1280e3d683b4d214ad4cb775403c8ebe9e8fed29fff5dd81f39",
+    "logs": [],
+    "blockNumber": 9382590,
+    "cumulativeGasUsed": "25201742",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "1d744ab9c9d10f5943f429fe3641b18d",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.6+commit.7338295f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"components\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"salt\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"enum ExchangeDomainV1.AssetType\",\"name\":\"assetType\",\"type\":\"uint8\"}],\"internalType\":\"struct ExchangeDomainV1.Asset\",\"name\":\"sellAsset\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"enum ExchangeDomainV1.AssetType\",\"name\":\"assetType\",\"type\":\"uint8\"}],\"internalType\":\"struct ExchangeDomainV1.Asset\",\"name\":\"buyAsset\",\"type\":\"tuple\"}],\"internalType\":\"struct ExchangeDomainV1.OrderKey\",\"name\":\"key\",\"type\":\"tuple\"},{\"internalType\":\"uint256\",\"name\":\"selling\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"buying\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"sellerFee\",\"type\":\"uint256\"}],\"internalType\":\"struct ExchangeDomainV1.Order\",\"name\":\"order\",\"type\":\"tuple\"}],\"name\":\"add\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"salt\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"enum ExchangeDomainV1.AssetType\",\"name\":\"assetType\",\"type\":\"uint8\"}],\"internalType\":\"struct ExchangeDomainV1.Asset\",\"name\":\"sellAsset\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"enum ExchangeDomainV1.AssetType\",\"name\":\"assetType\",\"type\":\"uint8\"}],\"internalType\":\"struct ExchangeDomainV1.Asset\",\"name\":\"buyAsset\",\"type\":\"tuple\"}],\"internalType\":\"struct ExchangeDomainV1.OrderKey\",\"name\":\"key\",\"type\":\"tuple\"},{\"internalType\":\"uint256\",\"name\":\"selling\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"buying\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"sellerFee\",\"type\":\"uint256\"}],\"internalType\":\"struct ExchangeDomainV1.Order\",\"name\":\"order\",\"type\":\"tuple\"}],\"name\":\"exists\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/exchange/ExchangeOrdersHolderV1.sol\":\"ExchangeOrdersHolderV1\"},\"evmVersion\":\"istanbul\",\"libraries\":{\":__CACHE_BREAKER__\":\"0x00000000d41867734bbee4c6863d9255b2b06ac1\"},\"metadata\":{\"bytecodeHash\":\"none\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":800},\"remappings\":[]},\"sources\":{\"contracts/exchange/ExchangeDomainV1.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity =0.7.6;\\n\\ncontract ExchangeDomainV1 {\\n\\n    enum AssetType {NO_USE, ETH, ERC20, ERC1155, ERC721, ERC721Deprecated}\\n\\n    struct Asset {\\n        address token;\\n        uint tokenId;\\n        AssetType assetType;\\n    }\\n\\n    struct OrderKey {\\n        /* who signed the order */\\n        address owner;\\n        /* random number */\\n        uint salt;\\n\\n        /* what has owner */\\n        Asset sellAsset;\\n\\n        /* what wants owner */\\n        Asset buyAsset;\\n    }\\n\\n    struct Order {\\n        OrderKey key;\\n\\n        /* how much has owner (in wei, or UINT256_MAX if ERC-721) */\\n        uint selling;\\n        /* how much wants owner (in wei, or UINT256_MAX if ERC-721) */\\n        uint buying;\\n\\n        /* fee for selling */\\n        uint sellerFee;\\n    }\\n\\n    /* An ECDSA signature. */\\n    struct Sig {\\n        /* v parameter */\\n        uint8 v;\\n        /* r parameter */\\n        bytes32 r;\\n        /* s parameter */\\n        bytes32 s;\\n    }\\n}\",\"keccak256\":\"0x121eb08a5a373a7baa898f30c0888bdb06673117aa79e57d4b38b21259a25bce\",\"license\":\"MIT\"},\"contracts/exchange/ExchangeOrdersHolderV1.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n\\npragma solidity =0.7.6;\\npragma experimental ABIEncoderV2;\\n\\nimport \\\"./ExchangeDomainV1.sol\\\";\\n\\ncontract ExchangeOrdersHolderV1 {\\n\\n    mapping(bytes32 => OrderParams) internal orders;\\n\\n    struct OrderParams {\\n        /* how much has owner (in wei, or UINT256_MAX if ERC-721) */\\n        uint selling;\\n        /* how much wants owner (in wei, or UINT256_MAX if ERC-721) */\\n        uint buying;\\n\\n        /* fee for selling */\\n        uint sellerFee;\\n    }\\n\\n    function add(ExchangeDomainV1.Order calldata order) external {\\n        require(msg.sender == order.key.owner, \\\"order could be added by owner only\\\");\\n        bytes32 key = prepareKey(order);\\n        orders[key] = OrderParams(order.selling, order.buying, order.sellerFee);\\n    }\\n\\n    function exists(ExchangeDomainV1.Order calldata order) external view returns (bool) {\\n        bytes32 key = prepareKey(order);\\n        OrderParams memory params = orders[key];\\n        return params.buying == order.buying && params.selling == order.selling && params.sellerFee == order.sellerFee;\\n    }\\n\\n    function prepareKey(ExchangeDomainV1.Order memory order) internal pure returns (bytes32) {\\n        return keccak256(abi.encode(\\n                order.key.sellAsset.token,\\n                order.key.sellAsset.tokenId,\\n                order.key.owner,\\n                order.key.buyAsset.token,\\n                order.key.buyAsset.tokenId,\\n                order.key.salt\\n            ));\\n    }\\n}\",\"keccak256\":\"0x633d403a773383371e1661e48537b7c9a9bdb5473d54a8450ebd148779af20a1\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610411806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80632aee7a311461003b5780639f6cc6d614610064575b600080fd5b61004e6100493660046102a6565b610079565b60405161005b91906103b7565b60405180910390f35b6100776100723660046102a6565b610101565b005b60008061009361008e368590038501856102be565b6101ad565b60008181526020818152604091829020825160608101845281548152600182015492810183905260029091015492810192909252919250906101208501351480156100e357508051610100850135145b80156100f757508361014001358160400151145b925050505b919050565b61010e6020820182610285565b6001600160a01b0316336001600160a01b0316146101475760405162461bcd60e51b815260040161013e906103c2565b60405180910390fd5b600061015b61008e368490038401846102be565b6040805160608101825261010085013581526101208501356020808301918252610140909601358284019081526000948552958490529190922091518255516001820155915160029092019190915550565b80516040808201518051602091820151845160608601518051908501519685015195516000976101e9979596949593949293909290910161037d565b604051602081830303815290604052805190602001209050919050565b80356001600160a01b03811681146100fc57600080fd5b60006060828403121561022e578081fd5b6040516060810181811067ffffffffffffffff8211171561024b57fe5b60405290508061025a83610206565b81526020830135602082015260408301356006811061027857600080fd5b6040919091015292915050565b600060208284031215610296578081fd5b61029f82610206565b9392505050565b600061016082840312156102b8578081fd5b50919050565b60008183036101608112156102d1578182fd5b6040516080810167ffffffffffffffff82821081831117156102ef57fe5b8160405261010080851215610302578586fd5b8084019450828510828611171561031557fe5b8460405261032287610206565b8352602087013560a085015261033b886040890161021d565b60c085015261034d8860a0890161021d565b60e08501529183525084013560208201526101208401356040820152610140909301356060840152509092915050565b6001600160a01b0396871681526020810195909552928516604085015293166060830152608082019290925260a081019190915260c00190565b901515815260200190565b60208082526022908201527f6f7264657220636f756c64206265206164646564206279206f776e6572206f6e6040820152616c7960f01b60608201526080019056fea164736f6c6343000706000a",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80632aee7a311461003b5780639f6cc6d614610064575b600080fd5b61004e6100493660046102a6565b610079565b60405161005b91906103b7565b60405180910390f35b6100776100723660046102a6565b610101565b005b60008061009361008e368590038501856102be565b6101ad565b60008181526020818152604091829020825160608101845281548152600182015492810183905260029091015492810192909252919250906101208501351480156100e357508051610100850135145b80156100f757508361014001358160400151145b925050505b919050565b61010e6020820182610285565b6001600160a01b0316336001600160a01b0316146101475760405162461bcd60e51b815260040161013e906103c2565b60405180910390fd5b600061015b61008e368490038401846102be565b6040805160608101825261010085013581526101208501356020808301918252610140909601358284019081526000948552958490529190922091518255516001820155915160029092019190915550565b80516040808201518051602091820151845160608601518051908501519685015195516000976101e9979596949593949293909290910161037d565b604051602081830303815290604052805190602001209050919050565b80356001600160a01b03811681146100fc57600080fd5b60006060828403121561022e578081fd5b6040516060810181811067ffffffffffffffff8211171561024b57fe5b60405290508061025a83610206565b81526020830135602082015260408301356006811061027857600080fd5b6040919091015292915050565b600060208284031215610296578081fd5b61029f82610206565b9392505050565b600061016082840312156102b8578081fd5b50919050565b60008183036101608112156102d1578182fd5b6040516080810167ffffffffffffffff82821081831117156102ef57fe5b8160405261010080851215610302578586fd5b8084019450828510828611171561031557fe5b8460405261032287610206565b8352602087013560a085015261033b886040890161021d565b60c085015261034d8860a0890161021d565b60e08501529183525084013560208201526101208401356040820152610140909301356060840152509092915050565b6001600160a01b0396871681526020810195909552928516604085015293166060830152608082019290925260a081019190915260c00190565b901515815260200190565b60208082526022908201527f6f7264657220636f756c64206265206164646564206279206f776e6572206f6e6040820152616c7960f01b60608201526080019056fea164736f6c6343000706000a",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 4339,
+        "contract": "contracts/exchange/ExchangeOrdersHolderV1.sol:ExchangeOrdersHolderV1",
+        "label": "orders",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_bytes32,t_struct(OrderParams)4346_storage)"
+      }
+    ],
+    "types": {
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_mapping(t_bytes32,t_struct(OrderParams)4346_storage)": {
+        "encoding": "mapping",
+        "key": "t_bytes32",
+        "label": "mapping(bytes32 => struct ExchangeOrdersHolderV1.OrderParams)",
+        "numberOfBytes": "32",
+        "value": "t_struct(OrderParams)4346_storage"
+      },
+      "t_struct(OrderParams)4346_storage": {
+        "encoding": "inplace",
+        "label": "struct ExchangeOrdersHolderV1.OrderParams",
+        "members": [
+          {
+            "astId": 4341,
+            "contract": "contracts/exchange/ExchangeOrdersHolderV1.sol:ExchangeOrdersHolderV1",
+            "label": "selling",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 4343,
+            "contract": "contracts/exchange/ExchangeOrdersHolderV1.sol:ExchangeOrdersHolderV1",
+            "label": "buying",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 4345,
+            "contract": "contracts/exchange/ExchangeOrdersHolderV1.sol:ExchangeOrdersHolderV1",
+            "label": "sellerFee",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

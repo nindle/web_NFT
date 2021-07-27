@@ -6,7 +6,7 @@
       :src="
         details.prop_image.replace(
           'ipfs://ipfs/',
-          'https://api.lionnft.io/v1/upload/view?hash='
+          'https://api.lionnft.net/v1/upload/view?hash='
         )
       "
       style="border-radius: 20px"
@@ -389,7 +389,7 @@ export default {
         } else {
           _bid_list[k].bid_user_cover = _bid_list[k].bid_user_cover.replace(
             "ipfs://ipfs/",
-            "https://api.lionnft.io/v1/upload/view?hash="
+            "https://api.lionnft.net/v1/upload/view?hash="
           );
         }
       }
@@ -477,7 +477,7 @@ export default {
           "SgfUrl",
           this.details.prop_image.replace(
             "ipfs://ipfs/",
-            "https://api.lionnft.io/v1/upload/view?hash="
+            "https://api.lionnft.net/v1/upload/view?hash="
           )
         );
       }
@@ -504,7 +504,7 @@ export default {
 
     async getRecord() {
       const resp = await $http.get(
-        `https://api.lionnft.io/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
+        `https://api.lionnft.net/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
       );
       console.log(resp.list);
       this.tableData = resp.list;
@@ -518,7 +518,7 @@ export default {
 
     async getDetails() {
       const resp = await $http.get(
-        `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
+        `https://api.lionnft.net/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
       // eslint-disable-next-line no-empty
       console.log(resp);
@@ -535,7 +535,7 @@ export default {
       } else {
         this.creator_pic = this.details.creator_pic.replace(
           "ipfs://ipfs/",
-          "https://api.lionnft.io/v1/upload/view?hash="
+          "https://api.lionnft.net/v1/upload/view?hash="
         );
       }
       // 设置所有者默认头像
@@ -546,7 +546,7 @@ export default {
       } else {
         this.own_user_pic = this.details.own_user_pic.replace(
           "ipfs://ipfs/",
-          "https://api.lionnft.io/v1/upload/view?hash="
+          "https://api.lionnft.net/v1/upload/view?hash="
         );
       }
       this.details.price = ethers.utils.formatUnits(this.details.price);
