@@ -3,6 +3,16 @@
     <h2 class="bazaar_headline">
       {{ $t("bazaar.title") }}
     </h2>
+    <div class="classify">
+      <span
+        v-for="(item, index) in classifyList"
+        :key="index"
+        @click="classifyFn(item)"
+        :id="'classifyid' + item.cate_id"
+      >
+        {{ item.cate_name }}
+      </span>
+    </div>
     <ul v-loading="loading" class="exhibition">
       <li
         v-for="(item, index) in showList.slice(0, a)"
@@ -29,12 +39,7 @@
           @error="setDefaultImage"
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-        >
-        <!-- <iframe
-          id="iframeShow"
-          src="http://127.0.0.1:5501/src/views/details/test.html"
-          style="width: 612px; height: 782px; border: 0"
-        ></iframe> -->
+        />
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
@@ -43,7 +48,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt=""> 2314
+            <img src="../../assets/souchang.png" alt="" /> 2314
           </div>
         </div>
         <div
@@ -69,7 +74,6 @@
 </template>
 
 <script>
-// import Http from "../../utils/http";
 import $http from "../../utils/request";
 
 import { ethers } from "ethers";
@@ -85,13 +89,41 @@ export default {
       b: 5,
       showList: [],
       loading: true,
+      classifyList: [],
+      classifyLS: "",
+      classifyS: "",
     };
   },
   created() {},
   mounted() {
     this.getList();
+    this.getClassify();
   },
   methods: {
+    classifyFn(e) {
+      if (this.showList.length == this.classifyLS) {
+        this.getList();
+        this.$message({
+          message: "分类商品为空",
+          type: "warning",
+        });
+      }
+      if (this.classifyS !== e.cate_id) {
+        this.showList.forEach((item) => {
+          if (item.cate_list.length !== 0) {
+            item.cate_list.forEach((items) => {
+              if (e.cate_name == items.cate_name) {
+                this.showList = [];
+                this.showList.push(item);
+                this.classifyLS = this.showList.length;
+              }
+            });
+          }
+        });
+      }
+      this.classifyS = e.cate_id;
+    },
+
     setDefaultImage(e) {
       e.target.src = require("../../assets/weiqifm.jpg");
     },
@@ -99,6 +131,7 @@ export default {
     loadMore() {
       this.a += 3;
     },
+
     async getList() {
       const resp = await $http.get("https://api.lionnft.net/v1/explore/list");
       this.showList = resp.list;
@@ -112,12 +145,38 @@ export default {
         }
       });
       this.loading = false;
+      console.log(this.showList);
+    },
+
+    async getClassify() {
+      const data = await $http.get("https://api.lionnft.net/v1/category/list");
+      this.classifyList = data.list;
+      console.log(data);
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
+.classifyidstyle {
+  color: red;
+}
+.classify {
+  width: 1200px;
+  height: 60px;
+  margin: 0 auto;
+  font-size: 22px;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #000000;
+  span {
+    padding-right: 30px;
+    cursor: pointer;
+  }
+  span:hover {
+    color: red;
+  }
+}
 .hoverBg {
   filter: blur(8px);
 }

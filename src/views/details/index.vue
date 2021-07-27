@@ -12,7 +12,7 @@
       style="border-radius: 20px"
       alt=""
       @error="setDefaultImage"
-    >
+    />
     <div id="clearid" class="clear" />
     <!-- 产品详情 -->
     <ul class="details-a">
@@ -30,12 +30,12 @@
           {{ $t("details.available") }}
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="">
+          <img id="examines" src="../../assets/examine.png" alt="" />
           2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="">
+          <img id="examine" src="../../assets/souchang.png" alt="" />
           2122
         </span>
       </li>
@@ -44,7 +44,7 @@
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        >
+        />
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
@@ -102,7 +102,7 @@
                   params: { address: str },
                 })
               "
-            >
+            />
           </div>
 
           <div class="clear" />
@@ -136,8 +136,8 @@
                 v.bid_result == 0
                   ? "竞拍中"
                   : v.bid_result == 1
-                    ? "竞拍成功"
-                    : "竞拍失败"
+                  ? "竞拍成功"
+                  : "竞拍失败"
               }}
             </span>
             <el-button
@@ -153,7 +153,7 @@
         </div>
       </li>
 
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li>
         <div class="productdetails">
           <div style="width: 100%">
@@ -167,7 +167,7 @@
                   params: { address: str },
                 })
               "
-            >
+            />
           </div>
 
           <div class="clear" />
@@ -211,7 +211,7 @@
               alt=""
               style="cursor: pointer"
               @click="copyText(1)"
-            >
+            />
           </div>
         </div>
       </li>
@@ -228,7 +228,7 @@
                   params: { address: strs },
                 })
               "
-            >
+            />
           </div>
           <div class="clear" />
           <div
@@ -271,11 +271,11 @@
               alt=""
               style="cursor: pointer"
               @click="copyText(2)"
-            >
+            />
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li
         style="
           font-size: 15px;

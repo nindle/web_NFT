@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 // import Common from './common';
 
 axios.defaults.withCredentials = true;
@@ -8,14 +8,14 @@ let baseUrl = "";
 
 let loginUrl = baseUrl + "/v1/account/login";
 export default {
-  httpGet: function (url, data, succFn) {
+  httpGet: function(url, data, succFn) {
     // data.page_size = localStorage.getItem("page_size");
     axios({
       url: baseUrl + url,
       method: "get",
       params: data,
       type: "json"
-    }).then((resp) => {
+    }).then(resp => {
       if (resp.data.code == 401) {
         console.log("not login");
         // location.href = loginUrl + "?goto=" + escape(location.href);
@@ -26,14 +26,14 @@ export default {
     });
   },
 
-  httpPost: function (url, data, succFn) {
+  httpPost: function(url, data, succFn) {
     // data.page_size = localStorage.getItem("page_size");
     axios({
       url: baseUrl + url,
       method: "post",
       data,
       type: "json"
-    }).then((resp) => {
+    }).then(resp => {
       if (resp.data.code == 401) {
         // console.log("not login");
         // location.href = loginUrl + "?goto=" + escape(location.href);
@@ -43,7 +43,7 @@ export default {
     });
   },
 
-  httpJson: function (url, data, succFn) {
+  httpJson: function(url, data, succFn) {
     data.page_size = localStorage.getItem("page_size");
     axios({
       url: baseUrl + url,
@@ -51,7 +51,7 @@ export default {
       data: JSON.stringify(data),
       type: "json",
       contentType: "application/json"
-    }).then((resp) => {
+    }).then(resp => {
       if (resp.data.code == 401) {
         console.log("not login");
         // location.href = loginUrl + "?goto=" + escape(location.href);
