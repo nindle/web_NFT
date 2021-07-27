@@ -244,7 +244,12 @@ export default {
       rules: {
         title: [
           { required: true, message: "请输入商品名称", trigger: "blur" },
-          { min: 3, max: 8, message: "长度在 3 到 32 个字符", trigger: "blur" },
+          {
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 32 个字符",
+            trigger: "blur",
+          },
         ],
         price: [
           { required: true, message: "价格不能为空" },

@@ -233,9 +233,9 @@ export default {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 32 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 32 个字符",
             trigger: "blur",
           },
         ],
