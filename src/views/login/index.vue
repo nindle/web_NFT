@@ -2,23 +2,23 @@
   <div class="loginStyle">
     <div class="login">
       <el-form
+        ref="ruleForm"
         :model="ruleForm"
         status-icon
-        ref="ruleForm"
         label-width="100px"
         class="demo-ruleForm"
         label-position="right"
       >
         <el-form-item label="账号">
-          <el-input v-model="ruleForm.age" placeholder="请输入账号"></el-input>
+          <el-input v-model="ruleForm.age" placeholder="请输入账号" />
         </el-form-item>
         <el-form-item label="密码">
           <el-input
-            type="password"
             v-model="ruleForm.pass"
+            type="password"
             placeholder="请输入密码"
             autocomplete="off"
-          ></el-input>
+          />
         </el-form-item>
 
         <el-form-item id="formSubmit">
@@ -30,9 +30,9 @@
           >
             登录
           </el-button>
-          <el-button @click="resetForm('ruleForm')" class="logStyle" round
-            >注册</el-button
-          >
+          <el-button class="logStyle" round @click="resetForm('ruleForm')">
+            注册
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -55,6 +55,7 @@ export default {
       // },
     };
   },
+  computed: {},
   mounted() {},
   methods: {
     submitForm(formName) {
@@ -71,7 +72,6 @@ export default {
       this.$refs[formName].resetFields();
     },
   },
-  computed: {},
 };
 </script>
 
