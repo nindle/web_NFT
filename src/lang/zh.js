@@ -68,9 +68,9 @@ export default {
     weiqi: "铸造围棋",
     zijin: "我们不拥有您的私钥，未经您的确认无法访问您的资金",
     tishi: "提示",
-    tihsi1: "1.下完棋点击下载SGF棋谱文件",
-    tishi2: "2.下载完SGF文件点击下一步",
-    quxiao: "取 消",
+    tihsi1: "1.下载SGF文件方可进行下一步",
+    tishi2: "2.点击'跳过'上传自己的SGF文件",
+    quxiao: "跳过",
     xiayibu: "下一步"
   },
   Single: {

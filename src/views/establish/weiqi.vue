@@ -29,7 +29,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.io/v1/upload/file"
+        action="https://api.lionnft.net/v1/upload/file"
         :auto-upload="false"
         :on-success="uploadSuccess"
       >
@@ -251,9 +251,9 @@ export default {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 32个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 32个字符",
             trigger: "blur",
           },
         ],
@@ -267,45 +267,45 @@ export default {
         meta_name: [
           { required: true, message: "棋谱名称不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 32 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 32 个字符",
             trigger: "blur",
           },
         ],
         meta_filed1: [
           { required: true, message: "黑棋棋手不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 16 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 16 个字符",
             trigger: "blur",
           },
         ],
         meta_filed2: [
           { required: true, message: "黑棋段位不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 16 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 16 个字符",
             trigger: "blur",
           },
         ],
         meta_filed3: [
           { required: true, message: "白棋棋手不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 16 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 16 个字符",
             trigger: "blur",
           },
         ],
         meta_filed4: [
           { required: true, message: "白棋段位不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 16 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 16 个字符",
             trigger: "blur",
           },
         ],

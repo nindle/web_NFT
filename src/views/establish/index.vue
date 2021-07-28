@@ -35,12 +35,14 @@
     >
       <p class="tishi">{{ $t("establish.tihsi1") }}</p>
       <p class="tishi">{{ $t("establish.tishi2") }}</p>
-      <iframe class="iframestyle" src="https://lionnft.io/weiqi.html" />
+      <iframe
+        class="iframestyle"
+        id="iframeid"
+        src="https://lionnft.io/weiqi.html"
+      />
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false"
-          >{{ $t("establish.quxiao") }}
-        </el-button>
-        <el-button type="primary" @click="weiqiFn">
+        <el-button @click="weiqiFn">{{ $t("establish.quxiao") }} </el-button>
+        <el-button type="primary" @click="weiqiFn" :disabled="next">
           {{ $t("establish.xiayibu") }}
         </el-button>
       </span>
@@ -56,12 +58,22 @@ import { userInfoApi } from "../../api/user";
 export default {
   data() {
     return {
+      next: true,
       dialogVisible: false,
     };
   },
   computed: {},
   mounted() {
-    console.log(sessionStorage.getItem("address"));
+    window.addEventListener(
+      "message",
+      (ev) => {
+        var data = ev.data;
+        if (data.code === 10000) {
+          this.next = false;
+        }
+      },
+      false
+    );
     var timer = setTimeout(this.setTimeoutFn, 500);
     timer;
   },

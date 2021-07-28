@@ -6,10 +6,11 @@
     <div class="uploading">
       <el-upload
         ref="upload"
-        action="https://api.lionnft.io/v1/upload/file"
+        action="https://api.lionnft.net/v1/upload/file"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
+        :on-change="before_upload"
       >
         <el-button
           round
@@ -58,15 +59,20 @@
       </p>
     </div>
     <!-- 编辑表单 -->
-    <el-form label-position="top" :model="formLabelAlign">
-      <el-form-item :label="$t('redactUser.name')">
+    <el-form
+      ref="formLabelAlign"
+      label-position="top"
+      :model="formLabelAlign"
+      :rules="rules"
+    >
+      <el-form-item :label="$t('redactUser.name')" prop="username">
         <el-input
           v-model="formLabelAlign.username"
           class="el-input-a"
           :placeholder="$t('redactUser.PleaseName')"
         />
       </el-form-item>
-      <el-form-item :label="$t('redactUser.URL')">
+      <el-form-item :label="$t('redactUser.URL')" prop="short_url">
         <el-input
           v-model="formLabelAlign.short_url"
           width:400px
@@ -76,7 +82,7 @@
           <template slot="prepend">lionnft.com/</template>
         </el-input>
       </el-form-item>
-      <el-form-item :label="$t('redactUser.Bio')">
+      <el-form-item :label="$t('redactUser.Bio')" prop="desc">
         <el-input
           v-model="formLabelAlign.desc"
           class="el-input-a"
@@ -92,7 +98,7 @@
           margin-top: 20px;
         "
         type="primary"
-        @click="postUserEdit"
+        @click="postUserEdit(formLabelAlign)"
       >
         {{ $t("redactUser.Update") }}
       </el-button>
@@ -109,6 +115,16 @@ export default {
   props: {},
   data() {
     return {
+      rules: {
+        username: [
+          { required: true, message: "名称不可为空", trigger: "blur" },
+          { min: 3, max: 5, message: "长度在 2 到 16 个字符", trigger: "blur" },
+        ],
+        short_url: [
+          { required: true, message: "URL不可为空", trigger: "blur" },
+        ],
+        desc: [{ required: true, message: "介绍不可为空", trigger: "blur" }],
+      },
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
@@ -122,11 +138,11 @@ export default {
         twitter: "",
         pic: "",
       },
+      userpicurl: false,
     };
   },
   created() {},
   async mounted() {
-    console.log(this.$route.params);
     this.formLabelAlign.address = this.$route.params.userId;
     const address = await initWallet();
     if (address != "") {
@@ -135,6 +151,13 @@ export default {
   },
 
   methods: {
+    before_upload(e) {
+      if (e.url == "") {
+        this.userpicurl = false;
+      } else {
+        this.userpicurl = true;
+      }
+    },
     uploadFile() {
       this.$refs.upload.submit();
     },
@@ -142,7 +165,7 @@ export default {
     async uploadSuccess(e) {
       this.formLabelAlign.pic = e.ipfs;
       const formLabelAlign = { ...this.formLabelAlign };
-      const resp = await $http.post("https://api.lionnft.io/v1/user/edit", {
+      const resp = await $http.post("https://api.lionnft.net/v1/user/edit", {
         ...formLabelAlign,
       });
       if (resp.code == 200) {
@@ -157,13 +180,26 @@ export default {
           name: "personalCenter",
           params: { address: this.$route.params.userId },
         });
-      } else if (resp.code == 500) {
+      } else {
         this.$message.error("更新失败");
       }
     },
 
     async postUserEdit() {
-      await this.uploadFile();
+      this.$refs.formLabelAlign.validate((valid) => {
+        if (valid) {
+          if (this.userpicurl == false) {
+            this.$message({
+              message: "头像不可为空",
+              type: "warning",
+            });
+          } else {
+            this.uploadFile();
+          }
+        } else {
+          return false;
+        }
+      });
     },
   },
 };
