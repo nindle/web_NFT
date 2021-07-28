@@ -71,9 +71,10 @@ export default {
     zijin:
       "We do not own your private keys and cannot access your funds without your confirmation",
     tishi: "prompt",
-    tihsi1: "1. Download the SGF file before proceeding to the next step",
-    tishi2: "2. Click 'jump over' to upload your own SGF file",
-    quxiao: "jump over",
+    tihsi1:
+      "1. After playing chess, click to download the SGF chess record file",
+    tishi2: "2. After downloading the SGF file, click Next",
+    quxiao: "cancel",
     xiayibu: "Next step"
   },
   Single: {
