@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div style="position: relative">
     <swiper
       ref="bestSelling"
@@ -16,7 +16,7 @@
             :src="
               item.user_cover.replace(
                 'ipfs://ipfs/',
-                'https://api.lionnft.net/v1/upload/view?hash='
+                'https://api.lionnft.io/v1/upload/view?hash='
               )
             "
             style="width: 371px; height: 186px"
@@ -26,7 +26,7 @@
             :src="
               item.user_pic.replace(
                 'ipfs://ipfs/',
-                'https://api.lionnft.net/v1/upload/view?hash='
+                'https://api.lionnft.io/v1/upload/view?hash='
               )
             "
             style="
@@ -112,7 +112,7 @@ export default {
 
     async getUserInfo() {
       const resp = await $http.get(
-        "https://api.lionnft.net/v1/user/top?user=seller"
+        "https://api.lionnft.io/v1/user/top?user=seller"
       );
       console.log(resp);
       resp.list.forEach((item, index) => {

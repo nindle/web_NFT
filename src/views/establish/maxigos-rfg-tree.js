@@ -5376,11 +5376,9 @@ if (!mxG.G.prototype.createSgf) {
     this.showGBox("ShowSgf");
   };
   mxG.G.prototype.doSgf = function() {
-    if (this.sgfAction == "download") {
-      window.parent.postMessage({ code: 10000 }, "*");
-
+    if (this.sgfAction == "download")
       this.doDownloadSgf(this.rN.sgf ? this.rN.sgf : "maxiGos.sgf");
-    } else if (this.sgfAction == "edit") this.doEditSgf();
+    else if (this.sgfAction == "edit") this.doEditSgf();
     else this.doShowSgf();
   };
   mxG.G.prototype.updateSgf = function() {

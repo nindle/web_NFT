@@ -43,7 +43,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.net/v1/upload/file"
+        action="https://api.lionnft.io/v1/upload/file"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
@@ -233,9 +233,9 @@ export default {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
           {
-            min: 2,
-            max: 32,
-            message: "长度在 2 到 32 个字符",
+            min: 3,
+            max: 16,
+            message: "长度在 3 到 32 个字符",
             trigger: "blur",
           },
         ],
