@@ -4,14 +4,16 @@
       {{ $t("bazaar.title") }}
     </h2>
     <div class="classify">
-      <span
+      <el-button
+        size="small"
         v-for="(item, index) in classifyList"
-        :id="'classifyid' + item.cate_id"
         :key="index"
+        round
         @click="classifyFn(item)"
+        id="classifyid"
       >
         {{ item.cate_name }}
-      </span>
+      </el-button>
     </div>
     <ul v-loading="loading" class="exhibition">
       <li
@@ -39,7 +41,7 @@
           @error="setDefaultImage"
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-        >
+        />
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
@@ -48,7 +50,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt=""> 2314
+            <img src="../../assets/souchang.png" alt="" /> 2314
           </div>
         </div>
         <div
@@ -90,8 +92,6 @@ export default {
       showList: [],
       loading: true,
       classifyList: [],
-      classifyLS: "",
-      classifyS: "",
     };
   },
   created() {},
@@ -100,28 +100,29 @@ export default {
     this.getClassify();
   },
   methods: {
-    classifyFn(e) {
-      if (this.showList.length == this.classifyLS) {
-        this.getList();
+    async classifyFn(e) {
+      const data = await $http.get(
+        `https://api.lionnft.net/v1/explore/list?cate_id=${e.cate_id}`
+      );
+      if (data.list.length == 0) {
         this.$message({
           message: "分类商品为空",
           type: "warning",
         });
-      }
-      if (this.classifyS !== e.cate_id) {
-        this.showList.forEach((item) => {
-          if (item.cate_list.length !== 0) {
-            item.cate_list.forEach((items) => {
-              if (e.cate_name == items.cate_name) {
-                this.showList = [];
-                this.showList.push(item);
-                this.classifyLS = this.showList.length;
-              }
-            });
+        this.getList();
+      } else {
+        this.showList = [];
+        this.showList = data.list;
+        this.showList.forEach((item, index) => {
+          if (this.showList[index].price === "") {
+            this.showList[index].price = "暂无价格";
+          } else {
+            this.showList[index].price = ethers.utils.formatUnits(
+              this.showList[index].price
+            );
           }
         });
       }
-      this.classifyS = e.cate_id;
     },
 
     setDefaultImage(e) {
@@ -145,22 +146,23 @@ export default {
         }
       });
       this.loading = false;
-      console.log(this.showList);
     },
 
     async getClassify() {
       const data = await $http.get("https://api.lionnft.net/v1/category/list");
       this.classifyList = data.list;
-      console.log(data);
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.classifyidstyle {
-  color: red;
+#classifyid {
+  margin-right: 20px;
+  color: #000;
+  font-family: Source Han Sans CN;
 }
+
 .classify {
   width: 1200px;
   height: 60px;
@@ -169,13 +171,6 @@ export default {
   font-family: Source Han Sans CN;
   font-weight: bold;
   color: #000000;
-  span {
-    padding-right: 30px;
-    cursor: pointer;
-  }
-  span:hover {
-    color: red;
-  }
 }
 .hoverBg {
   filter: blur(8px);
