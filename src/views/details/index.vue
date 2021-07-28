@@ -6,13 +6,13 @@
       :src="
         details.prop_image.replace(
           'ipfs://ipfs/',
-          'https://api.lionnft.net/v1/upload/view?hash='
+          'https://api.lionnft.io/v1/upload/view?hash='
         )
       "
       style="border-radius: 20px"
       alt=""
       @error="setDefaultImage"
-    />
+    >
     <div id="clearid" class="clear" />
     <!-- 产品详情 -->
     <ul class="details-a">
@@ -30,12 +30,12 @@
           {{ $t("details.available") }}
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="" />
+          <img id="examines" src="../../assets/examine.png" alt="">
           2212
           <!-- <div class="clear"></div> -->
         </span>
         <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="" />
+          <img id="examine" src="../../assets/souchang.png" alt="">
           2122
         </span>
       </li>
@@ -44,7 +44,7 @@
           src="../../assets/price.png"
           style="width: 47px; height: 47px; margin: 5px 15px 0 0"
           alt=""
-        />
+        >
         {{ details.price }} {{ details.coin_name }}
       </li>
       <li>
@@ -102,7 +102,7 @@
                   params: { address: str },
                 })
               "
-            />
+            >
           </div>
 
           <div class="clear" />
@@ -136,8 +136,8 @@
                 v.bid_result == 0
                   ? "竞拍中"
                   : v.bid_result == 1
-                  ? "竞拍成功"
-                  : "竞拍失败"
+                    ? "竞拍成功"
+                    : "竞拍失败"
               }}
             </span>
             <el-button
@@ -153,7 +153,7 @@
         </div>
       </li>
 
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li>
         <div class="productdetails">
           <div style="width: 100%">
@@ -167,7 +167,7 @@
                   params: { address: str },
                 })
               "
-            />
+            >
           </div>
 
           <div class="clear" />
@@ -211,7 +211,7 @@
               alt=""
               style="cursor: pointer"
               @click="copyText(1)"
-            />
+            >
           </div>
         </div>
       </li>
@@ -228,7 +228,7 @@
                   params: { address: strs },
                 })
               "
-            />
+            >
           </div>
           <div class="clear" />
           <div
@@ -271,11 +271,11 @@
               alt=""
               style="cursor: pointer"
               @click="copyText(2)"
-            />
+            >
           </div>
         </div>
       </li>
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
+      <hr style="border: 1px solid #eeeeee; margin: 24px 0">
       <li
         style="
           font-size: 15px;
@@ -389,7 +389,7 @@ export default {
         } else {
           _bid_list[k].bid_user_cover = _bid_list[k].bid_user_cover.replace(
             "ipfs://ipfs/",
-            "https://api.lionnft.net/v1/upload/view?hash="
+            "https://api.lionnft.io/v1/upload/view?hash="
           );
         }
       }
@@ -406,7 +406,7 @@ export default {
       this.wbnb_balance = this.$formatEther(erc20_balance.toString());
       const isApproved = await Erc20IsApproved(
         account,
-        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+        "0x03252f5C04f9b4Bc55A9994CbE8Eff5BA8041dF2"
       );
       console.log("isApproved", isApproved);
       this.isApproved = isApproved;
@@ -477,7 +477,7 @@ export default {
           "SgfUrl",
           this.details.prop_image.replace(
             "ipfs://ipfs/",
-            "https://api.lionnft.net/v1/upload/view?hash="
+            "https://api.lionnft.io/v1/upload/view?hash="
           )
         );
       }
@@ -504,7 +504,7 @@ export default {
 
     async getRecord() {
       const resp = await $http.get(
-        `https://api.lionnft.net/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
+        `https://api.lionnft.io/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
       );
       console.log(resp.list);
       this.tableData = resp.list;
@@ -518,7 +518,7 @@ export default {
 
     async getDetails() {
       const resp = await $http.get(
-        `https://api.lionnft.net/v1/item/info?token=${this.token}&token_id=${this.token_id}`
+        `https://api.lionnft.io/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
       // eslint-disable-next-line no-empty
       console.log(resp);
@@ -535,7 +535,7 @@ export default {
       } else {
         this.creator_pic = this.details.creator_pic.replace(
           "ipfs://ipfs/",
-          "https://api.lionnft.net/v1/upload/view?hash="
+          "https://api.lionnft.io/v1/upload/view?hash="
         );
       }
       // 设置所有者默认头像
@@ -546,7 +546,7 @@ export default {
       } else {
         this.own_user_pic = this.details.own_user_pic.replace(
           "ipfs://ipfs/",
-          "https://api.lionnft.net/v1/upload/view?hash="
+          "https://api.lionnft.io/v1/upload/view?hash="
         );
       }
       this.details.price = ethers.utils.formatUnits(this.details.price);
@@ -716,7 +716,7 @@ export default {
           salt: BigNumber.from(randomHex(32)),
           owner: addr,
           sellAsset: {
-            token: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+            token: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", // wbnb
             tokenId: BigNumber.from("0"),
             assetType: 2,
           },
@@ -761,7 +761,7 @@ export default {
     // Approve
     async bidApprove() {
       const resp = await Erc20Approve(
-        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+        "0x03252f5C04f9b4Bc55A9994CbE8Eff5BA8041dF2"
       );
       console.log("Erc20Approve", resp);
       setTimeout(() => {
