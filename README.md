@@ -1,3 +1,12 @@
+
+# 分支说明
+
+* master 主分支（本地开发或测试服代码 .net域名）
+
+* prod 生产分支（正式服代码 .io域名）
+
+* mobile 手机版分支
+
 <p align="center">
   <a href="https://github.com/vuejs/vue">
     <img src="https://img.shields.io/badge/vue-2.6.11-brightgreen" alt="vue">

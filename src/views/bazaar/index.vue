@@ -3,6 +3,18 @@
     <h2 class="bazaar_headline">
       {{ $t("bazaar.title") }}
     </h2>
+    <div class="classify">
+      <el-button
+        v-for="(item, index) in classifyList"
+        id="classifyid"
+        :key="index"
+        size="small"
+        round
+        @click="classifyFn(item)"
+      >
+        {{ item.cate_name }}
+      </el-button>
+    </div>
     <ul v-loading="loading" class="exhibition">
       <li
         v-for="(item, index) in showList.slice(0, a)"
@@ -21,7 +33,7 @@
           :src="
             item.prop_image.replace(
               'ipfs://ipfs/',
-              'https://api.lionnft.io/v1/upload/view?hash='
+              'https://api.lionnft.net/v1/upload/view?hash='
             )
           "
           :class="{ hoverBg: index == hoverIndex }"
@@ -30,11 +42,6 @@
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
         >
-        <!-- <iframe
-          id="iframeShow"
-          src="http://127.0.0.1:5501/src/views/details/test.html"
-          style="width: 612px; height: 782px; border: 0"
-        ></iframe> -->
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
@@ -69,7 +76,6 @@
 </template>
 
 <script>
-// import Http from "../../utils/http";
 import $http from "../../utils/request";
 
 import { ethers } from "ethers";
@@ -85,13 +91,40 @@ export default {
       b: 5,
       showList: [],
       loading: true,
+      classifyList: [],
     };
   },
   created() {},
   mounted() {
     this.getList();
+    this.getClassify();
   },
   methods: {
+    async classifyFn(e) {
+      const data = await $http.get(
+        `https://api.lionnft.net/v1/explore/list?cate_id=${e.cate_id}`
+      );
+      if (data.list.length == 0) {
+        this.$message({
+          message: "分类商品为空",
+          type: "warning",
+        });
+        this.getList();
+      } else {
+        this.showList = [];
+        this.showList = data.list;
+        this.showList.forEach((item, index) => {
+          if (this.showList[index].price === "") {
+            this.showList[index].price = "暂无价格";
+          } else {
+            this.showList[index].price = ethers.utils.formatUnits(
+              this.showList[index].price
+            );
+          }
+        });
+      }
+    },
+
     setDefaultImage(e) {
       e.target.src = require("../../assets/weiqifm.jpg");
     },
@@ -99,8 +132,9 @@ export default {
     loadMore() {
       this.a += 3;
     },
+
     async getList() {
-      const resp = await $http.get("https://api.lionnft.io/v1/explore/list");
+      const resp = await $http.get("https://api.lionnft.net/v1/explore/list");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
         if (this.showList[index].price === "") {
@@ -113,11 +147,31 @@ export default {
       });
       this.loading = false;
     },
+
+    async getClassify() {
+      const data = await $http.get("https://api.lionnft.net/v1/category/list");
+      this.classifyList = data.list;
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
+#classifyid {
+  margin-right: 20px;
+  color: #000;
+  font-family: Source Han Sans CN;
+}
+
+.classify {
+  width: 1200px;
+  height: 60px;
+  margin: 0 auto;
+  font-size: 22px;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #000000;
+}
 .hoverBg {
   filter: blur(8px);
 }

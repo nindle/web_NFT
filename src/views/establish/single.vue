@@ -43,7 +43,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.io/v1/upload/file"
+        action="https://api.lionnft.net/v1/upload/file"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
@@ -233,9 +233,9 @@ export default {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
           {
-            min: 3,
-            max: 16,
-            message: "长度在 3 到 32 个字符",
+            min: 2,
+            max: 32,
+            message: "长度在 2 到 32 个字符",
             trigger: "blur",
           },
         ],
@@ -260,7 +260,7 @@ export default {
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: "0x4769e82BaC4e7550D9311956fFb945f9eAB66E65",
+        token: "0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38",
         image: "",
         title: "",
         price: "",
@@ -283,6 +283,14 @@ export default {
   },
   async mounted() {
     this.open();
+    // const address = await initWallet();
+    // console.log(address);
+    // if (address != "") {
+    //   const cont721 = Contracts721();
+    //   currCont = cont721;
+    //   await this.whiteList(cont721);
+    //   await this.isApprovedAll(cont721);
+    // }
   },
   beforeUpdate() {
     this.editFn();
@@ -369,8 +377,8 @@ export default {
     // 白名单
     async whiteList(cont) {
       const res = await contracts.isWhitelist(cont, this.$address);
-      console.log('whiteList', cont.address, this.$address, res);
       if (res == false) {
+        // alert("不在白名单，无法创建NFT");
         this.$message({
           message: "不在白名单，无法创建NFT",
           type: "warning",
