@@ -51,7 +51,7 @@
         <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
         <el-button plain round>{{ $t("Single.xuanze") }}</el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
 
@@ -153,6 +153,7 @@
     <el-dialog
       :title="$t('Single.Create')"
       :visible.sync="dialogVisible"
+      v-loading="loading_ing"
       center
     >
       <div class="Approve">
@@ -167,8 +168,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -184,8 +185,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -201,8 +202,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-                ? $t("Single.Progress")
-                : $t("Single.Start")
+              ? $t("Single.Progress")
+              : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -229,6 +230,7 @@ export default {
   props: {},
   data() {
     return {
+      loading_ing: false,
       rules: {
         title: [
           { required: true, message: "商品名称不能为空", trigger: "blur" },
@@ -390,6 +392,7 @@ export default {
     // 上传图片
     uploadFile() {
       this.upLoading = true;
+      this.loading_ing = true;
       this.$refs.upload.submit();
     },
     // 上传成功
@@ -428,10 +431,12 @@ export default {
       const addResp = await contracts.addItem(mintResp.hash, 4);
       console.log("addResp=>", addResp);
       this.upLoading = false;
+      this.loading_ing = false;
       this.changes = 2;
     },
     // 创建订单
     async createOrder() {
+      this.loading_ing = true;
       this.ordLoading = true;
       const order = {
         key: {
@@ -474,6 +479,7 @@ export default {
       this.ordLoading = false;
       this.changes = 3;
       // alert("创建完成");
+      this.loading_ing = false;
       this.$message({
         message: "创建完成",
         type: "success",
