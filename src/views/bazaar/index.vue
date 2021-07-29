@@ -30,12 +30,7 @@
         @mouseleave="hover = false"
       >
         <img
-          :src="
-            item.prop_image.replace(
-              'ipfs://ipfs/',
-              'https://api.lionnft.net/v1/upload/view?hash='
-            )
-          "
+          :src="$Cover(item.prop_image)"
           :class="{ hoverBg: index == hoverIndex }"
           alt=""
           @error="setDefaultImage"
@@ -102,7 +97,7 @@ export default {
   methods: {
     async classifyFn(e) {
       const data = await $http.get(
-        `https://api.lionnft.net/v1/explore/list?cate_id=${e.cate_id}`
+        `/v1/explore/list?cate_id=${e.cate_id}`
       );
       if (data.list.length == 0) {
         this.$message({
@@ -134,7 +129,7 @@ export default {
     },
 
     async getList() {
-      const resp = await $http.get("https://api.lionnft.net/v1/explore/list");
+      const resp = await $http.get("/v1/explore/list");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
         if (this.showList[index].price === "") {
@@ -149,7 +144,7 @@ export default {
     },
 
     async getClassify() {
-      const data = await $http.get("https://api.lionnft.net/v1/category/list");
+      const data = await $http.get("/v1/category/list");
       this.classifyList = data.list;
     },
   },

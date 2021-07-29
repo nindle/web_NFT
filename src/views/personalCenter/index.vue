@@ -4,7 +4,7 @@
     <div class="personalCenter-bgc">
       <img :src="userBgc" class="personalCenter-img" alt="" />
       <el-upload
-        action="https://api.lionnft.net/v1/upload/file"
+        :action="$baseUrl+'/v1/upload/file'"
         :auto-upload="true"
         :on-success="uploadSuccessbgcFn"
       >
@@ -88,12 +88,7 @@
               @mouseleave="hover = false"
             >
               <img
-                :src="
-                  item.prop_image.replace(
-                    'ipfs://ipfs/',
-                    'https://api.lionnft.net/v1/upload/view?hash='
-                  )
-                "
+                :src="$Cover(item.prop_image)"
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
                 @mouseover="hoverIndex = index"
@@ -151,12 +146,7 @@
               @mouseleave="hover = false"
             >
               <img
-                :src="
-                  item.prop_image.replace(
-                    'ipfs://ipfs/',
-                    'https://api.lionnft.net/v1/upload/view?hash='
-                  )
-                "
+                :src="$Cover(item.prop_image)"
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
                 @error="setDefaultImage"
@@ -217,12 +207,7 @@
               @mouseleave="hover = false"
             >
               <img
-                :src="
-                  item.prop_image.replace(
-                    'ipfs://ipfs/',
-                    'https://api.lionnft.net/v1/upload/view?hash='
-                  )
-                "
+                :src="$Cover(item.prop_image)"
                 :class="{ hoverBg: index == hoverIndex }"
                 alt=""
                 @error="setDefaultImage"
@@ -403,7 +388,7 @@ export default {
         twitter: this.userinfo.user_twitter,
         pic: this.userinfo.user_pic,
       };
-      const resp = await $http.post("https://api.lionnft.net/v1/user/edit", {
+      const resp = await $http.post("/v1/user/edit", {
         ...edit,
       });
       this.getUserInfo();
@@ -477,7 +462,7 @@ export default {
 
     async getUserInfo() {
       const resp = await $http.get(
-        `https://api.lionnft.net/v1/user?address=${this.user_id}`
+        `/v1/user?address=${this.user_id}`
       );
 
       this.userinfo = resp.data;
@@ -489,18 +474,12 @@ export default {
       if (this.userinfo.user_cover == "") {
         this.userBgc = require("../../assets/bj.png");
       } else {
-        this.userBgc = this.userinfo.user_cover.replace(
-          "ipfs://ipfs/",
-          "https://api.lionnft.net/v1/upload/view?hash="
-        );
+        this.userBgc = this.$Cover(this.userinfo.user_cover);
       }
       if (this.userinfo.user_pic == "") {
         this.userpic = require("../../assets/touxiang.png");
       } else {
-        this.userpic = this.userinfo.user_pic.replace(
-          "ipfs://ipfs/",
-          "https://api.lionnft.net/v1/upload/view?hash="
-        );
+        this.userpic = this.$Cover(this.userinfo.user_pic);
       }
       this.str = this.userinfo.user_address;
       this.subStr = this.SubStr(this.str);
@@ -515,7 +494,7 @@ export default {
 
     async getCreated() {
       const resp = await $http.get(
-        `https://api.lionnft.net/v1/item/list?address=${this.user_id}&filter=${this.filters}`
+        `/v1/item/list?address=${this.user_id}&filter=${this.filters}`
       );
       // console.log(resp);
       this.createdList = resp.list;

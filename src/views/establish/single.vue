@@ -43,7 +43,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.net/v1/upload/file"
+        :action="$baseUrl+'/v1/upload/file'"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
@@ -218,6 +218,7 @@ import { userInfoApi } from "../../api/user";
 import {
   initWallet,
   Contracts721,
+  erc721Addr,
   getProvider,
   randomHex,
   getBalance,
@@ -262,7 +263,7 @@ export default {
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: "0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38",
+        token: erc721Addr,
         image: "",
         title: "",
         price: "",
@@ -285,14 +286,6 @@ export default {
   },
   async mounted() {
     this.open();
-    // const address = await initWallet();
-    // console.log(address);
-    // if (address != "") {
-    //   const cont721 = Contracts721();
-    //   currCont = cont721;
-    //   await this.whiteList(cont721);
-    //   await this.isApprovedAll(cont721);
-    // }
   },
   beforeUpdate() {
     this.editFn();
@@ -406,7 +399,7 @@ export default {
         let value = this.formLabelAlign.propertiess[key];
         props[name] = value;
       }
-
+      
       const jsonResp = await contracts.uploadJson(
         this.formLabelAlign.image,
         this.formLabelAlign.title,
@@ -414,7 +407,7 @@ export default {
         props
       );
       console.log("jsonResp=>", jsonResp);
-
+            
       const tokenResp = await contracts.newTokenId(this.formLabelAlign.token);
       console.log("tokenResp=>", tokenResp);
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;

@@ -1,5 +1,6 @@
 {
     "address": "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F",
+    "address_prod": "0x03252f5C04f9b4Bc55A9994CbE8Eff5BA8041dF2",
     "abi": [
       {
         "anonymous": false,

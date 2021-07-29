@@ -43,7 +43,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.net/v1/upload/file"
+        :action="$baseUrl+'/v1/upload/file'"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"

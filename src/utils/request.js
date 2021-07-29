@@ -4,8 +4,8 @@ import { getToken } from '@/utils/auth';
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  timeout: 5000,
+  baseURL: process.env.NODE_ENV === "production" ? "https://api.lionnft.io" : "https://api.lionnft.net", // url = base url + request url
+  timeout: 30000,
   // headers、auth
 });
 

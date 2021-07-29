@@ -11,12 +11,7 @@
         <div class="neirong">
           <div class="img-hover">
             <img
-              :src="
-                item.prop_image.replace(
-                  'ipfs://ipfs/',
-                  'https://api.lionnft.net/v1/upload/view?hash='
-                )
-              "
+              :src="$Cover(item.prop_image)"
               class="hoverBg"
               alt=""
               @error="setDefaultImage"
@@ -123,7 +118,7 @@ export default {
     },
     onSlideChange() {},
     async getList() {
-      const resp = await $http.get("https://api.lionnft.net/v1/explore/list");
+      const resp = await $http.get("/v1/explore/list");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
         if (this.showList[index].price === "") {

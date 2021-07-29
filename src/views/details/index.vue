@@ -3,11 +3,7 @@
     <!-- 商品大图zs -->
     <img
       id="imgShows"
-      :src="
-        details.prop_image.replace(
-          'ipfs://ipfs/',
-          'https://api.lionnft.net/v1/upload/view?hash='
-        )
+      :src="$Cover(details.prop_image)
       "
       style="border-radius: 20px"
       alt=""
@@ -387,10 +383,7 @@ export default {
         if (!_bid_list[k].bid_user_cover || _bid_list[k].bid_user_cover == "") {
           _bid_list[k].bid_user_cover = require("../../assets/touxiang.png");
         } else {
-          _bid_list[k].bid_user_cover = _bid_list[k].bid_user_cover.replace(
-            "ipfs://ipfs/",
-            "https://api.lionnft.net/v1/upload/view?hash="
-          );
+          _bid_list[k].bid_user_cover = this.$Cover(_bid_list[k].bid_user_cover);
         }
       }
       this.bid_list = _bid_list;
@@ -475,10 +468,7 @@ export default {
       } else {
         sessionStorage.setItem(
           "SgfUrl",
-          this.details.prop_image.replace(
-            "ipfs://ipfs/",
-            "https://api.lionnft.net/v1/upload/view?hash="
-          )
+          this.$Cover(this.details.prop_image)
         );
       }
       this.initSgf();
@@ -504,7 +494,7 @@ export default {
 
     async getRecord() {
       const resp = await $http.get(
-        `https://api.lionnft.net/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
+        `/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
       );
       console.log(resp.list);
       this.tableData = resp.list;
@@ -518,7 +508,7 @@ export default {
 
     async getDetails() {
       const resp = await $http.get(
-        `https://api.lionnft.net/v1/item/info?token=${this.token}&token_id=${this.token_id}`
+        `/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
       // eslint-disable-next-line no-empty
       console.log(resp);
@@ -533,10 +523,7 @@ export default {
       } else if (this.details.creator_pic == null) {
         this.creator_pic = require("../../assets/touxiang.png");
       } else {
-        this.creator_pic = this.details.creator_pic.replace(
-          "ipfs://ipfs/",
-          "https://api.lionnft.net/v1/upload/view?hash="
-        );
+        this.creator_pic = this.$Cover(this.details.creator_pic);
       }
       // 设置所有者默认头像
       if (this.details.own_user_pic == "") {
@@ -544,10 +531,7 @@ export default {
       } else if (this.details.own_user_pic == null) {
         this.own_user_pic = require("../../assets/touxiang.png");
       } else {
-        this.own_user_pic = this.details.own_user_pic.replace(
-          "ipfs://ipfs/",
-          "https://api.lionnft.net/v1/upload/view?hash="
-        );
+        this.own_user_pic = this.$Cover(this.details.own_user_pic);
       }
       this.details.price = ethers.utils.formatUnits(this.details.price);
       this.str = this.details.creator_address;

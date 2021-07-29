@@ -11,7 +11,7 @@ export function login(data) {
 // 用户信息
 export async function userInfoApi(address) {
   const resp = await request.get(
-    "https://api.lionnft.net/v1/user?address=" + address
+    "/v1/user?address=" + address
   );
   sessionStorage.setItem("userInfo", resp.data.user_name);
   return resp;

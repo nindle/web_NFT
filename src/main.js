@@ -46,6 +46,19 @@ Vue.prototype.$parseEther = function(res) {
   return ethers.utils.parseEther(res);
 };
 
+Vue.prototype.$Cover = function(res) {
+  if (!res) {
+    return '';
+  }
+  let baseUrl = process.env.NODE_ENV === "production" ? "https://api.lionnft.io" : "https://api.lionnft.net";
+  return res.replace(
+    'ipfs://ipfs/',
+    baseUrl+'/v1/upload/view?hash='
+  );
+};
+
+Vue.prototype.$baseUrl = process.env.NODE_ENV === "production" ? "https://api.lionnft.io" : "https://api.lionnft.net";
+
 Vue.config.productionTip = false;
 
 new Vue({

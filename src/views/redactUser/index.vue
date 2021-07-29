@@ -6,7 +6,7 @@
     <div class="uploading">
       <el-upload
         ref="upload"
-        action="https://api.lionnft.net/v1/upload/file"
+        :action="$baseUrl+'/v1/upload/file'"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
@@ -165,7 +165,7 @@ export default {
     async uploadSuccess(e) {
       this.formLabelAlign.pic = e.ipfs;
       const formLabelAlign = { ...this.formLabelAlign };
-      const resp = await $http.post("https://api.lionnft.net/v1/user/edit", {
+      const resp = await $http.post("/v1/user/edit", {
         ...formLabelAlign,
       });
       if (resp.code == 200) {

@@ -3,8 +3,7 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-// let baseUrl = "https://api.lionnft.net/";
-let baseUrl = "";
+let baseUrl = process.env.NODE_ENV === "production" ? "https://api.lionnft.io" : "https://api.lionnft.net";
 
 let loginUrl = baseUrl + "/v1/account/login";
 export default {

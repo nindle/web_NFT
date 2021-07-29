@@ -6,6 +6,8 @@ import { ethers } from "ethers";
 import { defaultAbiCoder, ParamType } from "@ethersproject/abi";
 import { keccak256 } from "@ethersproject/keccak256";
 
+const TransferProxyAddr = process.env.NODE_ENV === "production" ? "0x1ff9d91B940d552acE0f1a7A6e3c1c04b87B725d" : "0x200e61C267f040c3e00fC86d1fe507247F1b1B26";
+
 async function Sgfitem(
   address,
   tokenid,
@@ -25,7 +27,7 @@ async function Sgfitem(
   json.meta_field4 = meta_field4;
 
   const jsonResp = await $http.post(
-    "https://api.lionnft.net/v1/item/metadata",
+    "/v1/item/metadata",
     json
   );
   return jsonResp;
@@ -43,7 +45,7 @@ async function uploadJson(image, title, desc, props) {
   const formData = new FormData();
   formData.append("file", blob);
   const jsonResp = await $http.post(
-    "https://api.lionnft.net/v1/upload/file",
+    "/v1/upload/file",
     formData
   );
   return jsonResp;
@@ -53,7 +55,7 @@ async function newTokenId(contract) {
   const formData = new FormData();
   formData.append("address", contract);
   const tokenResp = await $http.post(
-    "https://api.lionnft.net/v1/tokenid/new",
+    "/v1/tokenid/new",
     formData
   );
   return tokenResp;
@@ -100,7 +102,7 @@ async function mintErc1155(
 }
 
 async function addItem(hash, assetType) {
-  const resp = await $http.post("https://api.lionnft.net/v1/item/add", {
+  const resp = await $http.post("/v1/item/add", {
     tx_id: hash,
     // 721=4 1155=3
     asset_type: assetType
@@ -197,7 +199,7 @@ async function orderSigner(signer, orderData) {
 }
 
 async function changeSale(token, token_id, sale) {
-  const resp = await $http.post("https://api.lionnft.net/v1/item/sale", {
+  const resp = await $http.post("/v1/item/sale", {
     token: token,
     token_id: token_id,
     sale: sale
@@ -206,7 +208,7 @@ async function changeSale(token, token_id, sale) {
 }
 
 async function createOrder(order, signature) {
-  const resp = await $http.post("https://api.lionnft.net/v1/order/create", {
+  const resp = await $http.post("/v1/order/create", {
     order: order,
     signature: signature
   });
@@ -238,7 +240,7 @@ function sequence(order) {
 async function setApproveAll(contract, address) {
   console.log("approveAll", address, contract);
   const tx = await contract.setApprovalForAll(
-    "0x200e61C267f040c3e00fC86d1fe507247F1b1B26",
+    TransferProxyAddr,
     true
   );
   console.log("transaction=>", tx);
@@ -251,7 +253,7 @@ async function setApproveAll(contract, address) {
 async function isApprovedAll(contract, address) {
   const res = await contract.isApprovedForAll(
     address,
-    "0x200e61C267f040c3e00fC86d1fe507247F1b1B26"
+    TransferProxyAddr
   );
   console.log("isApprovedForAll=>", res);
   return res;

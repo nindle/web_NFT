@@ -6,7 +6,8 @@
   "author": "{{ author }}",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build-dev": "cross-env NODE_ENV=development vue-cli-service build",
+    "build-prod": "cross-env NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
     "new": "plop"
   },
@@ -33,6 +34,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "less": "^3.0.4",
@@ -42,9 +44,6 @@
     "plop": "^2.7.4",
     "sass-loader": "^12.1.0",
     "vue-template-compiler": "^2.6.11"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,vue}": [

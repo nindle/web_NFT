@@ -29,7 +29,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        action="https://api.lionnft.net/v1/upload/file"
+        :action="$baseUrl+'/v1/upload/file'"
         :auto-upload="false"
         :on-success="uploadSuccess"
       >
@@ -236,6 +236,7 @@ import { userInfoApi } from "../../api/user";
 import {
   initWallet,
   Contracts721,
+  erc721Addr,
   getProvider,
   randomHex,
   getBalance,
@@ -325,7 +326,7 @@ export default {
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: "0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38",
+        token: erc721Addr,
         image: "",
         title: "",
         price: "",
@@ -492,7 +493,7 @@ export default {
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;
 
       const sgfitem = await contracts.Sgfitem(
-        0x3f1f2eff3a7ef3890b1b91cf1b13e72899bb1a38,
+        erc721Addr,
         this.formLabelAlign.tokenid,
         this.formLabelAlign.meta_name,
         this.formLabelAlign.meta_filed1,
