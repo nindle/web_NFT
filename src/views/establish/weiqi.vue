@@ -185,8 +185,8 @@
             changes >= 1
               ? $t("Single.Done")
               : aprLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -202,8 +202,8 @@
             changes >= 2
               ? $t("Single.Done")
               : upLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>
@@ -219,8 +219,8 @@
             changes == 3
               ? $t("Single.Done")
               : ordLoading
-              ? $t("Single.Progress")
-              : $t("Single.Start")
+                ? $t("Single.Progress")
+                : $t("Single.Start")
           }}
         </el-button>
       </div>

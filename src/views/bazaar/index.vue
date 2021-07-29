@@ -5,12 +5,12 @@
     </h2>
     <div class="classify">
       <el-button
-        size="small"
         v-for="(item, index) in classifyList"
+        id="classifyid"
         :key="index"
+        size="small"
         round
         @click="classifyFn(item)"
-        id="classifyid"
       >
         {{ item.cate_name }}
       </el-button>
@@ -41,7 +41,7 @@
           @error="setDefaultImage"
           @mouseover="hoverIndex = index"
           @mouseout="hoverIndex = -1"
-        />
+        >
         <h3 class="username">{{ item.prop_name }}</h3>
         <p class="usermessage">{{ item.prop_desc }}</p>
         <div class="userprice">
@@ -50,7 +50,7 @@
           </span>
           <span> {{ item.supply_sell }}/{{ item.supply }}</span>
           <div class="userpriceimg" style="float: right; margin-right: 40px">
-            <img src="../../assets/souchang.png" alt="" /> 2314
+            <img src="../../assets/souchang.png" alt=""> 2314
           </div>
         </div>
         <div

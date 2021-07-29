@@ -12,15 +12,15 @@
 
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="" />
+        <img src="../../assets/single.png" alt="">
         <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="" />
+        <img src="../../assets/Multiple.png" alt="">
         <p>{{ $t("establish.duo") }}</p>
       </div>
       <div class="weiqi" @click="dialogVisible = true">
-        <img src="../../assets/weiqijinkou.jpg" alt="" />
+        <img src="../../assets/weiqijinkou.jpg" alt="">
         <p>{{ $t("establish.weiqi") }}</p>
       </div>
     </div>
@@ -36,13 +36,13 @@
       <p class="tishi">{{ $t("establish.tihsi1") }}</p>
       <p class="tishi">{{ $t("establish.tishi2") }}</p>
       <iframe
-        class="iframestyle"
         id="iframeid"
+        class="iframestyle"
         src="https://lionnft.io/weiqi.html"
       />
       <span slot="footer" class="dialog-footer">
         <el-button @click="weiqiFn">{{ $t("establish.quxiao") }} </el-button>
-        <el-button type="primary" @click="weiqiFn" :disabled="next">
+        <el-button type="primary" :disabled="next" @click="weiqiFn">
           {{ $t("establish.xiayibu") }}
         </el-button>
       </span>
