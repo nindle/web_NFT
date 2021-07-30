@@ -64,6 +64,8 @@ export function Contracts721() {
 
 export const erc721Addr = ethers.utils.getAddress(ERC721[address_name]);
 export const erc1155Addr = ethers.utils.getAddress(ERC1155[address_name]);
+export const erc20TranProxyAddr = ethers.utils.getAddress(ERC20Proxy[address_name]);
+export const wbnbAddr = process.env.NODE_ENV === "production" ? "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" : "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd";
 
 // 实例化合约1155
 export function Contracts1155() {

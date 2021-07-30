@@ -47,7 +47,7 @@
         <el-button
           class="details-button"
           type="primary"
-          disabled="true">{{ $t("details.UnSale") }}</el-button>
+          :disabled="true">{{ $t("details.UnSale") }}</el-button>
       </li>
       <!-- 限价模式 -->
       <li v-else-if="details.saleable == 1 && details.price && details.price > 0">
@@ -55,18 +55,18 @@
           <el-button
             class="details-button"
             type="primary"
-            :disabled="isApproved == true"
-            @click="bidApprove"
+            :disabled="buyisApproved == true"
+            @click="buyApprove"
           >
             {{
-              isApproved ? $t("details.Approved") : $t("details.approvedNoW")
+              buyisApproved ? $t("details.Approved") : $t("details.approvedNoW")
             }}
           </el-button>
         </div>
         <el-button
           class="details-button"
           type="primary"
-          :disabled="isApproved == false || buyLoading == true"
+          :disabled="buyisApproved == false || buyLoading == true"
           @click="onBuy"
         >
           {{ buyLoading ? $t("details.Buying") : $t("details.BuyNow") }}
@@ -356,11 +356,13 @@ import {
   randomHex,
   getBalance,
   getProvider,
-  ContractsErc20,
   Erc20Balance,
-  Erc20Allowance,
   Erc20IsApproved,
   Erc20Approve,
+  erc20TranProxyAddr,
+  wbnbAddr,
+  Contracts721,
+  Contracts1155
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 import contracts from "../../wallet/contracts";
@@ -399,6 +401,8 @@ export default {
       bidErr: false,
       wbnb_balance: 0,
       isApproved: false,
+      // buy
+      buyisApproved: false,
     };
   },
   created() {},
@@ -433,20 +437,30 @@ export default {
       this.wbnb_balance = this.$formatEther(erc20_balance.toString());
       const isApproved = await Erc20IsApproved(
         account,
-        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+        erc20TranProxyAddr
       );
       console.log("isApproved", isApproved);
       this.isApproved = isApproved;
     }
-    this.getUserInfo();
     // approve
   },
   methods: {
-    async getUserInfo() {
-      const data = await $http.get(
-        `https://api.lionnft.net/v1/item/owner?token=0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38&token_id=2010&page=1`
-      );
-      console.log(data.list);
+    async buyApprove() {
+      let currCont = null;
+      // buy approve
+      if (this.details.asset_id == 4) {
+        // 721
+        currCont = Contracts721();
+      } else if (this.details.asset_id == 3) {
+        // 1155
+        currCont = Contracts1155();
+      }
+      if (currCont) {
+        const res = await contracts.setApproveAll(currCont, this.$address);
+        if (res == true) {
+          this.buyisApproved = res;
+        }
+      }
     },
     open() {
       this.$alert(
@@ -578,6 +592,23 @@ export default {
       this.creator_address = this.SubStr(this.strs);
       this.creator_addr = this.details.creator_address;
       this.owner_addr = this.details.own_address;
+
+      // buy approve
+      if (resp.data.saleable == 1 && resp.data.price && resp.data.price > 0) {
+        if (resp.data.asset_id == 4) {
+          // 721
+          const cont721 = Contracts721();
+          const res = await contracts.isApprovedAll(cont721, this.$address);
+          console.log('721 buy-isApprovedAll', res);
+          this.buyisApproved = res;
+        } else if (resp.data.asset_id == 3) {
+          // 1155
+          const cont1155 = Contracts1155();
+          const res = await contracts.isApprovedAll(cont1155, this.$address);
+          console.log('1155 buy-isApprovedAll', res);
+          this.buyisApproved = res;
+        }
+      }   
 
       this.orderInfo();
       this.buyFee();
@@ -736,7 +767,7 @@ export default {
           salt: BigNumber.from(randomHex(32)),
           owner: addr,
           sellAsset: {
-            token: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+            token: wbnbAddr,
             tokenId: BigNumber.from("0"),
             assetType: 2,
           },
@@ -781,7 +812,7 @@ export default {
     // Approve
     async bidApprove() {
       const resp = await Erc20Approve(
-        "0x70f2e6eE058F3C3312CEB4Bb27E2Eb0AB74CA37F"
+        erc20TranProxyAddr
       );
       console.log("Erc20Approve", resp);
       setTimeout(() => {

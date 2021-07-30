@@ -231,6 +231,7 @@ import { userInfoApi } from "../../api/user";
 import {
   initWallet,
   Contracts1155,
+  erc1155Addr,
   getProvider,
   randomHex,
   getBalance,
@@ -280,7 +281,7 @@ export default {
       disabled: false,
       formLabelAlign: {
         tokenid: 0,
-        token: "0xE9285F4Bd13D86Fe4f4b019C6b54cc3f8c6f858C",
+        token: erc1155Addr,
         image: "",
         title: "",
         price: "",
