@@ -3,8 +3,7 @@
     <!-- 商品大图zs -->
     <img
       id="imgShows"
-      :src="$Cover(details.prop_image)
-      "
+      :src="details.prop_image"
       style="border-radius: 20px"
       alt=""
       @error="setDefaultImage"
@@ -116,35 +115,46 @@
             >
               bider
             </p>
-            <span
+            <div
               style="
-                color: #0066ed;
-                font-size: 14px;
-                font-family: Source Han Sans CN;
-                font-weight: 400;
+                display: flex;
+                justify-content: space-between;
+                width: 439px;
               "
             >
-              {{ v.bid_user_address | faddr }}
-            </span>
-            <span style="margin: 0 10px">{{ v.bid_price | feth }} WBNB</span>
-            <span style="margin: 0 10px">
-              {{
-                v.bid_result == 0
-                  ? "竞拍中"
-                  : v.bid_result == 1
-                  ? "竞拍成功"
-                  : "竞拍失败"
-              }}
-            </span>
-            <el-button
-              v-if="v.bid_result == 0"
-              type="danger"
-              size="small"
-              :disabled="bidLoading == true"
-              @click="bidAccept(v.bid_id)"
-            >
-              Accept
-            </el-button>
+              <span
+                style="
+                  color: #0066ed;
+                  font-size: 14px;
+                  font-family: Source Han Sans CN;
+                  font-weight: 400;
+                "
+              >
+                {{ SubStr(v.bid_user_address) }}
+              </span>
+              <span style="padding: 0 10px 0 80px">
+                {{ v.bid_price | feth }} WBNB
+              </span>
+              <span style="margin: 0 30px 0 10px">
+                {{
+                  v.bid_result == 0
+                    ? "竞拍中"
+                    : v.bid_result == 1
+                    ? "竞拍成功"
+                    : "竞拍失败"
+                }}
+              </span>
+              <el-button
+                v-if="v.bid_result == 0"
+                type="danger"
+                size="small"
+                style="float: right"
+                :disabled="bidLoading == true"
+                @click="bidAccept(v.bid_id)"
+              >
+                Accept
+              </el-button>
+            </div>
           </div>
         </div>
       </li>
@@ -383,7 +393,9 @@ export default {
         if (!_bid_list[k].bid_user_cover || _bid_list[k].bid_user_cover == "") {
           _bid_list[k].bid_user_cover = require("../../assets/touxiang.png");
         } else {
-          _bid_list[k].bid_user_cover = this.$Cover(_bid_list[k].bid_user_cover);
+          _bid_list[k].bid_user_cover = this.$Cover(
+            _bid_list[k].bid_user_cover
+          );
         }
       }
       this.bid_list = _bid_list;
@@ -404,10 +416,16 @@ export default {
       console.log("isApproved", isApproved);
       this.isApproved = isApproved;
     }
-
+    this.getUserInfo();
     // approve
   },
   methods: {
+    async getUserInfo() {
+      const data = await $http.get(
+        `https://api.lionnft.net/v1/item/owner?token=0x3f1f2Eff3A7EF3890b1b91cf1b13e72899Bb1A38&token_id=2010&page=1`
+      );
+      console.log(data.list);
+    },
     open() {
       this.$alert(
         `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
@@ -434,7 +452,7 @@ export default {
     },
 
     SubStr(str) {
-      var subStr1 = str.slice(0, 6);
+      var subStr1 = str.slice(0, 7);
       var subStr2 = str.slice(str.length - 5, 42);
       var subStr = subStr1 + "..." + subStr2;
       return subStr;
@@ -457,6 +475,7 @@ export default {
     },
 
     setDefaultImage() {
+      console.log(1);
       document.getElementById("imgShows").style.display = "none";
       const divhe = document.createElement("div");
       divhe.id = "divhe";
@@ -466,10 +485,7 @@ export default {
       if (this.details.prop_image == "") {
         console.log(123);
       } else {
-        sessionStorage.setItem(
-          "SgfUrl",
-          this.$Cover(this.details.prop_image)
-        );
+        sessionStorage.setItem("SgfUrl", this.$Cover(this.details.prop_image));
       }
       this.initSgf();
     },
@@ -496,13 +512,12 @@ export default {
       const resp = await $http.get(
         `/v1/order/history?token=${this.token}&token_id=${this.token_id}&page=1`
       );
-      console.log(resp.list);
+      // console.log(resp.list);
       this.tableData = resp.list;
       this.tableData.forEach((item) => {
         item.ord_time = this.$dayjs(item.ord_time).format(
           "YYYY-MM-DD HH:mm:ss"
         );
-        console.log(item.ord_time);
       });
     },
 
@@ -511,12 +526,13 @@ export default {
         `/v1/item/info?token=${this.token}&token_id=${this.token_id}`
       );
       // eslint-disable-next-line no-empty
-      console.log(resp);
+      // console.log(resp);
       if (resp.code !== 200) {
       } else {
         this.loading = false;
       }
       this.details = resp.data;
+      this.details.prop_image = this.$Cover(this.details.prop_image);
       // 设置创建者默认头像
       if (this.details.creator_pic == "") {
         this.creator_pic = require("../../assets/touxiang.png");
@@ -545,12 +561,6 @@ export default {
       this.buyFee();
     },
 
-    SubStr(str) {
-      var subStr1 = str.slice(0, 6);
-      var subStr2 = str.slice(str.length - 5, 42);
-      var subStr = subStr1 + "..." + subStr2;
-      return subStr;
-    },
     // 订单信息
     async orderInfo() {
       const resp = await exchange.orderInfoApi(
