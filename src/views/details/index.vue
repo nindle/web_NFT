@@ -42,46 +42,66 @@
         />
         {{ details.price }} {{ details.coin_name }}
       </li>
-      <li>
+      <!-- 下架 -->
+      <li v-if="details.saleable == 0">
         <el-button
-          v-if="details.price && details.price > 0"
           class="details-button"
           type="primary"
-          :disabled="buyLoading == true"
+          disabled="true">{{ $t("details.UnSale") }}</el-button>
+      </li>
+      <!-- 限价模式 -->
+      <li v-else-if="details.saleable == 1 && details.price && details.price > 0">
+        <div>
+          <el-button
+            class="details-button"
+            type="primary"
+            :disabled="isApproved == true"
+            @click="bidApprove"
+          >
+            {{
+              isApproved ? $t("details.Approved") : $t("details.approvedNoW")
+            }}
+          </el-button>
+        </div>
+        <el-button
+          class="details-button"
+          type="primary"
+          :disabled="isApproved == false || buyLoading == true"
           @click="onBuy"
         >
           {{ buyLoading ? $t("details.Buying") : $t("details.BuyNow") }}
         </el-button>
-        <template v-else>
-          <div>
-            <el-input
-              v-model="bid_price"
-              type="text"
-              placeholder="竞拍价格(WBNB)"
-            />
-          </div>
-          <div>余额 {{ wbnb_balance }} WBNB</div>
-          <div>
-            <el-button
-              class="danger-button"
-              type="danger"
-              :disabled="isApproved == true"
-              @click="bidApprove"
-            >
-              {{
-                isApproved ? $t("details.Approved") : $t("details.approvedNoW")
-              }}
-            </el-button>
-          </div>
+      </li>
+      <!-- 竞拍模式 -->
+      <li v-else-if="details.saleable == 1 && details.price == 0">
+        <div>
+          <el-input
+            v-model="bid_price"
+            type="text"
+            placeholder="竞拍价格(WBNB)"
+          />
+        </div>
+        <div>余额 {{ wbnb_balance }} WBNB</div>
+        <div>
           <el-button
             class="danger-button"
             type="danger"
-            :disabled="bidLoading == true"
-            @click="onBid"
+            :disabled="isApproved == true"
+            @click="bidApprove"
           >
-            {{ bidLoading ? $t("details.Biding") : $t("details.BidNow") }}
+            {{
+              isApproved ? $t("details.Approved") : $t("details.approvedNoW")
+            }}
           </el-button>
-        </template>
+        </div>
+        <el-button
+          class="danger-button"
+          type="danger"
+          :disabled="isApproved == false || bidLoading == true"
+          @click="onBid"
+        >
+          {{ bidLoading ? $t("details.Biding") : $t("details.BidNow") }}
+        </el-button>
       </li>
 
       <li v-for="(v, k) in bid_list" :key="k">
@@ -356,7 +376,9 @@ export default {
       creator_pic: "",
       own_user_pic: "",
       loading: true,
-      details: {},
+      details: {
+        saleable: 0,
+      },
       activeName: "first",
       tableData: [],
       token_id: this.$route.params.id,
@@ -674,6 +696,9 @@ export default {
         type: "success",
       });
       this.loading = false;
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
     },
 
     // 竞拍

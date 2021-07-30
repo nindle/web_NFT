@@ -151,6 +151,7 @@ export default {
     Biding: "Biding",
     BidNow: "Bid Now",
     Buying: "Buying",
-    BuyNow: "Buy Now"
+    BuyNow: "Buy Now",
+    UnSale: "Sale Out"
   }
 };

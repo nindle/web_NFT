@@ -148,6 +148,7 @@ export default {
     Biding: "投标",
     BidNow: "现在出价",
     Buying: "购买",
-    BuyNow: "立即购买"
+    BuyNow: "立即购买",
+    UnSale: "已下架"
   }
 };
