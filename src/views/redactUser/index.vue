@@ -6,11 +6,10 @@
     <div class="uploading">
       <el-upload
         ref="upload"
-        :action="$baseUrl+'/v1/upload/file'"
+        :action="$baseUrl + '/v1/upload/file'"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
-        :on-change="before_upload"
       >
         <el-button
           round
@@ -24,7 +23,7 @@
           {{ $t("redactUser.xuanze") }}
         </el-button>
         <div slot="file" slot-scope="{ file }">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
         </div>
       </el-upload>
       <div class="preview" />
@@ -72,7 +71,7 @@
           :placeholder="$t('redactUser.PleaseName')"
         />
       </el-form-item>
-      <el-form-item :label="$t('redactUser.URL')" prop="short_url">
+      <el-form-item :label="$t('redactUser.URL')">
         <el-input
           v-model="formLabelAlign.short_url"
           width:400px
@@ -82,7 +81,7 @@
           <template slot="prepend">lionnft.com/</template>
         </el-input>
       </el-form-item>
-      <el-form-item :label="$t('redactUser.Bio')" prop="desc">
+      <el-form-item :label="$t('redactUser.Bio')">
         <el-input
           v-model="formLabelAlign.desc"
           class="el-input-a"
@@ -108,7 +107,6 @@
 
 <script>
 import $http from "../../utils/request";
-import { initWallet } from "../../wallet/wallet";
 
 export default {
   name: "RedactUser",
@@ -118,12 +116,13 @@ export default {
       rules: {
         username: [
           { required: true, message: "名称不可为空", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 2 到 16 个字符", trigger: "blur" },
+          {
+            min: 2,
+            max: 16,
+            message: "长度在 2 到 16 个字符",
+            trigger: "blur",
+          },
         ],
-        short_url: [
-          { required: true, message: "URL不可为空", trigger: "blur" },
-        ],
-        desc: [{ required: true, message: "介绍不可为空", trigger: "blur" }],
       },
       dialogImageUrl: "",
       dialogVisible: false,
@@ -132,8 +131,8 @@ export default {
         username: "",
         short_url: "",
         desc: "",
-        address: this.$route.params.userId,
-        cover: this.$route.params.cover,
+        address: "",
+        cover: "",
         website: "",
         twitter: "",
         pic: "",
@@ -143,27 +142,34 @@ export default {
   },
   created() {},
   async mounted() {
-    this.formLabelAlign.address = this.$route.params.userId;
-    const address = await initWallet();
-    if (address != "") {
-      this.formLabelAlign.address = address;
-    }
+    this.getUserInfo();
   },
 
   methods: {
-    before_upload(e) {
-      if (e.url == "") {
-        this.userpicurl = false;
-      } else {
-        this.userpicurl = true;
-      }
+    async getUserInfo() {
+      const resp = await $http.get(
+        `/v1/user?address=${sessionStorage.getItem("address")}`
+      );
+      this.formLabelAlign.address = resp.data.user_address;
+      this.formLabelAlign.desc = resp.data.user_desc;
+      this.formLabelAlign.username = resp.data.user_name;
+      this.formLabelAlign.cover = resp.data.user_cover;
+      this.formLabelAlign.pic = resp.data.user_pic;
     },
+
     uploadFile() {
       this.$refs.upload.submit();
+      setTimeout(() => {
+        this.uploadSuccess();
+      }, 1000);
     },
 
     async uploadSuccess(e) {
-      this.formLabelAlign.pic = e.ipfs;
+      console.log(e);
+      if (e !== undefined) {
+        console.log("123");
+        this.formLabelAlign.pic = e.ipfs;
+      }
       const formLabelAlign = { ...this.formLabelAlign };
       const resp = await $http.post("/v1/user/edit", {
         ...formLabelAlign,
@@ -175,20 +181,19 @@ export default {
         });
         sessionStorage.setItem("userInfo", formLabelAlign.username);
         this.formLabelAlign = {};
-
         this.$router.push({
           name: "personalCenter",
-          params: { address: this.$route.params.userId },
+          params: { address: sessionStorage.getItem("address") },
         });
-      } else {
+      } else if (resp.code == 500) {
         this.$message.error("更新失败");
       }
     },
 
-    async postUserEdit() {
+    async postUserEdit(e) {
       this.$refs.formLabelAlign.validate((valid) => {
         if (valid) {
-          if (this.userpicurl == false) {
+          if (e.pic == "") {
             this.$message({
               message: "头像不可为空",
               type: "warning",

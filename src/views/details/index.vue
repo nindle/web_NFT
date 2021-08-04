@@ -44,13 +44,14 @@
       </li>
       <!-- 下架 -->
       <li v-if="details.saleable == 0">
-        <el-button
-          class="details-button"
-          type="primary"
-          :disabled="true">{{ $t("details.UnSale") }}</el-button>
+        <el-button class="details-button" type="primary" :disabled="true">{{
+          $t("details.UnSale")
+        }}</el-button>
       </li>
       <!-- 限价模式 -->
-      <li v-else-if="details.saleable == 1 && details.price && details.price > 0">
+      <li
+        v-else-if="details.saleable == 1 && details.price && details.price > 0"
+      >
         <div>
           <el-button
             class="details-button"
@@ -362,7 +363,7 @@ import {
   erc20TranProxyAddr,
   wbnbAddr,
   Contracts721,
-  Contracts1155
+  Contracts1155,
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 import contracts from "../../wallet/contracts";
@@ -401,7 +402,6 @@ export default {
       bidErr: false,
       wbnb_balance: 0,
       isApproved: false,
-      // buy
       buyisApproved: false,
     };
   },
@@ -435,10 +435,7 @@ export default {
       const erc20_balance = await Erc20Balance(account);
       console.log("wbnb_balance", this.$formatEther(erc20_balance.toString()));
       this.wbnb_balance = this.$formatEther(erc20_balance.toString());
-      const isApproved = await Erc20IsApproved(
-        account,
-        erc20TranProxyAddr
-      );
+      const isApproved = await Erc20IsApproved(account, erc20TranProxyAddr);
       console.log("isApproved", isApproved);
       this.isApproved = isApproved;
     }
@@ -599,16 +596,16 @@ export default {
           // 721
           const cont721 = Contracts721();
           const res = await contracts.isApprovedAll(cont721, this.$address);
-          console.log('721 buy-isApprovedAll', res);
+          console.log("721 buy-isApprovedAll", res);
           this.buyisApproved = res;
         } else if (resp.data.asset_id == 3) {
           // 1155
           const cont1155 = Contracts1155();
           const res = await contracts.isApprovedAll(cont1155, this.$address);
-          console.log('1155 buy-isApprovedAll', res);
+          console.log("1155 buy-isApprovedAll", res);
           this.buyisApproved = res;
         }
-      }   
+      }
 
       this.orderInfo();
       this.buyFee();
@@ -811,9 +808,7 @@ export default {
 
     // Approve
     async bidApprove() {
-      const resp = await Erc20Approve(
-        erc20TranProxyAddr
-      );
+      const resp = await Erc20Approve(erc20TranProxyAddr);
       console.log("Erc20Approve", resp);
       setTimeout(() => {
         location.reload();

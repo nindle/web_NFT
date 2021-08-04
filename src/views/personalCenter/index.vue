@@ -4,7 +4,7 @@
     <div class="personalCenter-bgc">
       <img :src="userBgc" class="personalCenter-img" alt="" />
       <el-upload
-        :action="$baseUrl+'/v1/upload/file'"
+        :action="$baseUrl + '/v1/upload/file'"
         :auto-upload="true"
         :on-success="uploadSuccessbgcFn"
       >
@@ -248,68 +248,6 @@
           </ul>
           <div v-else class="createdStyle">暂无商品</div>
         </el-tab-pane>
-        <!-- <el-tab-pane :label="$t('personalCenter.collection')" name="fourth">
-          <ul v-if="createdList.length !== 0" class="exhibition">
-            <li
-              v-for="(item, index) in createdList.slice(0, a)"
-              :key="index"
-              style="position: relative"
-              @click="
-                $router.push({
-                  name: 'details',
-                  params: { id: item.token_id, token: item.token },
-                })
-              "
-              @mouseover="hover = true"
-              @mouseleave="hover = false"
-            >
-              <img
-                :src="
-                  item.prop_image.replace(
-                    'ipfs://ipfs/',
-                    'https://api.lionnft.net/v1/upload/view?hash='
-                  )
-                "
-                :class="{ hoverBg: index == hoverIndex }"
-                alt=""
-                @error="setDefaultImage"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-              >
-              <h3 class="username">{{ item.prop_name }}</h3>
-              <p class="usermessage">{{ item.prop_desc }}</p>
-              <div class="userprice">
-                <span style="float: left; color: #0066ed; margin-right: 20px">
-                  {{ item.price }} BNB
-                </span>
-                <span> 1/1</span>
-                <div
-                  class="userpriceimg"
-                  style="float: right; margin-right: 40px"
-                >
-                  <img src="../../assets/souchang.png" alt=""> 2314
-                </div>
-              </div>
-              <div
-                :class="hoverIndex == index ? 'redirects' : 'redirect'"
-                @mouseover="hoverIndex = index"
-                @mouseout="hoverIndex = -1"
-              >
-                Buy now →
-              </div>
-            </li>
-            <div
-              v-if="a < createdList.length"
-              class="loadMore"
-              @click="loadMore"
-            >
-              {{ $t("bazaar.jiazai") }}
-            </div>
-
-            <div v-else class="loadMore">{{ $t("bazaar.meiyou") }}</div>
-          </ul>
-          <div v-else class="createdStyle">暂无商品</div>
-        </el-tab-pane> -->
       </el-tabs>
     </div>
   </div>
@@ -396,14 +334,7 @@ export default {
 
     open() {
       if (this.user_id !== null) {
-        this.$router.push({
-          name: "redactUser",
-          params: {
-            userId: this.user_id,
-            userName: this.userinfo.user_name,
-            cover: this.userinfo.user_cover,
-          },
-        });
+        this.$router.push({ name: "redactUser" });
       } else {
         this.$alert(
           `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
@@ -461,9 +392,7 @@ export default {
     },
 
     async getUserInfo() {
-      const resp = await $http.get(
-        `/v1/user?address=${this.user_id}`
-      );
+      const resp = await $http.get(`/v1/user?address=${this.user_id}`);
 
       this.userinfo = resp.data;
       console.log(this.userinfo);

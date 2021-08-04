@@ -9,7 +9,15 @@
         @click="goHome"
       />
       <div class="header-input">
-        <el-input :placeholder="$t('home.search')" />
+        <el-autocomplete
+          v-model="state"
+          :fetch-suggestions="querySearchAsync"
+          :trigger-on-focus="false"
+          :placeholder="$t('home.search')"
+          @select="handleSelect"
+        >
+        </el-autocomplete>
+
         <img
           src="./assets/search.png"
           alt=""
@@ -83,7 +91,12 @@
               </div>
               <el-divider />
               <p class="popoverstyle_d" @click="personalCenterFn">My items</p>
-              <p class="popoverstyle_d">Edit profile</p>
+              <p
+                class="popoverstyle_d"
+                @click="$router.push({ name: 'redactUser' })"
+              >
+                Edit profile
+              </p>
               <el-button
                 id="userstyle"
                 slot="reference"
@@ -167,6 +180,7 @@
 import imgUrl from "./assets/xiaohuli.png";
 import { initWallet, getBalance } from "./wallet/wallet";
 import { userInfoApi } from "./api/user";
+import $http from "./utils/request";
 
 export default {
   provide() {
@@ -176,6 +190,10 @@ export default {
   },
   data() {
     return {
+      restaurants: [],
+      restaurantList: [],
+      state: "",
+      timeout: null,
       isRouterAlive: true,
       address: "",
       addres: sessionStorage.getItem("address"),
@@ -231,6 +249,44 @@ export default {
     }
   },
   methods: {
+    async querySearchAsync(queryString, cb) {
+      const resp = await $http.get(`v1/explore/list?keyword=${queryString}`);
+      // console.log(resp.list);
+      this.restaurants = [];
+      resp.list.forEach((item) => {
+        this.restaurants.push({
+          value: item.prop_name,
+          values: item.creator_user_name,
+          address: item.prop_desc,
+          token: item.token,
+          token_id: item.token_id,
+        });
+      });
+      // console.log(this.restaurants);
+      var restaurants = this.restaurants;
+      var results = restaurants.filter(this.createStateFilter(queryString));
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createStateFilter(queryString) {
+      return (restaurant) => {
+        return (
+          restaurant.value ||
+          values.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+
+    handleSelect(item) {
+      this.$router.push({
+        name: "details",
+        params: { id: item.token_id, token: item.token },
+      });
+      if (this.$route.name == "details") {
+        location.reload();
+      }
+    },
+
     personalCenterFn() {
       this.$router.push({
         name: "personalCenter",
@@ -241,7 +297,7 @@ export default {
       if (command == "a") {
         localStorage.setItem("language", "zh-cn");
         this.$i18n.locale = localStorage.getItem("language");
-        console.log(this.$i18n.locale);
+        // console.log(this.$i18n.locale);
       } else {
         localStorage.setItem("language", "en-us");
         this.$i18n.locale = localStorage.getItem("language");
@@ -531,6 +587,9 @@ export default {
   position: relative;
   width: 600px;
   margin-left: 210px;
+  /deep/.el-autocomplete {
+    width: 100%;
+  }
 }
 
 .header-icon {

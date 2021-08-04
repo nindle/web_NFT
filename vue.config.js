@@ -2,7 +2,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === "development",
   productionSourceMap: false,
   devServer: {
-    open: false,
+    open: true,
     host: "0.0.0.0",
     port: 8000,
     https: false,
@@ -20,11 +20,6 @@ module.exports = {
         },
         logLevel: "debug"
       }
-      // '/socket.io': {
-      //   target: '192.168.0.108:9999', // target host
-      //   changeOrigin: true, // needed for virtual hosted sites
-      //   logLevel: 'debug'
-      // }
     }
   },
   publicPath: "/"
