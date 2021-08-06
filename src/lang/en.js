@@ -37,7 +37,7 @@ export default {
     bazaar: "Explore the Browse",
     Invitealliance: "Invite alliance",
     email:
-      "If you and your team want to publish and push NFT, please contact nft@Meta World.com",
+      "If you and your team want to publish and push NFT, please contact service@lionnft.io",
     bottom1: "ABOUT US",
     bottom2: "WHITE PAPER",
     bottom3: "AUDIT REPORT",

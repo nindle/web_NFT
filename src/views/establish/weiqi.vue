@@ -29,7 +29,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        :action="$baseUrl+'/v1/upload/file'"
+        :action="$baseUrl + '/v1/upload/file'"
         :auto-upload="false"
         :on-success="uploadSuccess"
       >
@@ -54,13 +54,12 @@
       </div>
 
       <el-form-item v-show="value" :label="$t('Single.price')" prop="price">
-        <el-input
+        <el-input-number
           v-model.number="formLabelAlign.price"
-          type="number"
           :placeholder="$t('Single.PleasePrice')"
         >
-          <template slot="append">BNB</template>
-        </el-input>
+        </el-input-number>
+        <span>BNB</span>
       </el-form-item>
 
       <div style="position: relative; margin-bottom: 10px">
@@ -127,7 +126,7 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item :label="$t('Single.Properties')">
+      <el-form-item :label="$t('Single.Properties')" class="PropertiesCss">
         <div
           v-for="(item, index) in propertiesList"
           :key="index"
@@ -580,6 +579,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-input-number {
+  width: 100%;
+}
+/deep/.el-input-number__decrease,
+/deep/.el-input-number__increase {
+  display: none;
+}
+/deep/.el-input-number .el-input__inner {
+  text-align: left;
+}
 #itemForm {
   position: absolute;
   top: 437px;
@@ -639,9 +648,13 @@ export default {
 }
 /deep/ .el-form-item__content {
   display: flex;
-  // flex-direction: row;
+}
+
+.PropertiesCss /deep/ .el-form-item__content {
+  display: flex;
   flex-wrap: wrap;
 }
+
 /deep/.el-select {
   position: absolute;
   top: 0;

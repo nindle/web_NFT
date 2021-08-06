@@ -4,7 +4,12 @@
       <i class="el-icon-arrow-left" />
       {{ $t("Single.fanhui") }}
     </div>
-    <el-form label-position="top" :model="formLabelAlign" :rules="rules">
+    <el-form
+      label-position="top"
+      :model="formLabelAlign"
+      :rules="rules"
+      ref="formLabelAlign"
+    >
       <!-- 标题 -->
       <p
         style="
@@ -43,7 +48,7 @@
       <!-- 文件上传 -->
       <el-upload
         ref="upload"
-        :action="$baseUrl+'/v1/upload/file'"
+        :action="$baseUrl + '/v1/upload/file'"
         list-type="picture-card"
         :auto-upload="false"
         :on-success="uploadSuccess"
@@ -78,13 +83,12 @@
       </div>
 
       <el-form-item v-show="value" :label="$t('Single.price')" prop="price">
-        <el-input
+        <el-input-number
           v-model.number="formLabelAlign.price"
-          type="number"
           :placeholder="$t('Single.PleasePrice')"
         >
-          <template slot="append">BNB</template>
-        </el-input>
+        </el-input-number>
+        <span>BNB</span>
       </el-form-item>
 
       <div style="position: relative; margin-bottom: 10px">
@@ -114,7 +118,7 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item :label="$t('Single.Properties')">
+      <el-form-item :label="$t('Single.Properties')" class="PropertiesCss">
         <div
           v-for="(item, index) in propertiesList"
           :key="index"
@@ -145,7 +149,7 @@
           margin-top: 20px;
         "
         type="primary"
-        @click="postFrom"
+        @click="postFrom('formLabelAlign')"
       >
         {{ $t("Single.tijiao") }}
       </el-button>
@@ -349,8 +353,16 @@ export default {
       }
     },
 
-    postFrom() {
-      this.dialogVisible = true;
+    postFrom(formLabelAlign) {
+      console.log(this.formLabelAlign);
+      this.$refs[formLabelAlign].validate((valid) => {
+        if (valid) {
+          this.dialogVisible = true;
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
 
     // 链上开始
@@ -399,7 +411,7 @@ export default {
         let value = this.formLabelAlign.propertiess[key];
         props[name] = value;
       }
-      
+
       const jsonResp = await contracts.uploadJson(
         this.formLabelAlign.image,
         this.formLabelAlign.title,
@@ -407,7 +419,7 @@ export default {
         props
       );
       console.log("jsonResp=>", jsonResp);
-            
+
       const tokenResp = await contracts.newTokenId(this.formLabelAlign.token);
       console.log("tokenResp=>", tokenResp);
       this.formLabelAlign.tokenid = tokenResp.data.tokenid;
@@ -488,6 +500,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-input-number {
+  width: 100%;
+}
+/deep/.el-input-number__decrease,
+/deep/.el-input-number__increase {
+  display: none;
+}
+
+/deep/.el-input-number .el-input__inner {
+  text-align: left;
+}
+
 .Approve {
   margin-bottom: 40px;
 }
@@ -524,6 +548,7 @@ export default {
 }
 /deep/.el-dialog {
   width: 480px;
+
   height: 645px;
   background: #ffffff;
   border-radius: 10px;
@@ -540,11 +565,16 @@ export default {
   flex-direction: row;
   border-bottom: 1px solid #eceef0;
 }
+
 /deep/ .el-form-item__content {
   display: flex;
-  // flex-direction: row;
+}
+
+.PropertiesCss /deep/ .el-form-item__content {
+  display: flex;
   flex-wrap: wrap;
 }
+
 /deep/.el-select {
   position: absolute;
   top: 0;
@@ -572,15 +602,12 @@ export default {
 }
 .establish {
   width: 1200px;
-  // height: 1120px;
   margin: 0 auto;
 }
 /deep/.el-upload-list__item {
   position: absolute;
   left: 965px;
   top: 252px;
-  // width: 225px;
-  // height: 339px;
   border-radius: 13px;
 }
 /deep/.el-upload-list--picture-card .el-upload-list__item {
