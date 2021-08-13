@@ -16,7 +16,7 @@
             :src="$Cover(item.user_cover)"
             style="width: 371px; height: 186px"
             alt=""
-          >
+          />
           <img
             :src="$Cover(item.user_pic)"
             style="
@@ -56,7 +56,7 @@ import $http from "../../utils/request";
 export default {
   components: {
     Swiper,
-    SwiperSlide,
+    SwiperSlide
   },
   data() {
     return {
@@ -69,20 +69,20 @@ export default {
         // loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
-          el: ".swiper-pagination",
+          el: ".swiper-pagination"
         },
         navigation: {
           nextEl: ".bestSelling-right",
-          prevEl: ".bestSelling-left",
-        },
+          prevEl: ".bestSelling-left"
+        }
       },
-      userInfoList: [],
+      userInfoList: []
     };
   },
   computed: {
     swiper() {
       return this.$refs.bestSelling.$swiper;
-    },
+    }
   },
   mounted() {
     this.getUserInfo();
@@ -96,14 +96,12 @@ export default {
     goUserFn(id) {
       this.$router.push({
         name: "personalCenter",
-        params: { address: id },
+        params: { address: id }
       });
     },
 
     async getUserInfo() {
-      const resp = await $http.get(
-        "/v1/user/top?user=seller"
-      );
+      const resp = await $http.get("/v1/account/top?user=seller");
       console.log(resp);
       resp.list.forEach((item, index) => {
         if (item.user_name == null) {
@@ -145,8 +143,8 @@ export default {
           item.user_name = "暂无名称";
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

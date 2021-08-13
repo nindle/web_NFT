@@ -110,6 +110,24 @@ const routes = [
     name: "login",
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/login/index")
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () =>
+      import(/* webpackChunkName: "register" */ "../views/login/register")
+  },
+  {
+    path: "/bind",
+    name: "bind",
+    component: () =>
+      import(/* webpackChunkName: "bind" */ "../views/login/bind")
+  },
+  {
+    path: "/reset",
+    name: "reset",
+    component: () =>
+      import(/* webpackChunkName: "reset" */ "../views/login/Reset")
   }
 ];
 

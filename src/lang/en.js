@@ -33,7 +33,7 @@ export default {
       "Upload your work (image, video, audio, or 3D art), add a title and description, and customize your NFTs with propeties, stats, and unlockable content.",
     sale: "List for sale",
     saleintroduce:
-      "Choose between auctions, fixed-price listings, and declining-price listings. You choose how you want to sell your NFTs, and we help you sell them!",
+      "Choose between auctions and fixed price lists. The way you choose to sell NFTs, we help you sell them!",
     bazaar: "Explore the Browse",
     Invitealliance: "Invite alliance",
     email:

@@ -120,9 +120,9 @@ export default {
             min: 2,
             max: 16,
             message: "长度在 2 到 16 个字符",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
       dialogImageUrl: "",
       dialogVisible: false,
@@ -135,9 +135,9 @@ export default {
         cover: "",
         website: "",
         twitter: "",
-        pic: "",
+        pic: ""
       },
-      userpicurl: false,
+      userpicurl: false
     };
   },
   created() {},
@@ -148,7 +148,7 @@ export default {
   methods: {
     async getUserInfo() {
       const resp = await $http.get(
-        `/v1/user?address=${sessionStorage.getItem("address")}`
+        `/v1/account?address=${sessionStorage.getItem("address")}`
       );
       this.formLabelAlign.address = resp.data.user_address;
       this.formLabelAlign.desc = resp.data.user_desc;
@@ -171,19 +171,19 @@ export default {
         this.formLabelAlign.pic = e.ipfs;
       }
       const formLabelAlign = { ...this.formLabelAlign };
-      const resp = await $http.post("/v1/user/edit", {
-        ...formLabelAlign,
+      const resp = await $http.post("/v1/account/edit", {
+        ...formLabelAlign
       });
       if (resp.code == 200) {
         this.$message({
           message: "更新成功",
-          type: "success",
+          type: "success"
         });
         sessionStorage.setItem("userInfo", formLabelAlign.username);
         this.formLabelAlign = {};
         this.$router.push({
           name: "personalCenter",
-          params: { address: sessionStorage.getItem("address") },
+          params: { address: sessionStorage.getItem("address") }
         });
       } else if (resp.code == 500) {
         this.$message.error("更新失败");
@@ -191,12 +191,12 @@ export default {
     },
 
     async postUserEdit(e) {
-      this.$refs.formLabelAlign.validate((valid) => {
+      this.$refs.formLabelAlign.validate(valid => {
         if (valid) {
           if (e.pic == "") {
             this.$message({
               message: "头像不可为空",
-              type: "warning",
+              type: "warning"
             });
           } else {
             this.uploadFile();
@@ -205,8 +205,8 @@ export default {
           return false;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

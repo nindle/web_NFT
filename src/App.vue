@@ -1,128 +1,152 @@
 <template>
   <div id="app">
-    <el-header>
-      <img
-        src="./assets/logo.png"
-        alt=""
-        class="header-login"
-        replace
-        @click="goHome"
-      />
-      <div class="header-input">
-        <el-autocomplete
-          v-model="state"
-          :fetch-suggestions="querySearchAsync"
-          :trigger-on-focus="false"
-          :placeholder="$t('home.search')"
-          @select="handleSelect"
-        >
-        </el-autocomplete>
+    <el-header id="headerStyle">
+      <el-row>
+        <el-col :span="4">
+          <img src="./assets/logo.png" alt="" replace @click="goHome" />
+        </el-col>
+        <el-col :span="10">
+          <div class="header-input">
+            <el-autocomplete
+              v-model="state"
+              :fetch-suggestions="querySearchAsync"
+              :trigger-on-focus="false"
+              :placeholder="$t('home.search')"
+              @select="handleSelect"
+            >
+            </el-autocomplete>
 
-        <img
-          src="./assets/search.png"
-          alt=""
-          style="
+            <img
+              src="./assets/search.png"
+              alt=""
+              style="
             position: absolute;
             top: 16px;
             left: 8px;
             width: 27px;
             height: 27px;
           "
-        />
-      </div>
+            />
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="header-icon">
+            <router-link
+              class="header-icon-a"
+              :to="'/'"
+              :class="{ active: cur === 1 ? true : false }"
+              @click.native="cur = 1"
+            >
+              {{ $t("home.home") }}
+            </router-link>
 
-      <div class="header-icon">
-        <router-link
-          class="header-icon-a"
-          :to="'/'"
-          :class="{ active: cur === 1 ? true : false }"
-          @click.native="cur = 1"
-        >
-          {{ $t("home.home") }}
-        </router-link>
-        <router-link
-          class="header-icon-a"
-          :to="'/bazaar'"
-          :class="{ active: cur === 2 ? true : false }"
-          @click.native="cur = 2"
-        >
-          {{ $t("home.Browse") }}
-        </router-link>
-        <router-link
-          class="header-icon-a"
-          :to="{
-            name: 'personalCenter',
-            params: { address: addres },
-          }"
-          :class="{ active: cur === 3 ? true : false }"
-          @click.native="cur = 3"
-        >
-          {{ $t("home.Account") }}
-        </router-link>
+            <router-link
+              class="header-icon-a"
+              :to="'/bazaar'"
+              :class="{ active: cur === 2 ? true : false }"
+              @click.native="cur = 2"
+            >
+              {{ $t("home.Browse") }}
+            </router-link>
 
-        <el-button type="primary" class="create" round @click="account()">
-          {{ $t("home.Create") }}
-        </el-button>
+            <router-link
+              class="header-icon-a"
+              :to="{
+                name: 'personalCenter',
+                params: { address: addres }
+              }"
+              :class="{ active: cur === 3 ? true : false }"
+              @click.native="cur = 3"
+            >
+              {{ $t("home.Account") }}
+            </router-link>
 
-        <div v-if="success == 200" class="loginSuccessful">
-          <p class="lfet">
-            <img src="./assets/point.png" alt="" style="margin: 0 4px" />
-            <span>
-              {{ $t("home.LAN") }}
-            </span>
-          </p>
-          <p class="right">
-            <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" />
-            <el-popover placement="bottom" trigger="click">
-              <p class="popoverstyle_a">
-                {{ address }}
+            <el-button type="primary" class="create" round @click="account()">
+              {{ $t("home.Create") }}
+            </el-button>
+
+            <div v-if="showSuccess == 200" class="loginSuccessful">
+              <p class="lfet">
+                <img src="./assets/point.png" alt="" />
+                <span>
+                  {{ $t("home.LAN") }}
+                </span>
+              </p>
+              <p class="right">
+                <!-- <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" /> -->
+                <el-popover placement="bottom" trigger="click">
+                  <p class="popoverstyle_a">
+                    {{ address }}
+                    <img
+                      src="./assets/fz.png"
+                      style="cursor: pointer"
+                      alt=""
+                      @click="copyText"
+                    />
+                  </p>
+                  <p class="popoverstyle_b">{{ userName }}</p>
+                  <div class="popoverstyle_c">
+                    <img src="./assets/tx1.png" alt="" />
+                    <p class="popoverstyle_c_a">Balance</p>
+                    <p class="popoverstyle_c_b">{{ balance }} BNB</p>
+                  </div>
+                  <el-divider />
+                  <p class="popoverstyle_d" @click="personalCenterFn">
+                    My items
+                  </p>
+                  <p
+                    class="popoverstyle_d"
+                    @click="$router.push({ name: 'redactUser' })"
+                  >
+                    Edit profile
+                  </p>
+                  <el-button
+                    id="userstyle"
+                    slot="reference"
+                    style="background-color: #d7e8fe"
+                  >
+                    {{ address }}
+                    <span v-show="addres !== null" @click="addAddressFn"
+                      >切换钱包</span
+                    >
+                    <span v-show="addres == null" @click="addAddressFn"
+                      >连接钱包</span
+                    >
+                  </el-button>
+                </el-popover>
+              </p>
+            </div>
+
+            <el-button
+              v-else
+              type="primary"
+              class="userlogin"
+              round
+              @click="open"
+            >
+              {{ $t("home.LoginWallet") }}
+            </el-button>
+
+            <el-col :span="2">
+              <el-dropdown trigger="click" @command="handleCommand">
                 <img
-                  src="./assets/fz.png"
-                  style="cursor: pointer"
+                  style="margin: 0 25px 0 20px; height: 26px"
+                  src="./assets/language.png"
                   alt=""
-                  @click="copyText"
                 />
-              </p>
-              <p class="popoverstyle_b">Set display name</p>
-              <div class="popoverstyle_c">
-                <img src="./assets/tx1.png" alt="" />
-                <p class="popoverstyle_c_a">Balance</p>
-                <p class="popoverstyle_c_b">{{ balance }} BNB</p>
-              </div>
-              <el-divider />
-              <p class="popoverstyle_d" @click="personalCenterFn">My items</p>
-              <p
-                class="popoverstyle_d"
-                @click="$router.push({ name: 'redactUser' })"
-              >
-                Edit profile
-              </p>
-              <el-button
-                id="userstyle"
-                slot="reference"
-                style="background-color: #d7e8fe"
-              >
-                {{ userName || "未设置" }}
-              </el-button>
-            </el-popover>
-          </p>
-        </div>
-        <el-button v-else type="primary" class="userlogin" round @click="open">
-          {{ $t("home.LoginWallet") }}
-        </el-button>
-
-        <el-dropdown trigger="click" @command="handleCommand">
-          <img
-            style="margin: 0 25px 0 20px; height: 26px"
-            src="./assets/language.png"
-            alt=""
-          />
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a">{{ $t("lang.zh") }}</el-dropdown-item>
-            <el-dropdown-item command="c">{{ $t("lang.en") }}</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="a">{{
+                    $t("lang.zh")
+                  }}</el-dropdown-item>
+                  <el-dropdown-item command="c">{{
+                    $t("lang.en")
+                  }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown></el-col
+            >
+          </div>
+        </el-col>
+      </el-row>
     </el-header>
 
     <router-view v-if="isRouterAlive" />
@@ -185,7 +209,7 @@ import $http from "./utils/request";
 export default {
   provide() {
     return {
-      reload: this.reload,
+      reload: this.reload
     };
   },
   data() {
@@ -200,23 +224,17 @@ export default {
       balance: 0,
       cur: 1,
       a: 5,
-      success: "",
+      showSuccess: "",
       drawer: false,
       toRouter: "",
       userInfo: {},
-      userName: "",
+      userName: ""
     };
   },
   computed: {
     imgSrc() {
       return this.cur == 3 ? this.imgUrl[1].img2 : this.imgUrl[0].img1;
-    },
-    // eslint-disable-next-line vue/return-in-computed-property
-    weight() {
-      if (this.success == "") {
-        return "width: 600px;";
-      }
-    },
+    }
   },
   watch: {
     $route(to) {
@@ -225,41 +243,68 @@ export default {
       } else {
         this.toRouter = 2;
       }
-    },
+      var arr = ["/login", "/register", "/reset"];
+      var arr2 = arr.some(function(x) {
+        return to.path == x;
+      });
+      if (arr2) {
+        document.getElementById("headerStyle").style.display = "none";
+        document.getElementById("apptest").style.display = "none";
+      } else {
+        document.getElementById("headerStyle").style.display = "block";
+        document.getElementById("apptest").style.display = "block";
+      }
+    }
   },
   created() {},
   async mounted() {
-    if (sessionStorage.getItem("address") == null) {
-      this.success = "";
+    if (sessionStorage.getItem("showSuccess") == null) {
+      console.log(1);
     } else {
-      this.success = 200;
+      // this.address = this.SubStr(sessionStorage.getItem("address"));
+
+      this.showSuccess = await sessionStorage.getItem("showSuccess");
+      if (sessionStorage.getItem("address") == null) {
+        this.address = "Connect Wallet";
+      } else {
+        this.address = this.SubStr(sessionStorage.getItem("address"));
+      }
+    }
+
+    if (sessionStorage.getItem("address") == null) {
+      console.log();
+    } else {
+      this.showSuccess = await sessionStorage.getItem("showSuccess");
       this.userName = await sessionStorage.getItem("userInfo");
-      this.address = await sessionStorage.getItem("showAddress");
+      // this.address = await sessionStorage.getItem("showAddress");
       this.balance = await sessionStorage.getItem("balance");
     }
   },
   async beforeUpdate() {
     if (sessionStorage.getItem("address") == null) {
-      this.success = "";
+      console.log();
     } else {
-      this.success = 200;
+      this.showSuccess = await sessionStorage.getItem("showSuccess");
       this.userName = await sessionStorage.getItem("userInfo");
-      this.address = await sessionStorage.getItem("showAddress");
+      // this.address = await sessionStorage.getItem("showAddress");
       this.balance = await sessionStorage.getItem("balance");
     }
   },
   methods: {
+    addAddressFn() {
+      this.$router.replace("/bind");
+    },
     async querySearchAsync(queryString, cb) {
       const resp = await $http.get(`v1/explore/list?keyword=${queryString}`);
       // console.log(resp.list);
       this.restaurants = [];
-      resp.list.forEach((item) => {
+      resp.list.forEach(item => {
         this.restaurants.push({
           value: item.prop_name,
           values: item.creator_user_name,
           address: item.prop_desc,
           token: item.token,
-          token_id: item.token_id,
+          token_id: item.token_id
         });
       });
       // console.log(this.restaurants);
@@ -268,8 +313,9 @@ export default {
       // 调用 callback 返回建议列表的数据
       cb(results);
     },
+
     createStateFilter(queryString) {
-      return (restaurant) => {
+      return restaurant => {
         return (
           restaurant.value ||
           values.toLowerCase().indexOf(queryString.toLowerCase()) === 0
@@ -280,7 +326,7 @@ export default {
     handleSelect(item) {
       this.$router.push({
         name: "details",
-        params: { id: item.token_id, token: item.token },
+        params: { id: item.token_id, token: item.token }
       });
       if (this.$route.name == "details") {
         location.reload();
@@ -290,9 +336,10 @@ export default {
     personalCenterFn() {
       this.$router.push({
         name: "personalCenter",
-        params: { address: this.addres },
+        params: { address: this.addres }
       });
     },
+
     handleCommand(command) {
       if (command == "a") {
         localStorage.setItem("language", "zh-cn");
@@ -306,7 +353,7 @@ export default {
 
     reload() {
       this.isRouterAlive = false;
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.isRouterAlive = true;
       });
     },
@@ -320,13 +367,13 @@ export default {
       document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
       this.$message({
         message: "复制成功",
-        type: "success",
+        type: "success"
       });
     },
 
     SubStr(str) {
-      var subStr1 = str.slice(0, 6);
-      var subStr2 = str.slice(str.length - 5, 42);
+      var subStr1 = str.slice(0, 4);
+      var subStr2 = str.slice(str.length - 4, 42);
       var subStr = subStr1 + "..." + subStr2;
       return subStr;
     },
@@ -337,11 +384,8 @@ export default {
 
     goHome() {
       this.cur = 0;
-      this.$router.push({ name: "Home", params: { userId: "123" } });
-    },
-
-    load() {
-      this.a += 3;
+      this.$router.replace("/");
+      // this.$router.push({ name: "Home", params: { userId: "123" } });
     },
 
     open() {
@@ -352,26 +396,35 @@ export default {
           confirmButtonText: "Connecting Wallet",
           center: true,
           dangerouslyUseHTMLString: true,
-          confirmButtonClass: "btnstyle",
+          confirmButtonClass: "btnstyle"
         }
       ).then(async () => {
-        const address = await initWallet();
-        if (address != "") {
-          this.success = 200;
-          this.addres = address;
-          this.address = this.SubStr(address);
-          sessionStorage.setItem("showAddress", this.address);
-          this.balance = await getBalance();
-          const { data: data } = await userInfoApi(address);
-          this.userInfo = data;
-          location.reload();
-        }
+        // const { data: data } = await userInfoApi(address);
+        // this.userInfo = data;
+        this.$router.replace("/login");
+        // const address = await initWallet();
+        // if (address != "") {
+        //   this.success = 200;
+        //   this.addres = address;
+        //   this.address = this.SubStr(address);
+        //   sessionStorage.setItem("showAddress", this.address);
+        //   this.balance = await getBalance();
+        //   const { data: data } = await userInfoApi(address);
+        //   this.userInfo = data;
+        //   // location.reload();
+        // }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
+/deep/.el-row {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
 #userstyle {
   display: inline-block;
   line-height: 1;
@@ -390,10 +443,13 @@ export default {
   padding: 0;
   font-size: 14px;
   border-radius: 4px;
-  width: 61px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  span {
+    border-radius: 20px;
+    padding: 5px 10px;
+    color: #0066ed;
+    margin-left: 5px;
+    background-color: #ffffff;
+  }
 }
 
 .bottom_b tr td {
@@ -469,7 +525,6 @@ export default {
 }
 
 .create {
-  // width: 88px;
   height: 38px;
   background: #d9e8ff;
   border-radius: 19px;
@@ -477,13 +532,13 @@ export default {
   font-family: Source Han Sans CN;
   font-weight: 400;
   font-size: 13px;
+  margin-right: 20px;
 }
 
 .loginSuccessful {
-  width: 245px;
   height: 38px;
-  float: right;
   line-height: 38px;
+  display: flex;
   background: #d9e8ff;
   align-items: center;
   border-radius: 19px;
@@ -491,20 +546,30 @@ export default {
 }
 
 .loginSuccessful .lfet {
-  width: 147px;
   height: 32px;
-  float: left;
   line-height: 32px;
-  margin: 3px 0 0 5px;
+  margin-left: 5px;
   border-radius: 16px;
+  display: flex;
+  align-items: center;
+  img {
+    width: 24px;
+    height: 24px;
+    margin: 0 5px;
+  }
+  span {
+    margin-right: 10px;
+    white-space: pre;
+  }
   background-color: #fff;
 }
 
 .loginSuccessful .right {
   height: 32px;
   line-height: 32px;
-  margin: 3px 0 0 5px;
+  margin: 0 5px;
   border-radius: 16px;
+  display: flex;
 }
 
 .loginSuccessful .right img {
@@ -578,30 +643,25 @@ export default {
   z-index: 10;
 }
 
-.header-login {
-  margin-left: 50px;
-}
-
 .header-input {
   display: inline-block;
   position: relative;
-  width: 600px;
-  margin-left: 210px;
+  width: 100%;
+  // margin-left: 210px;
   /deep/.el-autocomplete {
     width: 100%;
   }
 }
 
 .header-icon {
-  float: right;
   display: flex;
   flex-direction: row;
   align-items: center;
   flex-grow: 1;
-  justify-content: flex-start;
-  justify-content: space-between;
-  // width: 750px;
+  justify-content: flex-end;
+  width: 100%;
   height: 60px;
+  padding-left: 30px;
 }
 
 .icon-public {
@@ -697,7 +757,7 @@ hr {
 }
 
 .header-icon-a {
-  margin-right: 20px;
+  margin-right: 40px;
   font-size: 18px;
   font-family: Source Han Sans CN;
   font-weight: 400;

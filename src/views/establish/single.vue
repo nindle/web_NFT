@@ -225,7 +225,7 @@ import {
   erc721Addr,
   getProvider,
   randomHex,
-  getBalance,
+  getBalance
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 
@@ -243,16 +243,16 @@ export default {
             min: 2,
             max: 32,
             message: "长度在 2 到 32 个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         price: [
           { required: true, message: "价格不能为空" },
-          { type: "number", message: "价格必须为数字值" },
+          { type: "number", message: "价格必须为数字值" }
         ],
         description: [
-          { required: true, message: "商品说明不能为空", trigger: "blur" },
-        ],
+          { required: true, message: "商品说明不能为空", trigger: "blur" }
+        ]
       },
       user_id: "",
       changes: "",
@@ -275,14 +275,14 @@ export default {
         type: "",
         royalties: "",
         properties: [],
-        propertiess: [],
+        propertiess: []
       },
       aprLoading: false,
       aprError: false,
       upLoading: false,
       upError: false,
       ordLoading: false,
-      ordError: false,
+      ordError: false
     };
   },
   async created() {
@@ -314,7 +314,7 @@ export default {
             confirmButtonText: "Connecting Wallet",
             center: true,
             dangerouslyUseHTMLString: true,
-            confirmButtonClass: "btnstyle",
+            confirmButtonClass: "btnstyle"
           }
         ).then(async () => {
           const address = await initWallet();
@@ -323,7 +323,7 @@ export default {
             currCont = cont721;
             await this.whiteList(cont721);
             await this.isApprovedAll(cont721);
-            this.success = 200;
+
             this.addres = address;
             this.address = this.SubStr(address);
             sessionStorage.setItem("showAddress", this.address);
@@ -355,7 +355,7 @@ export default {
 
     postFrom(formLabelAlign) {
       console.log(this.formLabelAlign);
-      this.$refs[formLabelAlign].validate((valid) => {
+      this.$refs[formLabelAlign].validate(valid => {
         if (valid) {
           this.dialogVisible = true;
         } else {
@@ -388,7 +388,7 @@ export default {
         // alert("不在白名单，无法创建NFT");
         this.$message({
           message: "不在白名单，无法创建NFT",
-          type: "warning",
+          type: "warning"
         });
         this.$router.push("/");
         return;
@@ -450,17 +450,17 @@ export default {
           sellAsset: {
             token: this.formLabelAlign.token,
             tokenId: BigNumber.from(this.formLabelAlign.tokenid),
-            assetType: 4,
+            assetType: 4
           },
           buyAsset: {
             token: "0x0000000000000000000000000000000000000000",
             tokenId: BigNumber.from("0"),
-            assetType: 1,
-          },
+            assetType: 1
+          }
         },
         selling: BigNumber.from("1"),
         buying: this.$parseEther(this.formLabelAlign.price.toString() || "0"),
-        sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
+        sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100")
       };
       console.log(order);
       const provider = getProvider();
@@ -487,15 +487,15 @@ export default {
       this.loading_ing = false;
       this.$message({
         message: "创建完成",
-        type: "success",
+        type: "success"
       });
       this.dialogVisible = false;
       this.$router.push({
         name: "personalCenter",
-        params: { address: this.user_id },
+        params: { address: this.user_id }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

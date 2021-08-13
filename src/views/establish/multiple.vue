@@ -238,7 +238,7 @@ import {
   erc1155Addr,
   getProvider,
   randomHex,
-  getBalance,
+  getBalance
 } from "../../wallet/wallet";
 
 let currCont = null;
@@ -255,12 +255,12 @@ export default {
             min: 2,
             max: 32,
             message: "长度在 2 到 32 个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         price: [
           { required: true, message: "价格不能为空" },
-          { type: "number", message: "价格必须为数字值" },
+          { type: "number", message: "价格必须为数字值" }
         ],
         description: [
           { required: true, message: "请输入商品介绍", trigger: "blur" },
@@ -268,9 +268,9 @@ export default {
             min: 3,
             max: 15,
             message: "长度在 3 到 15 个字符",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
       user_id: "",
       changes: "",
@@ -294,14 +294,14 @@ export default {
         royalties: "",
         supply: "1",
         properties: [],
-        propertiess: [],
+        propertiess: []
       },
       aprLoading: false,
       aprError: false,
       upLoading: false,
       upError: false,
       ordLoading: false,
-      ordError: false,
+      ordError: false
     };
   },
   async created() {
@@ -332,7 +332,7 @@ export default {
             confirmButtonText: "Connecting Wallet",
             center: true,
             dangerouslyUseHTMLString: true,
-            confirmButtonClass: "btnstyle",
+            confirmButtonClass: "btnstyle"
           }
         ).then(async () => {
           const address = await initWallet();
@@ -341,7 +341,7 @@ export default {
             currCont = cont1155;
             await this.whiteList(cont1155);
             await this.isApprovedAll(cont1155);
-            this.success = 200;
+
             this.addres = address;
             this.address = this.SubStr(address);
             sessionStorage.setItem("showAddress", this.address);
@@ -452,17 +452,17 @@ export default {
           sellAsset: {
             token: this.formLabelAlign.token,
             tokenId: BigNumber.from(this.formLabelAlign.tokenid),
-            assetType: 3,
+            assetType: 3
           },
           buyAsset: {
             token: "0x0000000000000000000000000000000000000000",
             tokenId: BigNumber.from("0"),
-            assetType: 1,
-          },
+            assetType: 1
+          }
         },
         selling: BigNumber.from(this.formLabelAlign.supply || "1"),
         buying: this.$parseEther(this.formLabelAlign.price.toString() || "0"),
-        sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100"),
+        sellerFee: BigNumber.from(this.formLabelAlign.royalties || "100")
       };
       console.log(order);
       const provider = getProvider();
@@ -501,15 +501,15 @@ export default {
       this.loading_ing = false;
       this.$message({
         message: "创建完成",
-        type: "success",
+        type: "success"
       });
       this.dialogVisible = false;
       this.$router.push({
         name: "personalCenter",
-        params: { address: this.user_id },
+        params: { address: this.user_id }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

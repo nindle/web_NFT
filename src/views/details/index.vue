@@ -115,7 +115,7 @@
               @click="
                 $router.push({
                   name: 'personalCenter',
-                  params: { address: str },
+                  params: { address: str }
                 })
               "
             />
@@ -191,7 +191,7 @@
               @click="
                 $router.push({
                   name: 'personalCenter',
-                  params: { address: str },
+                  params: { address: str }
                 })
               "
             />
@@ -252,7 +252,7 @@
               @click="
                 $router.push({
                   name: 'personalCenter',
-                  params: { address: strs },
+                  params: { address: strs }
                 })
               "
             />
@@ -363,7 +363,7 @@ import {
   erc20TranProxyAddr,
   wbnbAddr,
   Contracts721,
-  Contracts1155,
+  Contracts1155
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 import contracts from "../../wallet/contracts";
@@ -380,7 +380,7 @@ export default {
       own_user_pic: "",
       loading: true,
       details: {
-        saleable: 0,
+        saleable: 0
       },
       activeName: "first",
       tableData: [],
@@ -402,7 +402,7 @@ export default {
       bidErr: false,
       wbnb_balance: 0,
       isApproved: false,
-      buyisApproved: false,
+      buyisApproved: false
     };
   },
   created() {},
@@ -467,12 +467,11 @@ export default {
           confirmButtonText: "Connecting Wallet",
           center: true,
           dangerouslyUseHTMLString: true,
-          confirmButtonClass: "btnstyle",
+          confirmButtonClass: "btnstyle"
         }
       ).then(async () => {
         const address = await initWallet();
         if (address != "") {
-          this.success = 200;
           this.addres = address;
           this.address = this.SubStr(address);
           sessionStorage.setItem("showAddress", this.address);
@@ -495,9 +494,9 @@ export default {
       loadScript(
         "https://lionnft.io/123.js",
         {
-          async: false,
+          async: false
         },
-        function (err, script) {
+        function(err, script) {
           if (err) {
           } else {
             // document.getElementById("d1NavigationDiv").style.display = "none";
@@ -537,7 +536,7 @@ export default {
       document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
       this.$message({
         message: "复制成功",
-        type: "success",
+        type: "success"
       });
     },
 
@@ -547,7 +546,7 @@ export default {
       );
       // console.log(resp.list);
       this.tableData = resp.list;
-      this.tableData.forEach((item) => {
+      this.tableData.forEach(item => {
         item.ord_time = this.$dayjs(item.ord_time).format(
           "YYYY-MM-DD HH:mm:ss"
         );
@@ -645,17 +644,17 @@ export default {
           sellAsset: {
             token: _order.key.sellAsset.token,
             tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
-            assetType: _order.key.sellAsset.assetType,
+            assetType: _order.key.sellAsset.assetType
           },
           buyAsset: {
             token: _order.key.buyAsset.token,
             tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
-            assetType: _order.key.buyAsset.assetType,
-          },
+            assetType: _order.key.buyAsset.assetType
+          }
         },
         selling: BigNumber.from(_order.selling),
         buying: BigNumber.from(_order.buying),
-        sellerFee: BigNumber.from(_order.sellerFee),
+        sellerFee: BigNumber.from(_order.sellerFee)
       };
       // console.log(order2);
 
@@ -693,13 +692,13 @@ export default {
         if (err.data.code !== 3) {
           this.$message({
             message: "余额不足",
-            type: "warning",
+            type: "warning"
           });
           this.loading = false;
         } else {
           this.$message({
             message: "库存不足",
-            type: "warning",
+            type: "warning"
           });
           this.loading = false;
         }
@@ -721,7 +720,7 @@ export default {
       this.buyLoading = false;
       this.$message({
         message: "购买成功",
-        type: "success",
+        type: "success"
       });
       this.loading = false;
       setTimeout(() => {
@@ -745,14 +744,14 @@ export default {
       ) {
         this.$message({
           message: "请填写正确的竞拍价格",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
       if (parseFloat(this.bid_price) > parseFloat(this.wbnb_balance)) {
         this.$message({
           message: "账号WBNB余额不足",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
@@ -766,17 +765,17 @@ export default {
           sellAsset: {
             token: wbnbAddr,
             tokenId: BigNumber.from("0"),
-            assetType: 2,
+            assetType: 2
           },
           buyAsset: {
             token: _order.key.sellAsset.token,
             tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
-            assetType: _order.key.sellAsset.assetType,
-          },
+            assetType: _order.key.sellAsset.assetType
+          }
         },
         selling: this.$parseEther(this.bid_price),
         buying: BigNumber.from(_order.selling),
-        sellerFee: BigNumber.from(_order.sellerFee),
+        sellerFee: BigNumber.from(_order.sellerFee)
       };
 
       console.log(order2);
@@ -792,13 +791,13 @@ export default {
 
       const resp = await exchange.bidCreateApi({
         order: bidOrder,
-        signature: signResp,
+        signature: signResp
       });
       console.log(resp);
       if (resp.code == 200) {
         this.$message({
           message: "参加竞拍成功",
-          type: "success",
+          type: "success"
         });
         setTimeout(() => {
           location.reload();
@@ -838,7 +837,7 @@ export default {
       if (!_order) {
         this.$message({
           message: "订单不正确",
-          type: "warning",
+          type: "warning"
         });
         return;
       }
@@ -850,17 +849,17 @@ export default {
           sellAsset: {
             token: _order.key.sellAsset.token,
             tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
-            assetType: _order.key.sellAsset.assetType,
+            assetType: _order.key.sellAsset.assetType
           },
           buyAsset: {
             token: _order.key.buyAsset.token,
             tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
-            assetType: _order.key.buyAsset.assetType,
-          },
+            assetType: _order.key.buyAsset.assetType
+          }
         },
         selling: BigNumber.from(_order.selling),
         buying: BigNumber.from(_order.buying),
-        sellerFee: BigNumber.from(_order.sellerFee),
+        sellerFee: BigNumber.from(_order.sellerFee)
       };
       console.log("order2", order2);
 
@@ -896,13 +895,13 @@ export default {
         if (err.data.code !== 3) {
           this.$message({
             message: "余额不足",
-            type: "warning",
+            type: "warning"
           });
           this.loading = false;
         } else {
           this.$message({
             message: "库存不足",
-            type: "warning",
+            type: "warning"
           });
           this.loading = false;
         }
@@ -928,14 +927,14 @@ export default {
       this.bidLoading = false;
       this.$message({
         message: "竞拍成功",
-        type: "success",
+        type: "success"
       });
       this.loading = false;
       setTimeout(() => {
         location.reload();
       }, 2000);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -13,14 +13,16 @@
       >
         <h2>Sign in to LionNFT</h2>
 
+        <h3>
+          Enter your email address to register an account
+        </h3>
+
         <el-form-item label="Email address" prop="age">
-          <el-input v-model="ruleForm.age" placeholder="请输入邮箱账号" />
+          <el-input v-model="ruleForm.age" placeholder="请输入邮箱账号">
+          </el-input>
         </el-form-item>
 
         <el-form-item label="Password" prop="password">
-          <p class="forgotPassword" @click="$router.replace('/reset')">
-            forgot password？
-          </p>
           <el-input
             v-model="ruleForm.password"
             type="password"
@@ -29,20 +31,24 @@
           />
         </el-form-item>
 
+        <el-form-item label="Verification code" prop="code">
+          <el-input v-model="ruleForm.code" placeholder="请输入验证码">
+            <el-button v-show="show" slot="append" @click="getCode(ruleForm)">
+              获取验证码
+            </el-button>
+          </el-input>
+          <span v-show="!show" class="count">{{ count }} s</span>
+        </el-form-item>
+
         <el-form-item id="formSubmit">
           <el-button
             type="primary"
             class="logStyle"
             @click="submitForm('ruleForm')"
           >
-            Sign In
+            Register
           </el-button>
         </el-form-item>
-
-        <p>
-          Don’t have an account?
-          <span @click="$router.push({ name: 'register' })">Get started</span>
-        </p>
       </el-form>
     </div>
   </div>
@@ -50,15 +56,17 @@
 
 <script>
 import $http from "../../utils/request";
-import { getBalance } from "../../wallet/wallet";
 
 export default {
   data() {
     return {
-      userInfo: {},
+      show: true,
+      count: "",
+      timer: null,
       ruleForm: {
-        password: "",
-        age: ""
+        code: "",
+        age: "",
+        password: ""
       },
       rules: {
         age: [
@@ -69,8 +77,15 @@ export default {
           },
           {
             type: "email",
-            message: "Please enter a valid email address.",
+            message: "Please enter a valid email address",
             trigger: ["blur", "change"]
+          }
+        ],
+        code: [
+          {
+            required: true,
+            message: "please enter verification code",
+            trigger: "blur"
           }
         ],
         password: [
@@ -86,54 +101,49 @@ export default {
   computed: {},
   mounted() {},
   methods: {
+    async getCode(e) {
+      const TIME_COUNT = 60;
+      if (!this.timer) {
+        this.count = TIME_COUNT;
+        this.show = false;
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--;
+          } else {
+            this.show = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
+      let formData = new FormData();
+      formData.append("email", e.age);
+      formData.append("sendtype", 0);
+      const resp = await $http.post("/v1/account/vcode", formData);
+      if (resp.code == 200) {
+        this.$message({
+          message: "验证码已发送",
+          type: "success"
+        });
+      }
+    },
+
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let formData = new FormData();
           formData.append("email", this.ruleForm.age);
           formData.append("password", this.ruleForm.password);
-          const resp = await $http.post("/v1/account/login", formData);
-          this.userInfo = resp;
+          formData.append("code", this.ruleForm.code);
+          const resp = await $http.post("/v1/account/create", formData);
           if (resp.code == 200) {
-            console.log(this.userInfo);
-            if (this.userInfo.data == null) {
-              this.$message({
-                message: "未绑定钱包地址",
-                type: "warning"
-              });
-              sessionStorage.setItem("showSuccess", 200);
-              this.$router.replace("/bind");
-            } else if (this.userInfo.data == "") {
-              this.$message({
-                message: "未绑定钱包地址",
-                type: "warning"
-              });
-              sessionStorage.setItem("showSuccess", 200);
-              this.$router.replace("/bind");
-            } else {
-              sessionStorage.setItem("address", this.userInfo.data);
-              const { data: data } = await $http.get(
-                `/v1/account?address=${this.userInfo.data}`
-              );
-              sessionStorage.setItem("userInfo", data.user_name);
-              sessionStorage.setItem(
-                "showAddress",
-                this.SubStr(data.user_address.toString())
-              );
-
-              sessionStorage.setItem("balance", await getBalance());
-              this.$message({
-                message: "登录成功",
-                type: "success"
-              });
-              sessionStorage.setItem("showSuccess", 200);
-              this.$router.push({
-                name: "personalCenter",
-                params: { address: resp.data }
-              });
-            }
+            this.$message({
+              message: "注册成功",
+              type: "success"
+            });
+            this.$router.replace("/login");
           } else if (resp.code == 500) {
-            this.$message.error("登录失败");
+            this.$message.error("注册失败");
           }
         } else {
           console.log("error submit!!");
@@ -141,12 +151,8 @@ export default {
         }
       });
     },
-
-    SubStr(str) {
-      var subStr1 = str.slice(0, 6);
-      var subStr2 = str.slice(str.length - 5, 42);
-      var subStr = subStr1 + "..." + subStr2;
-      return subStr;
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
 };
@@ -189,7 +195,11 @@ export default {
         font-weight: normal;
         color: #000000;
         line-height: 28px;
-        margin: 40px 0 70px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+      h3 {
+        margin-bottom: 70px;
       }
       /deep/.el-input__inner {
         border: 0;
@@ -198,36 +208,23 @@ export default {
         border-bottom: 1px solid #f2f2f2;
       }
       /deep/.el-button--primary {
-        margin-top: 30px;
+        margin-top: 15px;
         width: 234px;
         height: 48px;
         background: #0066ed;
         border-radius: 4px;
       }
-      p {
-        font-size: 14px;
-        font-family: ArialMT;
-        color: #000000;
-        line-height: 16px;
-        span {
-          font-size: 14px;
-          font-family: Arial-BoldMT, Arial;
-          font-weight: normal;
-          color: #0066ed;
-          line-height: 16px;
-          cursor: pointer;
-        }
+      /deep/.el-input-group__append,
+      .el-input-group__prepend {
+        border: 0;
+        background-color: #fff;
+        border-bottom: 1px solid #f2f2f2;
       }
-      .forgotPassword {
+      .count {
         position: absolute;
-        z-index: 10;
-        top: -29px;
-        right: 45px;
-        font-size: 16px;
-        font-family: ArialMT;
-        color: #0066ed;
-        line-height: 18px;
-        cursor: pointer;
+        top: 0;
+        width: 30px;
+        margin-left: -30px;
       }
     }
   }

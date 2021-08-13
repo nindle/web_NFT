@@ -10,9 +10,7 @@ export function login(data) {
 
 // 用户信息
 export async function userInfoApi(address) {
-  const resp = await request.get(
-    "/v1/user?address=" + address
-  );
+  const resp = await request.get("/v1/account?address=" + address);
   sessionStorage.setItem("userInfo", resp.data.user_name);
   return resp;
 }

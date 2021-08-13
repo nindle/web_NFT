@@ -81,7 +81,7 @@
               @click="
                 $router.push({
                   name: 'details',
-                  params: { id: item.token_id, token: item.token },
+                  params: { id: item.token_id, token: item.token }
                 })
               "
               @mouseover="hover = true"
@@ -139,7 +139,7 @@
               @click="
                 $router.push({
                   name: 'details',
-                  params: { id: item.token_id, token: item.token },
+                  params: { id: item.token_id, token: item.token }
                 })
               "
               @mouseover="hover = true"
@@ -200,7 +200,7 @@
               @click="
                 $router.push({
                   name: 'details',
-                  params: { id: item.token_id, token: item.token },
+                  params: { id: item.token_id, token: item.token }
                 })
               "
               @mouseover="hover = true"
@@ -285,30 +285,36 @@ export default {
         cover: "",
         website: "",
         twitter: "",
-        pic: "",
+        pic: ""
       },
-      userShow: "",
+      userShow: ""
     };
   },
-  watch: {
-    $route(to) {
-      console.log("123===>", to);
-      this.getUserInfo();
 
-      location.reload();
-    },
-  },
   async created() {
     if (this.$route.params.address == sessionStorage.getItem("address")) {
       this.userShow = 123;
       this.user_id = sessionStorage.getItem("address");
+      this.getUserInfo();
+      // location.reload();
     } else {
+      // this.userShow = 123;
       this.user_id = this.$route.params.address;
     }
     this.getUserInfo();
     this.getCreated();
   },
   mounted() {},
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (from.path == "/login") {
+        location.reload();
+      } else if (from.path == "/bind") {
+        location.reload();
+      }
+    });
+  },
+
   methods: {
     setDefaultImage(e) {
       e.target.src = require("../../assets/weiqifm.jpg");
@@ -324,10 +330,10 @@ export default {
         short_url: this.userinfo.user_short_url,
         website: this.userinfo.user_website,
         twitter: this.userinfo.user_twitter,
-        pic: this.userinfo.user_pic,
+        pic: this.userinfo.user_pic
       };
-      const resp = await $http.post("/v1/user/edit", {
-        ...edit,
+      const resp = await $http.post("/v1/account/edit", {
+        ...edit
       });
       this.getUserInfo();
     },
@@ -343,14 +349,13 @@ export default {
             confirmButtonText: "Connecting Wallet",
             center: true,
             dangerouslyUseHTMLString: true,
-            confirmButtonClass: "btnstyle",
+            confirmButtonClass: "btnstyle"
           }
         ).then(async () => {
           const address = await initWallet();
           if (address != "") {
-            this.success = 200;
             this.addres = address;
-            this.address = this.SubStr(address);
+            this.address = this.SubStr(address.toString());
             sessionStorage.setItem("showAddress", this.address);
             this.balance = await getBalance();
             const { data: data } = await userInfoApi(address);
@@ -370,7 +375,7 @@ export default {
       document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
       this.$message({
         message: "复制成功",
-        type: "success",
+        type: "success"
       });
     },
 
@@ -392,7 +397,7 @@ export default {
     },
 
     async getUserInfo() {
-      const resp = await $http.get(`/v1/user?address=${this.user_id}`);
+      const resp = await $http.get(`/v1/account?address=${this.user_id}`);
 
       this.userinfo = resp.data;
       console.log(this.userinfo);
@@ -411,7 +416,7 @@ export default {
         this.userpic = this.$Cover(this.userinfo.user_pic);
       }
       this.str = this.userinfo.user_address;
-      this.subStr = this.SubStr(this.str);
+      this.subStr = this.SubStr(this.str.toString());
     },
 
     SubStr(str) {
@@ -437,8 +442,8 @@ export default {
         }
       });
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>
 
