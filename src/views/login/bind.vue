@@ -8,7 +8,9 @@
 
         <div class="bind_div">{{ address }}</div>
 
-        <el-button type="primary" @click="getAddress">Connect</el-button>
+        <el-button type="primary" @click="getAddress">
+          {{ buttonValue == false ? "binding" : "unbundle" }}
+        </el-button>
 
         <span class="bind_span">
           Connect with MetaMask to securely store your digital assets and crypto
@@ -26,66 +28,82 @@ import { getBalance, initWallet } from "../../wallet/wallet";
 export default {
   data() {
     return {
-      address: sessionStorage.getItem("address")
+      address: sessionStorage.getItem("address"),
+      buttonValue: false
     };
   },
   computed: {},
   mounted() {
+    if (sessionStorage.getItem("address") !== null) {
+      this.buttonValue = true;
+    }
     console.log(sessionStorage.getItem("showSuccess"));
   },
 
   methods: {
     async getAddress() {
-      this.address = await initWallet();
-
-      sessionStorage.setItem("address", this.address);
-      let formData = new FormData();
-      formData.append("address", this.address);
-      const resp = await $http.post("/v1/account/bind_address", formData);
-
-      if (resp.code == 200) {
-        this.$message({
-          message: "钱包绑定成功",
-          type: "success"
-        });
-        sessionStorage.setItem("address", this.address);
-
-        const data = await $http.get(`/v1/account?address=${this.address}`);
-        console.log(data);
-        const dataResp = data.data;
-        if (data.code == 200) {
-          sessionStorage.setItem("userInfo", dataResp.user_name);
-          sessionStorage.setItem(
-            "showAddress",
-            this.SubStr(dataResp.user_address.toString())
-          );
-          sessionStorage.setItem("balance", await getBalance());
+      this.buttonValue = true;
+      if (sessionStorage.getItem("address") !== "") {
+        console.log("绑定");
+        const resp = await $http.get("/v1/account/bind_address");
+        console.log(resp);
+        if (resp.code == 200) {
+          this.$message({
+            message: "钱包解绑成功",
+            type: "success"
+          });
+          sessionStorage.setItem("address", "");
+          this.address = "";
+        } else if (resp.code == 401) {
+          this.$message({
+            message: "账号未登录",
+            type: "warning"
+          });
         }
-
-        sessionStorage.setItem("showSuccess", 200);
-
-        this.$router.push({
-          name: "personalCenter",
-          params: { address: this.address }
-        });
-      } else if (resp.code == 401) {
-        this.$message({
-          message: "账号未登录",
-          type: "warning"
-        });
-
-        this.$router.push({
-          name: "login"
-        });
-      } else if (resp.code == 500) {
-        this.$message({
-          message: "钱包已绑定",
-          type: "warning"
-        });
-        this.$router.push({
-          name: "personalCenter",
-          params: { address: this.address }
-        });
+      } else {
+        this.address = await initWallet();
+        sessionStorage.setItem("address", this.address);
+        let formData = new FormData();
+        formData.append("address", this.address);
+        const resp = await $http.post("/v1/account/bind_address", formData);
+        if (resp.code == 200) {
+          this.$message({
+            message: "钱包绑定成功",
+            type: "success"
+          });
+          const data = await $http.get(`/v1/account?address=${this.address}`);
+          const dataResp = data.data;
+          if (data.code == 200) {
+            sessionStorage.setItem("userInfo", dataResp.user_name);
+            sessionStorage.setItem(
+              "showAddress",
+              this.SubStr(dataResp.user_address.toString())
+            );
+            sessionStorage.setItem("balance", await getBalance());
+          }
+          sessionStorage.setItem("showSuccess", 200);
+          this.$router.push({
+            name: "personalCenter",
+            params: { address: this.address }
+          });
+        } else if (resp.code == 401) {
+          this.$message({
+            message: "账号未登录",
+            type: "warning"
+          });
+          this.$router.push({
+            name: "login"
+          });
+        } else if (resp.code == 500) {
+          this.$message({
+            message: "钱包已绑定",
+            type: "warning"
+          });
+          this.$router.push({
+            name: "personalCenter",
+            params: { address: this.address }
+          });
+        }
       }
     },
     SubStr(str) {

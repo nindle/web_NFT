@@ -50,7 +50,8 @@
 
 <script>
 import $http from "../../utils/request";
-import { getBalance } from "../../wallet/wallet";
+import { getBalance, initWallet } from "../../wallet/wallet";
+import { ethers } from "ethers";
 
 export default {
   data() {
@@ -86,7 +87,7 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    submitForm(formName) {
+    async submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let formData = new FormData();
@@ -111,26 +112,40 @@ export default {
               sessionStorage.setItem("showSuccess", 200);
               this.$router.replace("/bind");
             } else {
-              sessionStorage.setItem("address", this.userInfo.data);
-              const { data: data } = await $http.get(
-                `/v1/account?address=${this.userInfo.data}`
-              );
-              sessionStorage.setItem("userInfo", data.user_name);
-              sessionStorage.setItem(
-                "showAddress",
-                this.SubStr(data.user_address.toString())
-              );
-
-              sessionStorage.setItem("balance", await getBalance());
-              this.$message({
-                message: "登录成功",
-                type: "success"
-              });
-              sessionStorage.setItem("showSuccess", 200);
-              this.$router.push({
-                name: "personalCenter",
-                params: { address: resp.data }
-              });
+              const address = await initWallet();
+              console.log(address);
+              if (this.userInfo.data == address) {
+                sessionStorage.setItem("address", address);
+                const data = await $http.get(
+                  `/v1/account?address=${this.userInfo.data}`
+                );
+                if (data.code == 500) {
+                  this.$message({
+                    message: "个人信息为空",
+                    type: "warning"
+                  });
+                  this.$router.replace("/redactUser");
+                } else if ((data.code = 200)) {
+                  const userData = data.data;
+                  sessionStorage.setItem("userInfo", userData.user_name);
+                  sessionStorage.setItem(
+                    "showAddress",
+                    this.SubStr(userData.user_address.toString())
+                  );
+                  sessionStorage.setItem("balance", await getBalance());
+                  this.$message({
+                    message: "登录成功",
+                    type: "success"
+                  });
+                  sessionStorage.setItem("showSuccess", 200);
+                  this.$router.push({
+                    name: "personalCenter",
+                    params: { address: address }
+                  });
+                }
+              } else {
+                this.$message.error("登录钱包与绑定钱包不一致");
+              }
             }
           } else if (resp.code == 500) {
             this.$message.error("登录失败");

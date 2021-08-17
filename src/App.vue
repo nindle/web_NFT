@@ -259,7 +259,6 @@ export default {
   created() {},
   async mounted() {
     if (sessionStorage.getItem("showSuccess") == null) {
-      console.log(1);
     } else {
       // this.address = this.SubStr(sessionStorage.getItem("address"));
 

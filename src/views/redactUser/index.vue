@@ -8,7 +8,7 @@
         ref="upload"
         :action="$baseUrl + '/v1/upload/file'"
         list-type="picture-card"
-        :auto-upload="false"
+        :auto-upload="true"
         :on-success="uploadSuccess"
       >
         <el-button
@@ -150,11 +150,15 @@ export default {
       const resp = await $http.get(
         `/v1/account?address=${sessionStorage.getItem("address")}`
       );
-      this.formLabelAlign.address = resp.data.user_address;
-      this.formLabelAlign.desc = resp.data.user_desc;
-      this.formLabelAlign.username = resp.data.user_name;
-      this.formLabelAlign.cover = resp.data.user_cover;
-      this.formLabelAlign.pic = resp.data.user_pic;
+      console.log(resp);
+      if (resp.code == 200) {
+        this.formLabelAlign.address = resp.data.user_address;
+        this.formLabelAlign.desc = resp.data.user_desc;
+        this.formLabelAlign.username = resp.data.user_name;
+        this.formLabelAlign.cover = resp.data.user_cover;
+        this.formLabelAlign.pic = resp.data.user_pic;
+      } else {
+      }
     },
 
     uploadFile() {
@@ -165,33 +169,14 @@ export default {
     },
 
     async uploadSuccess(e) {
-      console.log(e);
       if (e !== undefined) {
-        console.log("123");
         this.formLabelAlign.pic = e.ipfs;
-      }
-      const formLabelAlign = { ...this.formLabelAlign };
-      const resp = await $http.post("/v1/account/edit", {
-        ...formLabelAlign
-      });
-      if (resp.code == 200) {
-        this.$message({
-          message: "更新成功",
-          type: "success"
-        });
-        sessionStorage.setItem("userInfo", formLabelAlign.username);
-        this.formLabelAlign = {};
-        this.$router.push({
-          name: "personalCenter",
-          params: { address: sessionStorage.getItem("address") }
-        });
-      } else if (resp.code == 500) {
-        this.$message.error("更新失败");
       }
     },
 
     async postUserEdit(e) {
-      this.$refs.formLabelAlign.validate(valid => {
+      this.formLabelAlign.address = sessionStorage.getItem("address");
+      this.$refs.formLabelAlign.validate(async valid => {
         if (valid) {
           if (e.pic == "") {
             this.$message({
@@ -199,7 +184,25 @@ export default {
               type: "warning"
             });
           } else {
-            this.uploadFile();
+            const formLabelAlign = { ...this.formLabelAlign };
+            console.log(formLabelAlign);
+            const resp = await $http.post("/v1/account/edit", {
+              ...formLabelAlign
+            });
+            if (resp.code == 200) {
+              this.$message({
+                message: "更新成功",
+                type: "success"
+              });
+              sessionStorage.setItem("userInfo", formLabelAlign.username);
+              this.formLabelAlign = {};
+              this.$router.push({
+                name: "personalCenter",
+                params: { address: sessionStorage.getItem("address") }
+              });
+            } else if (resp.code == 500) {
+              this.$message.error("更新失败");
+            }
           }
         } else {
           return false;
