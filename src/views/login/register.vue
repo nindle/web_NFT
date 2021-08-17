@@ -143,7 +143,7 @@ export default {
             });
             this.$router.replace("/login");
           } else if (resp.code == 500) {
-            this.$message.error("注册失败");
+            this.$message.error("账号已存在或验证码错误");
           }
         } else {
           console.log("error submit!!");

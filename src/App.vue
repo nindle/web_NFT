@@ -122,7 +122,7 @@
               type="primary"
               class="userlogin"
               round
-              @click="open"
+              @click="$router.replace('/login')"
             >
               {{ $t("home.LoginWallet") }}
             </el-button>
@@ -201,9 +201,6 @@
 </template>
 
 <script>
-import imgUrl from "./assets/xiaohuli.png";
-import { initWallet, getBalance } from "./wallet/wallet";
-import { userInfoApi } from "./api/user";
 import $http from "./utils/request";
 
 export default {
@@ -384,35 +381,6 @@ export default {
     goHome() {
       this.cur = 0;
       this.$router.replace("/");
-      // this.$router.push({ name: "Home", params: { userId: "123" } });
-    },
-
-    open() {
-      this.$alert(
-        `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
-        "Please connect the wallet",
-        {
-          confirmButtonText: "Connecting Wallet",
-          center: true,
-          dangerouslyUseHTMLString: true,
-          confirmButtonClass: "btnstyle"
-        }
-      ).then(async () => {
-        // const { data: data } = await userInfoApi(address);
-        // this.userInfo = data;
-        this.$router.replace("/login");
-        // const address = await initWallet();
-        // if (address != "") {
-        //   this.success = 200;
-        //   this.addres = address;
-        //   this.address = this.SubStr(address);
-        //   sessionStorage.setItem("showAddress", this.address);
-        //   this.balance = await getBalance();
-        //   const { data: data } = await userInfoApi(address);
-        //   this.userInfo = data;
-        //   // location.reload();
-        // }
-      });
     }
   }
 };

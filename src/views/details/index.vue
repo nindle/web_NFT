@@ -34,6 +34,7 @@
           2122
         </span>
       </li>
+
       <li class="price">
         <img
           src="../../assets/price.png"
@@ -48,6 +49,7 @@
           $t("details.UnSale")
         }}</el-button>
       </li>
+
       <!-- 限价模式 -->
       <li
         v-else-if="details.saleable == 1 && details.price && details.price > 0"
@@ -73,6 +75,7 @@
           {{ buyLoading ? $t("details.Buying") : $t("details.BuyNow") }}
         </el-button>
       </li>
+
       <!-- 竞拍模式 -->
       <li v-else-if="details.saleable == 1 && details.price == 0">
         <div>
@@ -242,6 +245,7 @@
           </div>
         </div>
       </li>
+
       <li>
         <div class="productdetails">
           <div style="width: 100%">
@@ -302,6 +306,7 @@
           </div>
         </div>
       </li>
+
       <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
       <li
         style="
@@ -313,6 +318,7 @@
       >
         {{ $t("details.Transaction") }}
       </li>
+
       <li>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column prop="user_name" :label="$t('details.user')" />
@@ -470,16 +476,7 @@ export default {
           confirmButtonClass: "btnstyle"
         }
       ).then(async () => {
-        const address = await initWallet();
-        if (address != "") {
-          this.addres = address;
-          this.address = this.SubStr(address);
-          sessionStorage.setItem("showAddress", this.address);
-          this.balance = await getBalance();
-          const { data: data } = await userInfoApi(address);
-          this.userInfo = data;
-          location.reload();
-        }
+        this.$router.replace("/login");
       });
     },
 
@@ -628,6 +625,7 @@ export default {
     // 购买
     async onBuy() {
       const address = await initWallet();
+
       if (address != "") {
         addr = address;
         currCont = ContractExchange();

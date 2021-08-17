@@ -93,7 +93,12 @@ export default {
           let formData = new FormData();
           formData.append("email", this.ruleForm.age);
           formData.append("password", this.ruleForm.password);
-          const resp = await $http.post("/v1/account/login", formData);
+          const resp = await $http({
+            method: "POST",
+            url: "/v1/account/login",
+            withCredentials: true,
+            data: formData
+          });
           this.userInfo = resp;
           if (resp.code == 200) {
             console.log(this.userInfo);

@@ -2,7 +2,7 @@ export function dome(Arrty) {
   if (Arrty.constructor === Array) {
     Arrty.forEach(item => {
       console.log(item);
-      const style = document.getElementsByClassName("el-he123ader");
+      console.log("http://www.baidu.com?open=" + item);
     });
   }
   return Arrty;

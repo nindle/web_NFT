@@ -8,8 +8,8 @@ const service = axios.create({
     process.env.NODE_ENV === "production"
       ? "https://api.lionnft.io"
       : "https://api.lionnft.net", // url = base url + request url
-  timeout: 30000,
-  withCredentials: true
+  timeout: 30000
+  // withCredentials: true
   // headers、auth
 });
 

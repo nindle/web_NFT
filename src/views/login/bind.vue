@@ -37,15 +37,17 @@ export default {
     if (sessionStorage.getItem("address") !== null) {
       this.buttonValue = true;
     }
-    console.log(sessionStorage.getItem("showSuccess"));
+    console.log(this.buttonValue);
   },
 
   methods: {
     async getAddress() {
-      this.buttonValue = true;
-      if (sessionStorage.getItem("address") !== "") {
-        console.log("绑定");
-        const resp = await $http.get("/v1/account/bind_address");
+      if (this.buttonValue == true) {
+        const resp = await $http({
+          method: "GET",
+          withCredentials: true,
+          url: "/v1/account/bind_address"
+        });
         console.log(resp);
         if (resp.code == 200) {
           this.$message({
@@ -54,6 +56,7 @@ export default {
           });
           sessionStorage.setItem("address", "");
           this.address = "";
+          this.buttonValue = false;
         } else if (resp.code == 401) {
           this.$message({
             message: "账号未登录",
@@ -65,7 +68,12 @@ export default {
         sessionStorage.setItem("address", this.address);
         let formData = new FormData();
         formData.append("address", this.address);
-        const resp = await $http.post("/v1/account/bind_address", formData);
+        const resp = await $http({
+          method: "POST",
+          url: "/v1/account/bind_address",
+          withCredentials: true,
+          data: formData
+        });
         if (resp.code == 200) {
           this.$message({
             message: "钱包绑定成功",
@@ -91,6 +99,7 @@ export default {
             message: "账号未登录",
             type: "warning"
           });
+          this.buttonValue = true;
           this.$router.push({
             name: "login"
           });
