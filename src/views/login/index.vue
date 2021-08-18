@@ -99,6 +99,7 @@ export default {
             withCredentials: true,
             data: formData
           });
+          sessionStorage.setItem("emailWalletAddress", resp.data);
           this.userInfo = resp;
           if (resp.code == 200) {
             console.log(this.userInfo);

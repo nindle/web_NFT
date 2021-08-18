@@ -124,7 +124,6 @@
           controls-position="right"
           :min="1"
           :max="10"
-          @change="handleChange"
         />
       </el-form-item>
 
@@ -159,7 +158,7 @@
           margin-top: 20px;
         "
         type="primary"
-        @click="postFrom"
+        @click="postFrom('formLabelAlign')"
       >
         {{ $t("Single.tijiao") }}
       </el-button>
@@ -230,15 +229,12 @@ import contracts from "../../wallet/contracts";
 
 import { BigNumber } from "@ethersproject/bignumber";
 
-import imgUrl from "../../assets/xiaohuli.png";
-import { userInfoApi } from "../../api/user";
 import {
   initWallet,
   Contracts1155,
   erc1155Addr,
   getProvider,
-  randomHex,
-  getBalance
+  randomHex
 } from "../../wallet/wallet";
 
 let currCont = null;
@@ -307,8 +303,13 @@ export default {
   async created() {
     this.user_id = sessionStorage.getItem("address");
   },
-  mounted() {
-    this.open();
+  async mounted() {
+    const address = await initWallet();
+    if (address == sessionStorage.getItem("emailWalletAddress")) {
+      this.open();
+    } else {
+      this.$message.error("登录钱包与绑定钱包不一致");
+    }
   },
   beforeUpdate() {
     this.editFn();
@@ -325,32 +326,7 @@ export default {
           await this.isApprovedAll(cont1155);
         }
       } else {
-        this.$alert(
-          `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
-          "Please connect the wallet",
-          {
-            confirmButtonText: "Connecting Wallet",
-            center: true,
-            dangerouslyUseHTMLString: true,
-            confirmButtonClass: "btnstyle"
-          }
-        ).then(async () => {
-          const address = await initWallet();
-          if (address != "") {
-            const cont1155 = Contracts1155();
-            currCont = cont1155;
-            await this.whiteList(cont1155);
-            await this.isApprovedAll(cont1155);
-
-            this.addres = address;
-            this.address = this.SubStr(address);
-            sessionStorage.setItem("showAddress", this.address);
-            this.balance = await getBalance();
-            const { data: data } = await userInfoApi(address);
-            this.userInfo = data;
-            location.reload();
-          }
-        });
+        this.$router.replace("/login");
       }
     },
 
@@ -364,10 +340,23 @@ export default {
       }
     },
 
-    postFrom() {
-      this.dialogVisible = true;
+    postFrom(formLabelAlign) {
+      if (
+        sessionStorage.getItem("address") ==
+        sessionStorage.getItem("emailWalletAddress")
+      ) {
+        this.$refs[formLabelAlign].validate(valid => {
+          if (valid) {
+            this.dialogVisible = true;
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      } else {
+        this.$message.error("登录钱包与绑定钱包不一致");
+      }
     },
-    handleChange() {},
 
     // 链上开始
     async isApprovedAll(cont) {

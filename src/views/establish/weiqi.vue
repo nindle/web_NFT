@@ -157,7 +157,7 @@
             margin-top: 20px;
           "
           type="primary"
-          @click="postFrom(formLabelAlign)"
+          @click="postFrom('formLabelAlign')"
         >
           {{ $t("Single.tijiao") }}
         </el-button>
@@ -230,15 +230,13 @@
 
 <script>
 import contracts from "../../wallet/contracts";
-import imgUrl from "../../assets/xiaohuli.png";
-import { userInfoApi } from "../../api/user";
+
 import {
   initWallet,
   Contracts721,
   erc721Addr,
   getProvider,
-  randomHex,
-  getBalance
+  randomHex
 } from "../../wallet/wallet";
 import { BigNumber } from "@ethersproject/bignumber";
 
@@ -353,7 +351,12 @@ export default {
     this.user_id = sessionStorage.getItem("address");
   },
   async mounted() {
-    this.open();
+    const address = await initWallet();
+    if (address == sessionStorage.getItem("emailWalletAddress")) {
+      this.open();
+    } else {
+      this.$message.error("登录钱包与绑定钱包不一致");
+    }
   },
   beforeUpdate() {
     this.editFn();
@@ -363,7 +366,6 @@ export default {
     async open() {
       if (this.user_id !== null) {
         const address = await initWallet();
-        console.log(address);
         if (address != "") {
           const cont721 = Contracts721();
           currCont = cont721;
@@ -371,40 +373,8 @@ export default {
           await this.isApprovedAll(cont721);
         }
       } else {
-        this.$alert(
-          `<img src="${imgUrl}" style="width: 137px;height: 137px;" alt= "">`,
-          "Please connect the wallet",
-          {
-            confirmButtonText: "Connecting Wallet",
-            center: true,
-            dangerouslyUseHTMLString: true,
-            confirmButtonClass: "btnstyle"
-          }
-        ).then(async () => {
-          const address = await initWallet();
-          if (address != "") {
-            const cont721 = Contracts721();
-            currCont = cont721;
-            await this.whiteList(cont721);
-            await this.isApprovedAll(cont721);
-
-            this.addres = address;
-            this.address = this.SubStr(address);
-            sessionStorage.setItem("showAddress", this.address);
-            this.balance = await getBalance();
-            const { data: data } = await userInfoApi(address);
-            this.userInfo = data;
-            location.reload();
-          }
-        });
+        this.$router.replace("/login");
       }
-    },
-
-    SubStr(str) {
-      var subStr1 = str.slice(0, 6);
-      var subStr2 = str.slice(str.length - 5, 42);
-      var subStr = subStr1 + "..." + subStr2;
-      return subStr;
     },
 
     editFn() {
@@ -418,14 +388,21 @@ export default {
     },
 
     postFrom(formLabelAlign) {
-      this.$refs.formLabelAlign.validate(valid => {
-        if (valid) {
-          this.dialogVisible = true;
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+      if (
+        sessionStorage.getItem("address") ==
+        sessionStorage.getItem("emailWalletAddress")
+      ) {
+        this.$refs[formLabelAlign].validate(valid => {
+          if (valid) {
+            this.dialogVisible = true;
+          } else {
+            console.log("error submit!!");
+            return false;
+          }
+        });
+      } else {
+        this.$message.error("登录钱包与绑定钱包不一致");
+      }
     },
 
     // 链上开始
@@ -435,7 +412,6 @@ export default {
         this.changes = 1;
       }
     },
-
     // 授权
     async setApproveAll() {
       if (currCont) {
@@ -445,7 +421,6 @@ export default {
         }
       }
     },
-
     // 白名单
     async whiteList(cont) {
       const res = await contracts.isWhitelist(cont, this.$address);
@@ -459,14 +434,12 @@ export default {
         return;
       }
     },
-
     // 上传图片
     uploadFile() {
       this.upLoading = true;
       this.loading_ing = true;
       this.$refs.upload.submit();
     },
-
     // 上传成功
     async uploadSuccess(resp) {
       console.log("uploadSuccess=>", resp);
@@ -517,7 +490,6 @@ export default {
       this.loading_ing = false;
       this.changes = 2;
     },
-
     // 创建订单
     async createOrder() {
       this.loading_ing = true;

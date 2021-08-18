@@ -23,8 +23,9 @@
     </div>
     <!-- 个人简介 -->
     <div class="personalCenter-id">
-      <p style="color: #09090a; font-size: 20px">
+      <p class="personalCenter-p">
         {{ userinfo.user_name }}
+        <img class="personalCenter-img" src="../../assets/kyc1.jpg" alt="" />
       </p>
       <p>
         {{ subStr }}
@@ -493,6 +494,18 @@ export default {
   line-height: 40px;
   margin: 0 auto;
   margin-top: 50px;
+  .personalCenter-p {
+    color: #09090a;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .personalCenter-img {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+  }
 }
 .personalCenter-Tabs {
   width: 1200px;

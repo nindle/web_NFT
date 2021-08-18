@@ -56,7 +56,9 @@
       >
         <div>
           <el-button
-            class="details-button"
+            :class="
+              buyisApproved == false ? 'details-button' : 'details-buttonFn'
+            "
             type="primary"
             :disabled="buyisApproved == true"
             @click="buyApprove"
@@ -327,6 +329,7 @@
         </el-table>
       </li>
     </ul>
+
     <el-tabs v-model="activeName">
       <el-tab-pane :label="$t('details.product')" name="first">
         {{ details.prop_desc }}
@@ -449,20 +452,31 @@ export default {
   },
   methods: {
     async buyApprove() {
-      let currCont = null;
-      // buy approve
-      if (this.details.asset_id == 4) {
-        // 721
-        currCont = Contracts721();
-      } else if (this.details.asset_id == 3) {
-        // 1155
-        currCont = Contracts1155();
-      }
-      if (currCont) {
-        const res = await contracts.setApproveAll(currCont, this.$address);
-        if (res == true) {
-          this.buyisApproved = res;
+      const address = await initWallet();
+      if (address == sessionStorage.getItem("emailWalletAddress")) {
+        try {
+          this.loading = true;
+          let currCont = null;
+          // buy approve
+          if (this.details.asset_id == 4) {
+            // 721
+            currCont = Contracts721();
+          } else if (this.details.asset_id == 3) {
+            // 1155
+            currCont = Contracts1155();
+          }
+          if (currCont) {
+            const res = await contracts.setApproveAll(currCont, this.$address);
+            if (res == true) {
+              this.loading = false;
+              this.buyisApproved = res;
+            }
+          }
+        } catch (err) {
+          this.loading = false;
         }
+      } else {
+        this.$message.error("登录钱包与绑定钱包不一致");
       }
     },
     open() {
@@ -617,6 +631,7 @@ export default {
 
       this.order = resp.data.ord_data;
     },
+
     // 交易手续费
     async buyFee() {
       const resp = await exchange.getBuyerFeeApi(this.token_id, this.token);
@@ -625,181 +640,188 @@ export default {
     // 购买
     async onBuy() {
       const address = await initWallet();
-
-      if (address != "") {
-        addr = address;
-        currCont = ContractExchange();
-      }
-      this.loading = true;
-
-      this.buyLoading = true;
-      let _order = JSON.parse(JSON.stringify(this.order.order));
-      console.log(_order);
-      const order2 = {
-        key: {
-          salt: BigNumber.from(_order.key.salt),
-          owner: _order.key.owner,
-          sellAsset: {
-            token: _order.key.sellAsset.token,
-            tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
-            assetType: _order.key.sellAsset.assetType
-          },
-          buyAsset: {
-            token: _order.key.buyAsset.token,
-            tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
-            assetType: _order.key.buyAsset.assetType
-          }
-        },
-        selling: BigNumber.from(_order.selling),
-        buying: BigNumber.from(_order.buying),
-        sellerFee: BigNumber.from(_order.sellerFee)
-      };
-      // console.log(order2);
-
-      // console.log(this.order.signature);
-      // console.log(this.fee.buyFee);
-      // console.log(this.fee.buyFeeSignature);
-      // console.log(this.owner_addr);
-
-      const sign = ethers.utils.splitSignature(this.order.signature);
-      const feeSign = ethers.utils.splitSignature(this.fee.buyFeeSignature);
-
-      const amount = BigNumber.from(1);
-      const paying = order2.buying
-        .mul(amount)
-        .div(order2.selling)
-        .mul(BigNumber.from(10000).add(BigNumber.from(this.fee.buyFee)))
-        .div(BigNumber.from(10000));
-
-      let tx = null;
-      try {
-        tx = await currCont.exchange(
-          order2,
-          { v: sign.v, r: sign.r, s: sign.s },
-          BigNumber.from(this.fee.buyFee),
-          { v: feeSign.v, r: feeSign.r, s: feeSign.s },
-          amount,
-          addr,
-          { value: paying }
-        );
-        console.log(tx);
-      } catch (err) {
-        this.buyLoading = false;
-        this.loading = false;
-        console.log("exchange.err=>", err);
-        if (err.data.code !== 3) {
-          this.$message({
-            message: "余额不足",
-            type: "warning"
-          });
-          this.loading = false;
-        } else {
-          this.$message({
-            message: "库存不足",
-            type: "warning"
-          });
-          this.loading = false;
+      if (address == sessionStorage.getItem("emailWalletAddress")) {
+        if (address != "") {
+          addr = address;
+          currCont = ContractExchange();
         }
-        return;
-      }
+        this.loading = true;
 
-      try {
-        const buyResp = await exchange.buyApi(tx.hash);
-        console.log("buyResp=>", buyResp);
-      } catch (err) {
+        this.buyLoading = true;
+        let _order = JSON.parse(JSON.stringify(this.order.order));
+        console.log(_order);
+        const order2 = {
+          key: {
+            salt: BigNumber.from(_order.key.salt),
+            owner: _order.key.owner,
+            sellAsset: {
+              token: _order.key.sellAsset.token,
+              tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
+              assetType: _order.key.sellAsset.assetType
+            },
+            buyAsset: {
+              token: _order.key.buyAsset.token,
+              tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
+              assetType: _order.key.buyAsset.assetType
+            }
+          },
+          selling: BigNumber.from(_order.selling),
+          buying: BigNumber.from(_order.buying),
+          sellerFee: BigNumber.from(_order.sellerFee)
+        };
+        // console.log(order2);
+
+        // console.log(this.order.signature);
+        // console.log(this.fee.buyFee);
+        // console.log(this.fee.buyFeeSignature);
+        // console.log(this.owner_addr);
+
+        const sign = ethers.utils.splitSignature(this.order.signature);
+        const feeSign = ethers.utils.splitSignature(this.fee.buyFeeSignature);
+
+        const amount = BigNumber.from(1);
+        const paying = order2.buying
+          .mul(amount)
+          .div(order2.selling)
+          .mul(BigNumber.from(10000).add(BigNumber.from(this.fee.buyFee)))
+          .div(BigNumber.from(10000));
+
+        let tx = null;
+        try {
+          tx = await currCont.exchange(
+            order2,
+            { v: sign.v, r: sign.r, s: sign.s },
+            BigNumber.from(this.fee.buyFee),
+            { v: feeSign.v, r: feeSign.r, s: feeSign.s },
+            amount,
+            addr,
+            { value: paying }
+          );
+          console.log(tx);
+        } catch (err) {
+          this.buyLoading = false;
+          this.loading = false;
+          console.log("exchange.err=>", err);
+          if (err.data.code !== 3) {
+            this.$message({
+              message: "余额不足",
+              type: "warning"
+            });
+            this.loading = false;
+          } else {
+            this.$message({
+              message: "库存不足",
+              type: "warning"
+            });
+            this.loading = false;
+          }
+          return;
+        }
+
+        try {
+          const buyResp = await exchange.buyApi(tx.hash);
+          console.log("buyResp=>", buyResp);
+        } catch (err) {
+          this.buyLoading = false;
+          console.log("buyApi.err=>", err);
+          alert(err);
+          return;
+        }
+
+        const receipt = await tx.wait();
+        console.log("receipt=>", receipt);
         this.buyLoading = false;
-        console.log("buyApi.err=>", err);
-        alert(err);
-        return;
+        this.$message({
+          message: "购买成功",
+          type: "success"
+        });
+        this.loading = false;
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      } else {
+        this.$message.error("登录钱包与绑定钱包不一致");
       }
-
-      const receipt = await tx.wait();
-      console.log("receipt=>", receipt);
-      this.buyLoading = false;
-      this.$message({
-        message: "购买成功",
-        type: "success"
-      });
-      this.loading = false;
-      setTimeout(() => {
-        location.reload();
-      }, 2000);
     },
 
     // 竞拍
     async onBid() {
       const address = await initWallet();
-      if (address != "") {
-        addr = address;
-        currCont = ContractExchange();
-      }
+      if (address == sessionStorage.getItem("emailWalletAddress")) {
+        if (address != "") {
+          addr = address;
+          currCont = ContractExchange();
+        }
 
-      console.log(parseFloat(this.bid_price));
-      if (
-        this.bid_price == "" ||
-        isNaN(this.bid_price) ||
-        parseFloat(this.bid_price) <= 0
-      ) {
-        this.$message({
-          message: "请填写正确的竞拍价格",
-          type: "warning"
-        });
-        return;
-      }
-      if (parseFloat(this.bid_price) > parseFloat(this.wbnb_balance)) {
-        this.$message({
-          message: "账号WBNB余额不足",
-          type: "warning"
-        });
-        return;
-      }
+        console.log(parseFloat(this.bid_price));
+        if (
+          this.bid_price == "" ||
+          isNaN(this.bid_price) ||
+          parseFloat(this.bid_price) <= 0
+        ) {
+          this.$message({
+            message: "请填写正确的竞拍价格",
+            type: "warning"
+          });
+          return;
+        }
+        if (parseFloat(this.bid_price) > parseFloat(this.wbnb_balance)) {
+          this.$message({
+            message: "账号WBNB余额不足",
+            type: "warning"
+          });
+          return;
+        }
 
-      console.log(this.order.order);
-      let _order = JSON.parse(JSON.stringify(this.order.order));
-      const order2 = {
-        key: {
-          salt: BigNumber.from(randomHex(32)),
-          owner: addr,
-          sellAsset: {
-            token: wbnbAddr,
-            tokenId: BigNumber.from("0"),
-            assetType: 2
+        console.log(this.order.order);
+        let _order = JSON.parse(JSON.stringify(this.order.order));
+        const order2 = {
+          key: {
+            salt: BigNumber.from(randomHex(32)),
+            owner: addr,
+            sellAsset: {
+              token: wbnbAddr,
+              tokenId: BigNumber.from("0"),
+              assetType: 2
+            },
+            buyAsset: {
+              token: _order.key.sellAsset.token,
+              tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
+              assetType: _order.key.sellAsset.assetType
+            }
           },
-          buyAsset: {
-            token: _order.key.sellAsset.token,
-            tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
-            assetType: _order.key.sellAsset.assetType
-          }
-        },
-        selling: this.$parseEther(this.bid_price),
-        buying: BigNumber.from(_order.selling),
-        sellerFee: BigNumber.from(_order.sellerFee)
-      };
+          selling: this.$parseEther(this.bid_price),
+          buying: BigNumber.from(_order.selling),
+          sellerFee: BigNumber.from(_order.sellerFee)
+        };
 
-      console.log(order2);
+        console.log(order2);
 
-      const provider = getProvider();
-      const signResp = await contracts.orderSigner(
-        provider.getSigner(),
-        order2
-      );
-      console.log("signResp=>", signResp);
+        const provider = getProvider();
+        const signResp = await contracts.orderSigner(
+          provider.getSigner(),
+          order2
+        );
+        console.log("signResp=>", signResp);
 
-      const bidOrder = contracts.sequence(order2);
+        const bidOrder = contracts.sequence(order2);
 
-      const resp = await exchange.bidCreateApi({
-        order: bidOrder,
-        signature: signResp
-      });
-      console.log(resp);
-      if (resp.code == 200) {
-        this.$message({
-          message: "参加竞拍成功",
-          type: "success"
+        const resp = await exchange.bidCreateApi({
+          order: bidOrder,
+          signature: signResp
         });
-        setTimeout(() => {
-          location.reload();
-        }, 2000);
+        console.log(resp);
+        if (resp.code == 200) {
+          this.$message({
+            message: "参加竞拍成功",
+            type: "success"
+          });
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        }
+      } else {
+        this.$message.error("登录钱包与绑定钱包不一致");
       }
     },
 
@@ -1045,8 +1067,17 @@ export default {
   width: 504px;
   height: 61px;
   background: #0066ed;
-  box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
+  // box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
   border-radius: 10px;
+}
+.details-buttonFn {
+  margin-top: 20px;
+  width: 504px;
+  height: 61px;
+  background-color: #a0cfff;
+  // box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
+  border-radius: 10px;
+  border: 0;
 }
 .danger-button {
   margin-top: 20px;
@@ -1055,6 +1086,7 @@ export default {
   box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
   border-radius: 10px;
 }
+
 .details-b {
   display: flex;
   border-bottom: 1px solid #eceef0;

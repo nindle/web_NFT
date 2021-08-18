@@ -12,15 +12,15 @@
 
     <div class="Choice">
       <div class="Single" @click="Single">
-        <img src="../../assets/single.png" alt="">
+        <img src="../../assets/single.png" alt="" />
         <p>{{ $t("establish.dan") }}</p>
       </div>
       <div class="Multiple" @click="Multiple">
-        <img src="../../assets/Multiple.png" alt="">
+        <img src="../../assets/Multiple.png" alt="" />
         <p>{{ $t("establish.duo") }}</p>
       </div>
       <div class="weiqi" @click="dialogVisible = true">
-        <img src="../../assets/weiqijinkou.jpg" alt="">
+        <img src="../../assets/weiqijinkou.jpg" alt="" />
         <p>{{ $t("establish.weiqi") }}</p>
       </div>
     </div>
@@ -59,14 +59,14 @@ export default {
   data() {
     return {
       next: true,
-      dialogVisible: false,
+      dialogVisible: false
     };
   },
   computed: {},
   mounted() {
     window.addEventListener(
       "message",
-      (ev) => {
+      ev => {
         var data = ev.data;
         if (data.code === 10000) {
           this.next = false;
@@ -81,7 +81,7 @@ export default {
     weiqiFn() {
       this.dialogVisible = false;
       this.$router.push({
-        name: "Weiqi",
+        name: "Weiqi"
         // params: { userId: sessionStorage.getItem("address") },
       });
     },
@@ -89,11 +89,12 @@ export default {
     setTimeoutFn() {
       if (sessionStorage.getItem("address") == null) {
         this.$message.error("未登录");
+        this.$router.replace("/login");
       } else if (sessionStorage.getItem("userInfo") == null) {
         this.$message.error("个人信息不全");
         this.$router.push({
           name: "redactUser",
-          params: { userId: sessionStorage.getItem("address") },
+          params: { userId: sessionStorage.getItem("address") }
         });
       }
     },
@@ -103,12 +104,12 @@ export default {
     },
     Multiple() {
       this.$router.push({ name: "multiple", params: { userId: "123" } });
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style scoped lang='less'>
+<style scoped lang="less">
 .tishi {
   color: red;
   font-family: Source Han Sans CN;
