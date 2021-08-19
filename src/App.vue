@@ -292,7 +292,6 @@ export default {
     },
     async querySearchAsync(queryString, cb) {
       const resp = await $http.get(`v1/explore/list?keyword=${queryString}`);
-      // console.log(resp.list);
       this.restaurants = [];
       resp.list.forEach(item => {
         this.restaurants.push({

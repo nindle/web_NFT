@@ -28,7 +28,7 @@ import { getBalance, initWallet } from "../../wallet/wallet";
 export default {
   data() {
     return {
-      address: sessionStorage.getItem("address"),
+      address: sessionStorage.getItem("emailWalletAddress"),
       buttonValue: false
     };
   },
@@ -55,6 +55,7 @@ export default {
             type: "success"
           });
           sessionStorage.setItem("address", "");
+          sessionStorage.setItem("emailWalletAddress", "");
           this.address = "";
           this.buttonValue = false;
         } else if (resp.code == 401) {
@@ -87,6 +88,8 @@ export default {
               "showAddress",
               this.SubStr(dataResp.user_address.toString())
             );
+            sessionStorage.setItem("emailWalletAddress", this.address);
+            console.log(sessionStorage.getItem("emailWalletAddress"));
             sessionStorage.setItem("balance", await getBalance());
           }
           sessionStorage.setItem("showSuccess", 200);

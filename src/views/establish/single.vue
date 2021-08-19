@@ -290,7 +290,11 @@ export default {
     if (address == sessionStorage.getItem("emailWalletAddress")) {
       this.open();
     } else {
-      this.$message.error("登录钱包与绑定钱包不一致");
+      if (sessionStorage.getItem("emailWalletAddress") == "") {
+        this.$message.error("未绑定钱包");
+      } else {
+        this.$message.error("登录钱包与绑定钱包不一致");
+      }
     }
   },
   beforeUpdate() {
@@ -336,7 +340,11 @@ export default {
           }
         });
       } else {
-        this.$message.error("登录钱包与绑定钱包不一致");
+        if (sessionStorage.getItem("emailWalletAddress") == "") {
+          this.$message.error("未绑定钱包");
+        } else {
+          this.$message.error("登录钱包与绑定钱包不一致");
+        }
       }
     },
 
