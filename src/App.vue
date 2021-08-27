@@ -5,7 +5,7 @@
         <el-col :span="4">
           <img src="./assets/logo.png" alt="" replace @click="goHome" />
         </el-col>
-        <el-col :span="10">
+        <el-col :span="9">
           <div class="header-input">
             <el-autocomplete
               v-model="state"
@@ -15,21 +15,20 @@
               @select="handleSelect"
             >
             </el-autocomplete>
-
             <img
               src="./assets/search.png"
               alt=""
               style="
-            position: absolute;
-            top: 16px;
-            left: 8px;
-            width: 27px;
-            height: 27px;
-          "
+                position: absolute;
+                top: 16px;
+                left: 8px;
+                width: 27px;
+                height: 27px;
+              "
             />
           </div>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="11">
           <div class="header-icon">
             <router-link
               class="header-icon-a"
@@ -53,7 +52,7 @@
               class="header-icon-a"
               :to="{
                 name: 'personalCenter',
-                params: { address: addres }
+                params: { address: addres },
               }"
               :class="{ active: cur === 3 ? true : false }"
               @click.native="cur = 3"
@@ -130,7 +129,7 @@
             <el-col :span="2">
               <el-dropdown trigger="click" @command="handleCommand">
                 <img
-                  style="margin: 0 25px 0 20px; height: 26px"
+                  style="margin: 0 auto; height: 26px"
                   src="./assets/language.png"
                   alt=""
                 />
@@ -206,7 +205,7 @@ import $http from "./utils/request";
 export default {
   provide() {
     return {
-      reload: this.reload
+      reload: this.reload,
     };
   },
   data() {
@@ -225,13 +224,13 @@ export default {
       drawer: false,
       toRouter: "",
       userInfo: {},
-      userName: ""
+      userName: "",
     };
   },
   computed: {
     imgSrc() {
       return this.cur == 3 ? this.imgUrl[1].img2 : this.imgUrl[0].img1;
-    }
+    },
   },
   watch: {
     $route(to) {
@@ -241,7 +240,7 @@ export default {
         this.toRouter = 2;
       }
       var arr = ["/login", "/register", "/reset"];
-      var arr2 = arr.some(function(x) {
+      var arr2 = arr.some(function (x) {
         return to.path == x;
       });
       if (arr2) {
@@ -251,7 +250,7 @@ export default {
         document.getElementById("headerStyle").style.display = "block";
         document.getElementById("apptest").style.display = "block";
       }
-    }
+    },
   },
   created() {},
   async mounted() {
@@ -293,13 +292,13 @@ export default {
     async querySearchAsync(queryString, cb) {
       const resp = await $http.get(`v1/explore/list?keyword=${queryString}`);
       this.restaurants = [];
-      resp.list.forEach(item => {
+      resp.list.forEach((item) => {
         this.restaurants.push({
           value: item.prop_name,
           values: item.creator_user_name,
           address: item.prop_desc,
           token: item.token,
-          token_id: item.token_id
+          token_id: item.token_id,
         });
       });
       // console.log(this.restaurants);
@@ -310,7 +309,7 @@ export default {
     },
 
     createStateFilter(queryString) {
-      return restaurant => {
+      return (restaurant) => {
         return (
           restaurant.value ||
           values.toLowerCase().indexOf(queryString.toLowerCase()) === 0
@@ -321,7 +320,7 @@ export default {
     handleSelect(item) {
       this.$router.push({
         name: "details",
-        params: { id: item.token_id, token: item.token }
+        params: { id: item.token_id, token: item.token },
       });
       if (this.$route.name == "details") {
         location.reload();
@@ -331,7 +330,7 @@ export default {
     personalCenterFn() {
       this.$router.push({
         name: "personalCenter",
-        params: { address: this.addres }
+        params: { address: this.addres },
       });
     },
 
@@ -348,7 +347,7 @@ export default {
 
     reload() {
       this.isRouterAlive = false;
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.isRouterAlive = true;
       });
     },
@@ -362,7 +361,7 @@ export default {
       document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
       this.$message({
         message: "复制成功",
-        type: "success"
+        type: "success",
       });
     },
 
@@ -380,8 +379,8 @@ export default {
     goHome() {
       this.cur = 0;
       this.$router.replace("/");
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -740,5 +739,8 @@ hr {
 
 /deep/.el-drawer.rtl {
   top: 60px !important;
+}
+/deep/.el-col-11 {
+  width: 47.83333%;
 }
 </style>

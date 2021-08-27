@@ -128,6 +128,12 @@ const routes = [
     name: "reset",
     component: () =>
       import(/* webpackChunkName: "reset" */ "../views/login/Reset")
+  },
+  {
+    path: "/attestation",
+    name: "attestation",
+    component: () =>
+      import(/* webpackChunkName: "attestation" */ "../views/attestation/index")
   }
 ];
 

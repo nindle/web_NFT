@@ -641,114 +641,160 @@ export default {
       const resp = await exchange.getBuyerFeeApi(this.token_id, this.token);
       this.fee = resp;
     },
+
+    async buyFn() {
+      const address = await initWallet();
+      if (address != "") {
+        addr = address;
+        currCont = ContractExchange();
+      }
+      this.loading = true;
+
+      this.buyLoading = true;
+      let _order = JSON.parse(JSON.stringify(this.order.order));
+      console.log(_order);
+      const order2 = {
+        key: {
+          salt: BigNumber.from(_order.key.salt),
+          owner: _order.key.owner,
+          sellAsset: {
+            token: _order.key.sellAsset.token,
+            tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
+            assetType: _order.key.sellAsset.assetType
+          },
+          buyAsset: {
+            token: _order.key.buyAsset.token,
+            tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
+            assetType: _order.key.buyAsset.assetType
+          }
+        },
+        selling: BigNumber.from(_order.selling),
+        buying: BigNumber.from(_order.buying),
+        sellerFee: BigNumber.from(_order.sellerFee)
+      };
+      // console.log(order2);
+
+      // console.log(this.order.signature);
+      // console.log(this.fee.buyFee);
+      // console.log(this.fee.buyFeeSignature);
+      // console.log(this.owner_addr);
+
+      const sign = ethers.utils.splitSignature(this.order.signature);
+      const feeSign = ethers.utils.splitSignature(this.fee.buyFeeSignature);
+
+      const amount = BigNumber.from(1);
+      const paying = order2.buying
+        .mul(amount)
+        .div(order2.selling)
+        .mul(BigNumber.from(10000).add(BigNumber.from(this.fee.buyFee)))
+        .div(BigNumber.from(10000));
+
+      let tx = null;
+      try {
+        tx = await currCont.exchange(
+          order2,
+          { v: sign.v, r: sign.r, s: sign.s },
+          BigNumber.from(this.fee.buyFee),
+          { v: feeSign.v, r: feeSign.r, s: feeSign.s },
+          amount,
+          addr,
+          { value: paying }
+        );
+        console.log(tx);
+      } catch (err) {
+        this.buyLoading = false;
+        this.loading = false;
+        console.log("exchange.err=>", err);
+        if (err.data.code !== 3) {
+          this.$message({
+            message: "余额不足",
+            type: "warning"
+          });
+          this.loading = false;
+        } else {
+          this.$message({
+            message: "库存不足",
+            type: "warning"
+          });
+          this.loading = false;
+        }
+        return;
+      }
+
+      try {
+        const buyResp = await exchange.buyApi(tx.hash);
+        console.log("buyResp=>", buyResp);
+      } catch (err) {
+        this.buyLoading = false;
+        console.log("buyApi.err=>", err);
+        alert(err);
+        return;
+      }
+
+      const receipt = await tx.wait();
+      console.log("receipt=>", receipt);
+      this.buyLoading = false;
+      this.$message({
+        message: "购买成功",
+        type: "success"
+      });
+      this.loading = false;
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    },
+
     // 购买
     async onBuy() {
       const address = await initWallet();
       if (address == sessionStorage.getItem("emailWalletAddress")) {
-        if (address != "") {
-          addr = address;
-          currCont = ContractExchange();
-        }
-        this.loading = true;
-
-        this.buyLoading = true;
-        let _order = JSON.parse(JSON.stringify(this.order.order));
-        console.log(_order);
-        const order2 = {
-          key: {
-            salt: BigNumber.from(_order.key.salt),
-            owner: _order.key.owner,
-            sellAsset: {
-              token: _order.key.sellAsset.token,
-              tokenId: BigNumber.from(_order.key.sellAsset.tokenId),
-              assetType: _order.key.sellAsset.assetType
-            },
-            buyAsset: {
-              token: _order.key.buyAsset.token,
-              tokenId: BigNumber.from(_order.key.buyAsset.tokenId),
-              assetType: _order.key.buyAsset.assetType
-            }
-          },
-          selling: BigNumber.from(_order.selling),
-          buying: BigNumber.from(_order.buying),
-          sellerFee: BigNumber.from(_order.sellerFee)
-        };
-        // console.log(order2);
-
-        // console.log(this.order.signature);
-        // console.log(this.fee.buyFee);
-        // console.log(this.fee.buyFeeSignature);
-        // console.log(this.owner_addr);
-
-        const sign = ethers.utils.splitSignature(this.order.signature);
-        const feeSign = ethers.utils.splitSignature(this.fee.buyFeeSignature);
-
-        const amount = BigNumber.from(1);
-        const paying = order2.buying
-          .mul(amount)
-          .div(order2.selling)
-          .mul(BigNumber.from(10000).add(BigNumber.from(this.fee.buyFee)))
-          .div(BigNumber.from(10000));
-
-        let tx = null;
-        try {
-          tx = await currCont.exchange(
-            order2,
-            { v: sign.v, r: sign.r, s: sign.s },
-            BigNumber.from(this.fee.buyFee),
-            { v: feeSign.v, r: feeSign.r, s: feeSign.s },
-            amount,
-            addr,
-            { value: paying }
-          );
-          console.log(tx);
-        } catch (err) {
-          this.buyLoading = false;
-          this.loading = false;
-          console.log("exchange.err=>", err);
-          if (err.data.code !== 3) {
-            this.$message({
-              message: "余额不足",
-              type: "warning"
-            });
-            this.loading = false;
+        if (sessionStorage.getItem("authentication") == "null") {
+          this.$message({
+            message: "认证级别低！暂无法购买！",
+            type: "warning"
+          });
+          this.$router.push({ name: "attestation" });
+        } else if (sessionStorage.getItem("authentication") == "1") {
+          let pay = new FormData();
+          pay.append("pay", this.details.price);
+          const data = await $http({
+            method: "POST",
+            url: "/v1/account/validate_countpay",
+            withCredentials: true,
+            data: pay
+          });
+          if (data.code == 200) {
+            this.buyFn();
           } else {
             this.$message({
-              message: "库存不足",
+              message: "认证级别低！暂无法购买！",
               type: "warning"
             });
-            this.loading = false;
+            this.$router.push({ name: "attestation" });
           }
-          return;
+        } else if (sessionStorage.getItem("authentication") == "2") {
+          let pay = new FormData();
+          pay.append("pay", this.details.price);
+          const data = await $http({
+            method: "POST",
+            url: "/v1/account/validate_countpay",
+            withCredentials: true,
+            data: pay
+          });
+          if (data.code == 200) {
+            this.buyFn();
+          } else {
+            this.$message({
+              message: "认证级别低！暂无法购买！",
+              type: "warning"
+            });
+            this.$router.push({ name: "attestation" });
+          }
         }
-
-        try {
-          const buyResp = await exchange.buyApi(tx.hash);
-          console.log("buyResp=>", buyResp);
-        } catch (err) {
-          this.buyLoading = false;
-          console.log("buyApi.err=>", err);
-          alert(err);
-          return;
-        }
-
-        const receipt = await tx.wait();
-        console.log("receipt=>", receipt);
-        this.buyLoading = false;
-        this.$message({
-          message: "购买成功",
-          type: "success"
-        });
-        this.loading = false;
-        setTimeout(() => {
-          location.reload();
-        }, 2000);
+      } else if (sessionStorage.getItem("emailWalletAddress") == "") {
+        this.$message.error("未绑定钱包");
       } else {
-        if (sessionStorage.getItem("emailWalletAddress") == "") {
-          this.$message.error("未绑定钱包");
-        } else {
-          this.$message.error("登录钱包与绑定钱包不一致");
-        }
+        this.$message.error("登录钱包与绑定钱包不一致");
       }
     },
 

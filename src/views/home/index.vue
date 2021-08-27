@@ -112,7 +112,7 @@ export default {
   name: "Home",
   components: {
     NameSwiper,
-    Bestselling,
+    Bestselling
   },
   props: {},
   data() {
@@ -124,15 +124,15 @@ export default {
         // { url: require("../../assets/bannar2.jpeg") },
         { url: require("../../assets/bannar3.jpg") },
         // { url: require("../../assets/bannar4.jpeg") },
-        { url: require("../../assets/bannar5.jpg") },
+        { url: require("../../assets/bannar5.jpg") }
         // { url: require("../../assets/bannar6.jpeg") },
-      ],
+      ]
     };
   },
   watch: {},
   created() {},
   mounted() {},
-  methods: {},
+  methods: {}
 };
 </script>
 

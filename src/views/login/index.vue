@@ -59,36 +59,36 @@ export default {
       userInfo: {},
       ruleForm: {
         password: "",
-        age: ""
+        age: "",
       },
       rules: {
         age: [
           {
             required: true,
             message: "Please input the email address",
-            trigger: "blur"
+            trigger: "blur",
           },
           {
             type: "email",
             message: "Please enter a valid email address.",
-            trigger: ["blur", "change"]
-          }
+            trigger: ["blur", "change"],
+          },
         ],
         password: [
           {
             required: true,
             message: "Please enter the password",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   computed: {},
   mounted() {},
   methods: {
     async submitForm(formName) {
-      this.$refs[formName].validate(async valid => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
           let formData = new FormData();
           formData.append("email", this.ruleForm.age);
@@ -97,38 +97,40 @@ export default {
             method: "POST",
             url: "/v1/account/login",
             withCredentials: true,
-            data: formData
+            data: formData,
           });
-          sessionStorage.setItem("emailWalletAddress", resp.data);
+          sessionStorage.setItem("emailWalletAddress", resp.data.address);
+          sessionStorage.setItem("email", resp.data.email);
+
           this.userInfo = resp;
           if (resp.code == 200) {
             console.log(this.userInfo);
-            if (this.userInfo.data == null) {
+            if (this.userInfo.data.address == null) {
               this.$message({
                 message: "未绑定钱包地址",
-                type: "warning"
+                type: "warning",
               });
               sessionStorage.setItem("showSuccess", 200);
               this.$router.replace("/bind");
-            } else if (this.userInfo.data == "") {
+            } else if (this.userInfo.data.address == "") {
               this.$message({
                 message: "未绑定钱包地址",
-                type: "warning"
+                type: "warning",
               });
               sessionStorage.setItem("showSuccess", 200);
               this.$router.replace("/bind");
             } else {
               const address = await initWallet();
               console.log(address);
-              if (this.userInfo.data == address) {
+              if (this.userInfo.data.address == address) {
                 sessionStorage.setItem("address", address);
                 const data = await $http.get(
-                  `/v1/account?address=${this.userInfo.data}`
+                  `/v1/account?address=${this.userInfo.data.address}`
                 );
                 if (data.code == 500) {
                   this.$message({
                     message: "个人信息为空",
-                    type: "warning"
+                    type: "warning",
                   });
                   this.$router.replace("/redactUser");
                 } else if ((data.code = 200)) {
@@ -141,12 +143,16 @@ export default {
                   sessionStorage.setItem("balance", await getBalance());
                   this.$message({
                     message: "登录成功",
-                    type: "success"
+                    type: "success",
                   });
                   sessionStorage.setItem("showSuccess", 200);
+                  sessionStorage.setItem(
+                    "authentication",
+                    this.userInfo.data.authentication
+                  );
                   this.$router.push({
                     name: "personalCenter",
-                    params: { address: address }
+                    params: { address: address },
                   });
                 }
               } else {
@@ -168,8 +174,8 @@ export default {
       var subStr2 = str.slice(str.length - 5, 42);
       var subStr = subStr1 + "..." + subStr2;
       return subStr;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -23,7 +23,7 @@
         @click="
           $router.push({
             name: 'details',
-            params: { id: item.token_id, token: item.token },
+            params: { id: item.token_id, token: item.token }
           })
         "
         @mouseover="hover = true"
@@ -86,7 +86,7 @@ export default {
       b: 5,
       showList: [],
       loading: true,
-      classifyList: [],
+      classifyList: []
     };
   },
   created() {},
@@ -100,7 +100,7 @@ export default {
       if (data.list.length == 0) {
         this.$message({
           message: "分类商品为空",
-          type: "warning",
+          type: "warning"
         });
         this.getList();
       } else {
@@ -127,7 +127,7 @@ export default {
     },
 
     async getList() {
-      const resp = await $http.get("/v1/explore/list");
+      const resp = await $http.get("/v1/explore/list?page=1&size=100");
       this.showList = resp.list;
       this.showList.forEach((item, index) => {
         if (this.showList[index].price === "") {
@@ -144,8 +144,8 @@ export default {
     async getClassify() {
       const data = await $http.get("/v1/category/list");
       this.classifyList = data.list;
-    },
-  },
+    }
+  }
 };
 </script>
 

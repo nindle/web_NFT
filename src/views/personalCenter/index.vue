@@ -25,7 +25,7 @@
     <div class="personalCenter-id">
       <p class="personalCenter-p">
         {{ userinfo.user_name }}
-        <img class="personalCenter-img" src="../../assets/kyc1.jpg" alt="" />
+        <!-- <img class="personalCenter-img" src="../../assets/kyc1.jpg" alt="" /> -->
       </p>
       <p>
         {{ subStr }}
@@ -69,6 +69,9 @@
           style="width: 17px; height: 17px"
         />
       </div>
+      <span @click="$router.push({ name: 'attestation' })"
+        >verify now <i class="el-icon-arrow-right"></i>
+      </span>
     </div>
     <!-- 产品系列 -->
     <div class="personalCenter-Tabs">
@@ -82,7 +85,7 @@
               @click="
                 $router.push({
                   name: 'details',
-                  params: { id: item.token_id, token: item.token }
+                  params: { id: item.token_id, token: item.token },
                 })
               "
               @mouseover="hover = true"
@@ -140,7 +143,7 @@
               @click="
                 $router.push({
                   name: 'details',
-                  params: { id: item.token_id, token: item.token }
+                  params: { id: item.token_id, token: item.token },
                 })
               "
               @mouseover="hover = true"
@@ -201,7 +204,7 @@
               @click="
                 $router.push({
                   name: 'details',
-                  params: { id: item.token_id, token: item.token }
+                  params: { id: item.token_id, token: item.token },
                 })
               "
               @mouseover="hover = true"
@@ -286,9 +289,9 @@ export default {
         cover: "",
         website: "",
         twitter: "",
-        pic: ""
+        pic: "",
       },
-      userShow: ""
+      userShow: "",
     };
   },
 
@@ -307,7 +310,7 @@ export default {
   },
   mounted() {},
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       if (from.path == "/login") {
         location.reload();
       } else if (from.path == "/bind") {
@@ -331,10 +334,10 @@ export default {
         short_url: this.userinfo.user_short_url,
         website: this.userinfo.user_website,
         twitter: this.userinfo.user_twitter,
-        pic: this.userinfo.user_pic
+        pic: this.userinfo.user_pic,
       };
       const resp = await $http.post("/v1/account/edit", {
-        ...edit
+        ...edit,
       });
       this.getUserInfo();
     },
@@ -350,7 +353,7 @@ export default {
             confirmButtonText: "Connecting Wallet",
             center: true,
             dangerouslyUseHTMLString: true,
-            confirmButtonClass: "btnstyle"
+            confirmButtonClass: "btnstyle",
           }
         ).then(async () => {
           const address = await initWallet();
@@ -376,7 +379,7 @@ export default {
       document.body.removeChild(input); // 最后删除实例中临时创建的input输入框，完成复制操作
       this.$message({
         message: "复制成功",
-        type: "success"
+        type: "success",
       });
     },
 
@@ -443,8 +446,8 @@ export default {
         }
       });
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -494,6 +497,13 @@ export default {
   line-height: 40px;
   margin: 0 auto;
   margin-top: 50px;
+  span {
+    font-size: 14px;
+    font-family: HelveticaNeue;
+    color: #0166ed;
+    margin-left: 10px;
+    cursor: pointer;
+  }
   .personalCenter-p {
     color: #09090a;
     font-size: 20px;
