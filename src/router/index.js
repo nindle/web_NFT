@@ -134,6 +134,12 @@ const routes = [
     name: "attestation",
     component: () =>
       import(/* webpackChunkName: "attestation" */ "../views/attestation/index")
+  },
+  {
+    path: "/landbook",
+    name: "landbook",
+    component: () =>
+      import(/* webpackChunkName: "landbook" */ "../views/landbook/index")
   }
 ];
 

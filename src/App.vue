@@ -60,6 +60,16 @@
               {{ $t("home.Account") }}
             </router-link>
 
+            <router-link
+              class="header-icon-a"
+              :to="{
+                name: 'personalCenter',
+                params: { address: addres },
+              }"
+            >
+              地书
+            </router-link>
+
             <el-button type="primary" class="create" round @click="account()">
               {{ $t("home.Create") }}
             </el-button>
@@ -239,7 +249,7 @@ export default {
       } else {
         this.toRouter = 2;
       }
-      var arr = ["/login", "/register", "/reset"];
+      var arr = ["/login", "/register", "/reset", "/landbook"];
       var arr2 = arr.some(function (x) {
         return to.path == x;
       });
