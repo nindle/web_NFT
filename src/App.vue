@@ -1,161 +1,148 @@
 <template>
   <div id="app">
     <el-header id="headerStyle">
-      <el-row>
-        <el-col :span="4">
+      <div style="display: flex">
+        <div class="el-header_img">
           <img src="./assets/logo.png" alt="" replace @click="goHome" />
-        </el-col>
-        <el-col :span="9">
-          <div class="header-input">
-            <el-autocomplete
-              v-model="state"
-              :fetch-suggestions="querySearchAsync"
-              :trigger-on-focus="false"
-              :placeholder="$t('home.search')"
-              @select="handleSelect"
-            >
-            </el-autocomplete>
+        </div>
+        <div class="header-input">
+          <el-autocomplete
+            v-model="state"
+            :fetch-suggestions="querySearchAsync"
+            :trigger-on-focus="false"
+            :placeholder="$t('home.search')"
+            @select="handleSelect"
+          >
+          </el-autocomplete>
+          <img
+            src="./assets/search.png"
+            alt=""
+            style="
+              position: absolute;
+              top: 16px;
+              left: 8px;
+              width: 27px;
+              height: 27px;
+            "
+          />
+        </div>
+
+        <div class="header-icon">
+          <router-link
+            class="header-icon-a"
+            :to="'/'"
+            :class="{ active: cur === 1 ? true : false }"
+            @click.native="cur = 1"
+          >
+            {{ $t("home.home") }}
+          </router-link>
+
+          <router-link
+            class="header-icon-a"
+            :to="'/bazaar'"
+            :class="{ active: cur === 2 ? true : false }"
+            @click.native="cur = 2"
+          >
+            {{ $t("home.Browse") }}
+          </router-link>
+
+          <router-link class="header-icon-a" :to="{ name: 'landbook' }">
+            {{ $t("home.landbook") }}
+          </router-link>
+
+          <router-link
+            class="header-icon-a"
+            :to="{
+              name: 'personalCenter',
+              params: { address: addres },
+            }"
+            :class="{ active: cur === 3 ? true : false }"
+            @click.native="cur = 3"
+          >
+            {{ $t("home.Account") }}
+          </router-link>
+
+          <el-button type="primary" class="create" round @click="account()">
+            {{ $t("home.Create") }}
+          </el-button>
+
+          <div v-if="showSuccess == 200" class="loginSuccessful">
+            <p class="lfet">
+              <img src="./assets/point.png" alt="" />
+              <span>
+                {{ $t("home.LAN") }}
+              </span>
+            </p>
+            <p class="right">
+              <!-- <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" /> -->
+              <el-popover placement="bottom" trigger="click">
+                <p class="popoverstyle_a">
+                  {{ address }}
+                  <img
+                    src="./assets/fz.png"
+                    style="cursor: pointer"
+                    alt=""
+                    @click="copyText"
+                  />
+                </p>
+                <p class="popoverstyle_b">{{ userName }}</p>
+                <div class="popoverstyle_c">
+                  <img src="./assets/tx1.png" alt="" />
+                  <p class="popoverstyle_c_a">Balance</p>
+                  <p class="popoverstyle_c_b">{{ balance }} BNB</p>
+                </div>
+                <el-divider />
+                <p class="popoverstyle_d" @click="personalCenterFn">My items</p>
+                <p
+                  class="popoverstyle_d"
+                  @click="$router.push({ name: 'redactUser' })"
+                >
+                  Edit profile
+                </p>
+                <el-button
+                  id="userstyle"
+                  slot="reference"
+                  style="background-color: #d7e8fe"
+                >
+                  {{ address }}
+                  <span v-show="addres !== null" @click="addAddressFn"
+                    >切换钱包</span
+                  >
+                  <span v-show="addres == null" @click="addAddressFn"
+                    >连接钱包</span
+                  >
+                </el-button>
+              </el-popover>
+            </p>
+          </div>
+
+          <el-button
+            v-else
+            type="primary"
+            class="userlogin"
+            round
+            @click="$router.replace('/login')"
+          >
+            {{ $t("home.LoginWallet") }}
+          </el-button>
+
+          <el-dropdown trigger="click" @command="handleCommand">
             <img
-              src="./assets/search.png"
+              style="margin: 0 15px; height: 26px"
+              src="./assets/language.png"
               alt=""
-              style="
-                position: absolute;
-                top: 16px;
-                left: 8px;
-                width: 27px;
-                height: 27px;
-              "
             />
-          </div>
-        </el-col>
-        <el-col :span="11">
-          <div class="header-icon">
-            <router-link
-              class="header-icon-a"
-              :to="'/'"
-              :class="{ active: cur === 1 ? true : false }"
-              @click.native="cur = 1"
-            >
-              {{ $t("home.home") }}
-            </router-link>
-
-            <router-link
-              class="header-icon-a"
-              :to="'/bazaar'"
-              :class="{ active: cur === 2 ? true : false }"
-              @click.native="cur = 2"
-            >
-              {{ $t("home.Browse") }}
-            </router-link>
-
-            <router-link
-              class="header-icon-a"
-              :to="{
-                name: 'personalCenter',
-                params: { address: addres },
-              }"
-              :class="{ active: cur === 3 ? true : false }"
-              @click.native="cur = 3"
-            >
-              {{ $t("home.Account") }}
-            </router-link>
-
-            <router-link
-              class="header-icon-a"
-              :to="{
-                name: 'personalCenter',
-                params: { address: addres },
-              }"
-            >
-              地书
-            </router-link>
-
-            <el-button type="primary" class="create" round @click="account()">
-              {{ $t("home.Create") }}
-            </el-button>
-
-            <div v-if="showSuccess == 200" class="loginSuccessful">
-              <p class="lfet">
-                <img src="./assets/point.png" alt="" />
-                <span>
-                  {{ $t("home.LAN") }}
-                </span>
-              </p>
-              <p class="right">
-                <!-- <img src="./assets/Avatar.png" alt="" style="margin: 0 4px" /> -->
-                <el-popover placement="bottom" trigger="click">
-                  <p class="popoverstyle_a">
-                    {{ address }}
-                    <img
-                      src="./assets/fz.png"
-                      style="cursor: pointer"
-                      alt=""
-                      @click="copyText"
-                    />
-                  </p>
-                  <p class="popoverstyle_b">{{ userName }}</p>
-                  <div class="popoverstyle_c">
-                    <img src="./assets/tx1.png" alt="" />
-                    <p class="popoverstyle_c_a">Balance</p>
-                    <p class="popoverstyle_c_b">{{ balance }} BNB</p>
-                  </div>
-                  <el-divider />
-                  <p class="popoverstyle_d" @click="personalCenterFn">
-                    My items
-                  </p>
-                  <p
-                    class="popoverstyle_d"
-                    @click="$router.push({ name: 'redactUser' })"
-                  >
-                    Edit profile
-                  </p>
-                  <el-button
-                    id="userstyle"
-                    slot="reference"
-                    style="background-color: #d7e8fe"
-                  >
-                    {{ address }}
-                    <span v-show="addres !== null" @click="addAddressFn"
-                      >切换钱包</span
-                    >
-                    <span v-show="addres == null" @click="addAddressFn"
-                      >连接钱包</span
-                    >
-                  </el-button>
-                </el-popover>
-              </p>
-            </div>
-
-            <el-button
-              v-else
-              type="primary"
-              class="userlogin"
-              round
-              @click="$router.replace('/login')"
-            >
-              {{ $t("home.LoginWallet") }}
-            </el-button>
-
-            <el-col :span="2">
-              <el-dropdown trigger="click" @command="handleCommand">
-                <img
-                  style="margin: 0 auto; height: 26px"
-                  src="./assets/language.png"
-                  alt=""
-                />
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="a">{{
-                    $t("lang.zh")
-                  }}</el-dropdown-item>
-                  <el-dropdown-item command="c">{{
-                    $t("lang.en")
-                  }}</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown></el-col
-            >
-          </div>
-        </el-col>
-      </el-row>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="a">{{
+                $t("lang.zh")
+              }}</el-dropdown-item>
+              <el-dropdown-item command="c">{{
+                $t("lang.en")
+              }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
     </el-header>
 
     <router-view v-if="isRouterAlive" />
@@ -517,7 +504,6 @@ export default {
   background: #d9e8ff;
   align-items: center;
   border-radius: 19px;
-  margin-left: 5px;
 }
 
 .loginSuccessful .lfet {
@@ -616,12 +602,16 @@ export default {
   padding: 0;
   box-shadow: 0px 3px 4px 0px rgba(140, 140, 140, 0.19);
   z-index: 10;
+  .el-header_img {
+    flex-grow: 1;
+    margin: 0 50px;
+  }
 }
 
 .header-input {
   display: inline-block;
   position: relative;
-  width: 100%;
+  width: 70%;
   // margin-left: 210px;
   /deep/.el-autocomplete {
     width: 100%;
@@ -630,13 +620,12 @@ export default {
 
 .header-icon {
   display: flex;
-  flex-direction: row;
+  // flex-direction: row;
   align-items: center;
-  flex-grow: 1;
+  // flex-grow: 1;
   justify-content: flex-end;
   width: 100%;
   height: 60px;
-  padding-left: 30px;
 }
 
 .icon-public {
@@ -732,11 +721,11 @@ hr {
 }
 
 .header-icon-a {
-  margin-right: 40px;
   font-size: 18px;
   font-family: Source Han Sans CN;
   font-weight: 400;
   color: #333333;
+  margin-right: 30px;
 }
 
 .header-icon-a.active {

@@ -12,28 +12,32 @@
     <div class="wrap" @mouseup.prevent="mouseUp()">
       <div class="left">
         <div class="left_a">
-          <div
-            v-for="(item, index) in classifyList"
-            :key="index"
-            @click="classifyFn(item)"
-          >
-            {{ item.ds_cate_name }}
+          <div class="left_a_list">
+            <div
+              v-for="(item, index) in classifyList"
+              :key="index"
+              @click="classifyFn(item)"
+            >
+              {{ item.ds_cate_name }}
+            </div>
           </div>
         </div>
 
         <div class="left_b">
           <h3>Smileys & People</h3>
-          <div
-            class="item"
-            v-for="(item, index) in leftList"
-            :key="index"
-            @mousedown="mouseEnter1(item)"
-          >
-            <img
-              :src="$Cover(item.prop_image)"
-              oncontextmenu="return false;"
-              ondragstart="return false;"
-            />
+          <div class="left_b_list">
+            <div
+              class="item"
+              v-for="(item, index) in leftList"
+              :key="index"
+              @mousedown="mouseEnter1(item)"
+            >
+              <img
+                :src="$Cover(item.prop_image)"
+                oncontextmenu="return false;"
+                ondragstart="return false;"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -438,13 +442,35 @@ export default {
         height: 100%;
         text-align: center;
         font-size: 20px;
-        background-color: aquamarine;
+        background-color: #fff;
+        border-right: 1px solid #0000000f;
         div {
           cursor: pointer;
+        }
+        .left_a_list {
+          display: flex;
+          flex-direction: column-reverse;
+          justify-content: center;
+          margin-top: 20px;
+          div {
+            width: 122px;
+            height: 62px;
+            line-height: 62px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+          }
+          div:hover {
+            background: #f1f3fb;
+            border-radius: 4px;
+          }
         }
       }
       .left_b {
         padding: 0 15px;
+        .left_b_list {
+          display: flex;
+          flex-wrap: wrap;
+        }
       }
       .item {
         display: flex;

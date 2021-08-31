@@ -410,6 +410,7 @@ export default {
             withCredentials: true,
             data: ruleFormData,
           });
+          console.log(data);
           if (data.code == 200) {
             this.$message({
               message: "上传成功！等待认证！",
