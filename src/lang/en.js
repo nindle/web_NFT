@@ -14,7 +14,7 @@ export default {
     Browse: "Browse",
     Account: "Account",
     Create: "Create",
-    landbook: "landbook",
+    landbook: "metawords",
     LAN: "BSC Mainnet",
     LoginWallet: "Link wallet",
     title: "Discover, collect, and sell extraordinary NFTs",

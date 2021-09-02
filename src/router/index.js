@@ -140,6 +140,12 @@ const routes = [
     name: "landbook",
     component: () =>
       import(/* webpackChunkName: "landbook" */ "../views/landbook/index")
+  },
+  {
+    path: "/operation",
+    name: "operation",
+    component: () =>
+      import(/* webpackChunkName: "operation" */ "../views/landbook/operation")
   }
 ];
 

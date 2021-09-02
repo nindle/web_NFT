@@ -12,8 +12,7 @@
             :trigger-on-focus="false"
             :placeholder="$t('home.search')"
             @select="handleSelect"
-          >
-          </el-autocomplete>
+          />
           <img
             src="./assets/search.png"
             alt=""
@@ -46,7 +45,12 @@
             {{ $t("home.Browse") }}
           </router-link>
 
-          <router-link class="header-icon-a" :to="{ name: 'landbook' }">
+          <router-link
+            class="header-icon-a"
+            :to="{ name: 'landbook' }"
+            :class="{ active: cur === 3 ? true : false }"
+            @click.native="cur = 3"
+          >
             {{ $t("home.landbook") }}
           </router-link>
 
@@ -56,8 +60,8 @@
               name: 'personalCenter',
               params: { address: addres },
             }"
-            :class="{ active: cur === 3 ? true : false }"
-            @click.native="cur = 3"
+            :class="{ active: cur === 4 ? true : false }"
+            @click.native="cur = 4"
           >
             {{ $t("home.Account") }}
           </router-link>
@@ -133,12 +137,12 @@
               alt=""
             />
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="a">{{
-                $t("lang.zh")
-              }}</el-dropdown-item>
-              <el-dropdown-item command="c">{{
-                $t("lang.en")
-              }}</el-dropdown-item>
+              <el-dropdown-item command="a">
+                {{ $t("lang.zh") }}
+              </el-dropdown-item>
+              <el-dropdown-item command="c">
+                {{ $t("lang.en") }}
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -236,7 +240,7 @@ export default {
       } else {
         this.toRouter = 2;
       }
-      var arr = ["/login", "/register", "/reset", "/landbook"];
+      var arr = ["/login", "/register", "/reset", "/operation"];
       var arr2 = arr.some(function (x) {
         return to.path == x;
       });
@@ -252,6 +256,7 @@ export default {
   created() {},
   async mounted() {
     if (sessionStorage.getItem("showSuccess") == null) {
+      console.log();
     } else {
       // this.address = this.SubStr(sessionStorage.getItem("address"));
 
@@ -494,7 +499,7 @@ export default {
   font-family: Source Han Sans CN;
   font-weight: 400;
   font-size: 13px;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
 .loginSuccessful {
@@ -725,7 +730,7 @@ hr {
   font-family: Source Han Sans CN;
   font-weight: 400;
   color: #333333;
-  margin-right: 30px;
+  margin-right: 25px;
 }
 
 .header-icon-a.active {
