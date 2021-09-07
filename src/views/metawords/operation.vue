@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="header">
-      <p @click="$router.push('/')"><i class="el-icon-back"></i>Home</p>
+      <p @click="$router.go(-1)"><i class="el-icon-back"></i>Back</p>
       <div>
         <p>Save as draft</p>
         <el-button type="primary" round @click="saveImg('mycanvas')"
@@ -9,6 +9,7 @@
         >
       </div>
     </div>
+
     <div class="wrap" @mouseup.prevent="mouseUp()">
       <div class="left">
         <div class="left_a">
@@ -47,7 +48,8 @@
       </div>
 
       <div class="right">
-        <h3>Create Your Unique Book</h3>
+        <div class="right_a">Create Your Unique Metawords</div>
+
         <div class="right-wrap">
           <div
             class="item"
@@ -65,11 +67,24 @@
               />
             </div>
           </div>
+          <div class="right_c">
+            <div class="right_c_a">97 / 100</div>
+            <div class="right_c_b" @click="dialogFn">
+              <i class="el-icon-view"></i> Preview
+            </div>
+            <div class="right_c_c"><i class="el-icon-delete"></i>(1)</div>
+          </div>
         </div>
       </div>
+    </div>
 
+    <el-dialog
+      title="Preview"
+      :visible.sync="dialogVisible"
+      width="32%"
+      top="4vh"
+    >
       <div class="show">
-        <h3>Preview</h3>
         <div class="right-wrap" id="mycanvas" ref="mycanvas">
           <div class="item" v-for="(item, index) in rightList" :key="index">
             <div v-show="item.prop_image" class="item-img">
@@ -81,8 +96,16 @@
             </div>
           </div>
         </div>
+
+        <div class="show_a" @click="saveImg('mycanvas')">
+          <i class="el-icon-download"></i> Download
+        </div>
+
+        <div class="show_b">
+          Create your metawords NFT in time and make it your asset
+        </div>
       </div>
-    </div>
+    </el-dialog>
 
     <div
       class="mouse-img"
@@ -103,12 +126,13 @@ import $http from "../../utils/request";
 import html2canvas from "html2canvas";
 
 export default {
-  name: "HelloWorld",
   props: {
     msg: String,
   },
+
   data() {
     return {
+      dialogVisible: false,
       classifyList: [],
       selectedItem: {},
       selectedItem2: {},
@@ -118,160 +142,10 @@ export default {
       },
       mouseImg: {},
       leftList: [],
-      rightList: [
-        {
-          id: 1,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 2,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 3,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 4,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 5,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 6,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 7,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 8,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 9,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 10,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 11,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 12,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 13,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 14,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 15,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 16,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 17,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 18,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 19,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 20,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 21,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 22,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 23,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 24,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 25,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 26,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 27,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 28,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 29,
-          prop_image: "",
-          token_id: "",
-        },
-        {
-          id: 30,
-          prop_image: "",
-          token_id: "",
-        },
-      ],
+      rightList: [],
     };
   },
+
   created() {
     this.$nextTick(() => {
       // 禁用右键
@@ -280,6 +154,7 @@ export default {
       document.onselectstart = new Function("event.returnValue=false");
     });
   },
+
   async mounted() {
     // 实时监听鼠标位置
     window.addEventListener("mousemove", this.updateMouse);
@@ -287,14 +162,36 @@ export default {
     this.classifyList = data.data;
     const resp = await $http.get(`v1/explore/list?page=1&dsid=2`);
     this.leftList = resp.list;
+    this.forFn();
   },
+
   methods: {
+    dialogFn() {
+      this.dialogVisible = true;
+    },
+
+    forFn() {
+      console.log(1);
+      for (var i = 0; i < 100; i++) {
+        console.log(i);
+        var arr = {
+          id: i,
+          prop_image: "",
+          token_id: "",
+        };
+        console.log(arr);
+        this.rightList.push(arr);
+      }
+    },
+
     drag(e) {
       console.log(e);
     },
+
     allowDrop(e) {
       console.log(e);
     },
+
     //下载图片
     saveImg(val) {
       window.pageYoffset = 0;
@@ -414,7 +311,7 @@ export default {
   .header {
     width: 100%;
     height: 60px;
-    background: #0066ed;
+    background: #121214ff;
     display: flex;
     align-items: center;
     padding: 0 15px;
@@ -448,7 +345,7 @@ export default {
     width: 100%;
     display: flex;
     .left {
-      width: 33%;
+      width: 540px;
       height: 770px;
       display: flex;
       flex-wrap: wrap;
@@ -511,28 +408,68 @@ export default {
     }
 
     .right {
-      width: 33%;
-      height: 770px;
-      padding: 40px;
+      width: 68%;
+      // height: 770px;
       background-color: #f1f3fb;
-      h3 {
+      .right_a {
         font-size: 24px;
-        font-family: PingFangSC-Semibold, PingFang SC;
+        font-family: Poppins-SemiBold, Poppins;
         font-weight: 600;
         color: #09090a;
-        margin-bottom: 33px;
+        height: 88px;
+        line-height: 88px;
+        padding-left: 40px;
+        border-bottom: 1px solid #e1e7f0;
+        margin-bottom: 48px;
       }
       .right-wrap {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
+        margin: 0 auto;
+        width: 590px;
+        .right_c {
+          width: 100%;
+          display: flex;
+          margin: 20px 0;
+          align-items: center;
+          justify-content: space-between;
+          .right_c_a {
+            font-size: 16px;
+            font-family: Poppins-Regular, Poppins;
+            font-weight: 400;
+            color: #cbcbd4;
+          }
+          .right_c_b {
+            width: 137px;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 20px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 14px;
+            font-family: Poppins-SemiBold, Poppins;
+            font-weight: 600;
+            cursor: pointer;
+            color: #09090a;
+            z-index: 99;
+          }
+          .right_c_c {
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #09090a;
+            cursor: pointer;
+          }
+        }
         // justify-content: center;
         .item {
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 70px;
-          height: 70px;
+          width: 44px;
+          height: 57px;
+          border-radius: 4px;
           margin-right: 15px;
           margin-bottom: 15px;
           border: 1px dashed #d4d4d4;
@@ -549,55 +486,84 @@ export default {
         }
       }
     }
-
-    .show {
-      width: 33%;
-      height: 770px;
-      padding: 20px;
-      h3 {
-        font-size: 24px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 500;
-        color: #09090a;
-        line-height: 33px;
-        margin: 20px 20px;
-      }
-      .right-wrap {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        padding: 20px;
-        .item {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 40px;
-          height: 40px;
-          cursor: pointer;
-
-          .item-img {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            img {
-              width: 40px;
-              height: 40px;
-            }
-          }
-        }
-      }
-    }
   }
+
   .mouse-img {
     position: fixed;
     top: 100px;
     left: 200px;
     z-index: 99;
-
     img {
       width: 30px;
       height: 30px;
     }
   }
+
+  .show {
+    width: 100%;
+    padding: 20px;
+    .right-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      background-image: url("../../assets/dishu/showbg.png");
+      padding: 20px;
+      width: 530px;
+      .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        margin: 0 10px 10px 0;
+        .item-img {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+      .item:nth-of-type(10n) {
+        margin-right: 0;
+      }
+    }
+    .show_a {
+      width: 153px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: #0066ed;
+      border-radius: 20px;
+      margin: 30px auto 20px;
+      font-size: 14px;
+      font-family: Poppins-SemiBold, Poppins;
+      font-weight: 600;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    .show_b {
+      width: 240px;
+      height: 32px;
+      font-size: 12px;
+      font-family: Poppins-Regular, Poppins;
+      font-weight: 400;
+      color: #7a7a7a;
+      line-height: 16px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}
+/deep/.el-dialog__header {
+  text-align: center;
+  padding: 20px 20px 0;
+  font-size: 24px;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  color: #09090a;
 }
 </style>

@@ -35,7 +35,9 @@
           </div>
           <div class="dishu_b_a_b">
             <p class="dishu_b_a_1">Book from the Ground: Pop-up Book</p>
-            <p class="dishu_b_a_2">2015 - 2016</p>
+            <p class="dishu_b_a_2">
+              a book composed entirely of symbols and icons, 2015 - 2016
+            </p>
           </div>
         </div>
         <div class="dishu_b_a">
@@ -116,7 +118,9 @@
         </div>
       </div>
 
-      <div class="dishu_c">Explore more<i class="el-icon-arrow-right"></i></div>
+      <div class="dishu_c" @click="$router.push({ name: 'dishubazaar' })">
+        Explore more<i class="el-icon-arrow-right"></i>
+      </div>
     </div>
   </div>
 </template>

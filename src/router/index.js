@@ -146,6 +146,14 @@ const routes = [
     name: "operation",
     component: () =>
       import(/* webpackChunkName: "operation" */ "../views/metawords/operation")
+  },
+  {
+    path: "/dishubazaar",
+    name: "dishubazaar",
+    component: () =>
+      import(
+        /* webpackChunkName: "dishubazaar" */ "../views/metawords/dishubazaar"
+      )
   }
 ];
 
