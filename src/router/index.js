@@ -136,16 +136,16 @@ const routes = [
       import(/* webpackChunkName: "attestation" */ "../views/attestation/index")
   },
   {
-    path: "/landbook",
-    name: "landbook",
+    path: "/metawords",
+    name: "metawords",
     component: () =>
-      import(/* webpackChunkName: "landbook" */ "../views/landbook/index")
+      import(/* webpackChunkName: "metawords" */ "../views/metawords/index")
   },
   {
     path: "/operation",
     name: "operation",
     component: () =>
-      import(/* webpackChunkName: "operation" */ "../views/landbook/operation")
+      import(/* webpackChunkName: "operation" */ "../views/metawords/operation")
   }
 ];
 

@@ -14,7 +14,7 @@ export default {
     Browse: "市场",
     Account: "帐户",
     Create: "创造",
-    landbook: "地书",
+    metawords: "地书",
     LAN: "BSC 主网",
     LoginWallet: "登录",
     title: "发现、收集和销售非凡的 NFT",

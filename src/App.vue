@@ -47,11 +47,11 @@
 
           <router-link
             class="header-icon-a"
-            :to="{ name: 'landbook' }"
+            :to="{ name: 'metawords' }"
             :class="{ active: cur === 3 ? true : false }"
             @click.native="cur = 3"
           >
-            {{ $t("home.landbook") }}
+            {{ $t("home.metawords") }}
           </router-link>
 
           <router-link
