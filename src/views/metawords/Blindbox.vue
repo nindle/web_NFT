@@ -1,192 +1,174 @@
 <template>
   <div id="detailsid" v-loading="loading" class="details">
-    <!-- 商品大图zs -->
-    <img
-      id="imgShows"
-      :src="details.prop_image"
-      style="border-radius: 20px"
-      alt=""
-      @error="setDefaultImage"
-    />
-    <div id="clearid" class="clear" />
-    <!-- 产品详情 -->
-    <ul class="details-a">
-      <li class="productTitle">
-        {{ details.prop_name }}
-      </li>
-      <li class="attestation">{{ $t("details.approve") }}</li>
-      <li>
-        <span class="browse">{{ $t("details.Owned") }}</span>
-        <span style="color: #0066ed; margin: 0 13px 0 -12px">
-          {{ details.creator_user_name }}
-        </span>
-        <span class="browse">
-          {{ details.supply_sell }} of {{ details.supply }}
-          {{ $t("details.available") }}
-        </span>
-        <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examines" src="../../assets/examine.png" alt="" />
-          2212
-          <!-- <div class="clear"></div> -->
-        </span>
-        <span class="browse" style="position: relative; margin-left: 20px">
-          <img id="examine" src="../../assets/souchang.png" alt="" />
-          2122
-        </span>
-      </li>
+    <div class="details_a">
+      <img
+        id="imgShows"
+        src="../../assets/dishu/xaingqing.png"
+        alt=""
+        @error="setDefaultImage"
+      />
+      <ul class="details-a">
+        <li class="attestation">Metawords Mystery Box</li>
 
-      <li class="price">
-        <img
-          src="../../assets/price.png"
-          style="width: 47px; height: 47px; margin: 5px 15px 0 0"
-          alt=""
-        />
-        {{ details.price }} {{ details.coin_name }}
-      </li>
-      <!-- 下架 -->
-      <li v-if="details.saleable == 0">
-        <el-button class="details-button" type="primary" :disabled="true">{{
-          $t("details.UnSale")
-        }}</el-button>
-      </li>
+        <li class="details-a_a">Expiration Date</li>
 
-      <!-- 限价模式 -->
-      <li
-        v-else-if="details.saleable == 1 && details.price && details.price > 0"
-      >
-        <div>
+        <li class="details-a_b">
+          <span class="a">00</span>
+          <span class="a">00</span>
+          <span class="a">15</span>
+          <span class="a">00</span>
+        </li>
+
+        <li class="price">
+          <p class="price_a">Price</p>
+          <p class="price_b">
+            <img src="../../assets/dishu/price.png" alt="" />
+            1.9
+            <span class="aa">BNB</span>
+            <span class="bb">≈ $ 921.5</span>
+          </p>
+        </li>
+        <!-- 下架 -->
+        <!-- <li v-if="details.saleable == 0">
+          <el-button class="details-button" type="primary" :disabled="true">{{
+            $t("details.UnSale")
+          }}</el-button>
+        </li> -->
+
+        <!-- 限价模式 -->
+        <li v-if="details.saleable == 0" class="details_btn">
+          <div class="a">
+            <el-button
+              :class="
+                buyisApproved == false ? 'details-button' : 'details-buttonFn'
+              "
+              type="primary"
+              :disabled="buyisApproved == true"
+              @click="buyApprove"
+            >
+              Approve Now
+            </el-button>
+          </div>
           <el-button
-            :class="
-              buyisApproved == false ? 'details-button' : 'details-buttonFn'
-            "
+            class="details-button"
             type="primary"
-            :disabled="buyisApproved == true"
-            @click="buyApprove"
+            :disabled="buyisApproved == false || buyLoading == true"
+            @click="onBuy"
           >
-            {{
-              buyisApproved ? $t("details.Approved") : $t("details.approvedNoW")
-            }}
+            Buy Now
           </el-button>
-        </div>
-        <el-button
-          class="details-button"
-          type="primary"
-          :disabled="buyisApproved == false || buyLoading == true"
-          @click="onBuy"
-        >
-          {{ buyLoading ? $t("details.Buying") : $t("details.BuyNow") }}
-        </el-button>
-      </li>
+        </li>
 
-      <!-- 竞拍模式 -->
-      <li v-else-if="details.saleable == 1 && details.price == 0">
-        <div>
-          <el-input
-            v-model="bid_price"
-            type="text"
-            placeholder="竞拍价格(WBNB)"
-          />
-        </div>
-        <div>余额 {{ wbnb_balance }} WBNB</div>
-        <div>
+        <!-- 竞拍模式 -->
+        <li v-else-if="details.saleable == 1 && details.price == 0">
+          <div>
+            <el-input
+              v-model="bid_price"
+              type="text"
+              placeholder="竞拍价格(WBNB)"
+            />
+          </div>
+          <div>余额 {{ wbnb_balance }} WBNB</div>
+          <div>
+            <el-button
+              class="danger-button"
+              type="danger"
+              :disabled="isApproved == true"
+              @click="bidApprove"
+            >
+              {{
+                isApproved ? $t("details.Approved") : $t("details.approvedNoW")
+              }}
+            </el-button>
+          </div>
           <el-button
             class="danger-button"
             type="danger"
-            :disabled="isApproved == true"
-            @click="bidApprove"
+            :disabled="isApproved == false || bidLoading == true"
+            @click="onBid"
           >
-            {{
-              isApproved ? $t("details.Approved") : $t("details.approvedNoW")
-            }}
+            {{ bidLoading ? $t("details.Biding") : $t("details.BidNow") }}
           </el-button>
-        </div>
-        <el-button
-          class="danger-button"
-          type="danger"
-          :disabled="isApproved == false || bidLoading == true"
-          @click="onBid"
-        >
-          {{ bidLoading ? $t("details.Biding") : $t("details.BidNow") }}
-        </el-button>
-      </li>
+        </li>
 
-      <li v-for="(v, k) in bid_list" :key="k">
-        <div class="productdetails">
-          <div style="width: 100%">
-            <img
-              :src="v.bid_user_cover"
-              style="margin: 10px 15px 0 0; cursor: pointer"
-              alt=""
-              @click="
-                $router.push({
-                  name: 'personalCenter',
-                  params: { address: str },
-                })
-              "
-            />
-          </div>
+        <li v-for="(v, k) in bid_list" :key="k">
+          <div class="productdetails">
+            <div style="width: 100%">
+              <img
+                :src="v.bid_user_cover"
+                style="margin: 10px 15px 0 0; cursor: pointer"
+                alt=""
+                @click="
+                  $router.push({
+                    name: 'personalCenter',
+                    params: { address: str },
+                  })
+                "
+              />
+            </div>
 
-          <div class="clear" />
-          <div
-            class="productdetails-a"
-            style="position: absolute; left: 65px; top: 0px"
-          >
-            <p
-              style="
-                font-size: 12px;
-                font-family: Source Han Sans CN;
-                font-weight: 400;
-                color: #aaaaaa;
-              "
-            >
-              bider
-            </p>
+            <div class="clear" />
             <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                width: 439px;
-              "
+              class="productdetails-a"
+              style="position: absolute; left: 65px; top: 0px"
             >
-              <span
+              <p
                 style="
-                  color: #0066ed;
-                  font-size: 14px;
+                  font-size: 12px;
                   font-family: Source Han Sans CN;
                   font-weight: 400;
+                  color: #aaaaaa;
                 "
               >
-                {{ SubStr(v.bid_user_address) }}
-              </span>
-              <span style="padding: 0 10px 0 80px">
-                {{ v.bid_price | feth }} WBNB
-              </span>
-              <span style="margin: 0 30px 0 10px">
-                {{
-                  v.bid_result == 0
-                    ? "竞拍中"
-                    : v.bid_result == 1
-                    ? "竞拍成功"
-                    : "竞拍失败"
-                }}
-              </span>
-              <el-button
-                v-if="v.bid_result == 0"
-                type="danger"
-                size="small"
-                style="float: right"
-                :disabled="bidLoading == true"
-                @click="bidAccept(v.bid_id)"
+                bider
+              </p>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  width: 439px;
+                "
               >
-                Accept
-              </el-button>
+                <span
+                  style="
+                    color: #0066ed;
+                    font-size: 14px;
+                    font-family: Source Han Sans CN;
+                    font-weight: 400;
+                  "
+                >
+                  {{ SubStr(v.bid_user_address) }}
+                </span>
+                <span style="padding: 0 10px 0 80px">
+                  {{ v.bid_price | feth }} WBNB
+                </span>
+                <span style="margin: 0 30px 0 10px">
+                  {{
+                    v.bid_result == 0
+                      ? "竞拍中"
+                      : v.bid_result == 1
+                      ? "竞拍成功"
+                      : "竞拍失败"
+                  }}
+                </span>
+                <el-button
+                  v-if="v.bid_result == 0"
+                  type="danger"
+                  size="small"
+                  style="float: right"
+                  :disabled="bidLoading == true"
+                  @click="bidAccept(v.bid_id)"
+                >
+                  Accept
+                </el-button>
+              </div>
             </div>
           </div>
-        </div>
-      </li>
+        </li>
 
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
-      <li>
+        <!-- <hr style="border: 1px solid #eeeeee; margin: 24px 0" /> -->
+
+        <!-- <li>
         <div class="productdetails">
           <div style="width: 100%">
             <img
@@ -246,9 +228,9 @@
             />
           </div>
         </div>
-      </li>
+      </li> -->
 
-      <li>
+        <!-- <li>
         <div class="productdetails">
           <div style="width: 100%">
             <img
@@ -307,10 +289,11 @@
             />
           </div>
         </div>
-      </li>
+      </li> -->
 
-      <hr style="border: 1px solid #eeeeee; margin: 24px 0" />
-      <li
+        <!-- <hr style="border: 1px solid #eeeeee; margin: 24px 0" /> -->
+
+        <!-- <li
         style="
           font-size: 15px;
           font-family: Source Han Sans CN;
@@ -319,22 +302,45 @@
         "
       >
         {{ $t("details.Transaction") }}
-      </li>
+      </li> -->
 
-      <li>
+        <!-- <li>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column prop="user_name" :label="$t('details.user')" />
           <el-table-column prop="ord_cate" :label="$t('details.perating')" />
           <el-table-column prop="ord_time" :label="$t('details.time')" />
         </el-table>
-      </li>
-    </ul>
+      </li> -->
+      </ul>
+    </div>
+
+    <div class="details_b">
+      <p class="a">Contract Address</p>
+      <p class="b">0xdB3a8fB8baCd8cCECE587344f3e704Abe27f7581</p>
+    </div>
+    <!-- 商品大图zs -->
+
+    <!-- 产品详情 -->
 
     <el-tabs v-model="activeName">
-      <el-tab-pane :label="$t('details.product')" name="first">
-        {{ details.prop_desc }}
+      <el-tab-pane
+        :label="$t('details.product')"
+        name="first"
+        class="tab_pane_a"
+      >
+        Xu Bing (Chinese: 徐冰; pinyin: Xú Bīng; born 1955) is a Chinese artist
+        who served as vice-president of the Central Academy of Fine Arts. He is
+        known for his printmaking skills and installation art, as well as his
+        creative artistic use of language, words, and text and how they have
+        affected our understanding of the world. He is an A.D. White
+        Professor-at-Large at Cornell University. He was awarded the MacArthur
+        Fellows Program in 1999 and the Fukuoka Prize in 2003.
       </el-tab-pane>
-      <el-tab-pane :label="$t('details.About')" name="second">
+      <el-tab-pane
+        :label="$t('details.About')"
+        name="second"
+        class="tab_pane_a"
+      >
         The full name of NFT is non-Fungible Token, which is a non-homogeneous
         Token. It is the only cryptocurrency Token used to represent digital
         assets, and has the characteristics of indivisible, irreplaceable and
@@ -387,7 +393,7 @@ export default {
     return {
       creator_pic: "",
       own_user_pic: "",
-      loading: true,
+      loading: false,
       details: {
         saleable: 0,
       },
@@ -416,25 +422,25 @@ export default {
   },
   created() {},
   async mounted() {
-    this.getDetails();
-    this.getRecord();
+    // this.getDetails();
+    // this.getRecord();
     // 竞拍列表
-    const bid_resp = await exchange.bidListApi(this.token, this.token_id, 1);
-    console.log(bid_resp);
-    if (bid_resp.code == 200) {
-      let _bid_list = bid_resp.list;
-      for (let k in _bid_list) {
-        console.log(_bid_list[k]);
-        if (!_bid_list[k].bid_user_cover || _bid_list[k].bid_user_cover == "") {
-          _bid_list[k].bid_user_cover = require("../../assets/touxiang.png");
-        } else {
-          _bid_list[k].bid_user_cover = this.$Cover(
-            _bid_list[k].bid_user_cover
-          );
-        }
-      }
-      this.bid_list = _bid_list;
-    }
+    // const bid_resp = await exchange.bidListApi(this.token, this.token_id, 1);
+    // console.log(bid_resp);
+    // if (bid_resp.code == 200) {
+    //   let _bid_list = bid_resp.list;
+    //   for (let k in _bid_list) {
+    //     console.log(_bid_list[k]);
+    //     if (!_bid_list[k].bid_user_cover || _bid_list[k].bid_user_cover == "") {
+    //       _bid_list[k].bid_user_cover = require("../../assets/touxiang.png");
+    //     } else {
+    //       _bid_list[k].bid_user_cover = this.$Cover(
+    //         _bid_list[k].bid_user_cover
+    //       );
+    //     }
+    //   }
+    //   this.bid_list = _bid_list;
+    // }
 
     // wbnb余额
     if (sessionStorage.getItem("address") == null) {
@@ -452,36 +458,38 @@ export default {
   },
   methods: {
     async buyApprove() {
-      const address = await initWallet();
-      if (address == sessionStorage.getItem("emailWalletAddress")) {
-        try {
-          this.loading = true;
-          let currCont = null;
-          // buy approve
-          if (this.details.asset_id == 4) {
-            // 721
-            currCont = Contracts721();
-          } else if (this.details.asset_id == 3) {
-            // 1155
-            currCont = Contracts1155();
-          }
-          if (currCont) {
-            const res = await contracts.setApproveAll(currCont, this.$address);
-            if (res == true) {
-              this.loading = false;
-              this.buyisApproved = res;
-            }
-          }
-        } catch (err) {
-          this.loading = false;
-        }
-      } else {
-        if (sessionStorage.getItem("emailWalletAddress") == "") {
-          this.$message.error("未绑定钱包");
-        } else {
-          this.$message.error("登录钱包与绑定钱包不一致");
-        }
-      }
+      this.buyisApproved = true;
+
+      // const address = await initWallet();
+      // if (address == sessionStorage.getItem("emailWalletAddress")) {
+      //   try {
+      //     // this.loading = true;
+      //     let currCont = null;
+      //     // buy approve
+      //     if (this.details.asset_id == 4) {
+      //       // 721
+      //       currCont = Contracts721();
+      //     } else if (this.details.asset_id == 3) {
+      //       // 1155
+      //       currCont = Contracts1155();
+      //     }
+      //     if (currCont) {
+      //       const res = await contracts.setApproveAll(currCont, this.$address);
+      //       if (res == true) {
+      //         this.loading = false;
+      //         this.buyisApproved = res;
+      //       }
+      //     }
+      //   } catch (err) {
+      //     this.loading = false;
+      //   }
+      // } else {
+      //   if (sessionStorage.getItem("emailWalletAddress") == "") {
+      //     this.$message.error("未绑定钱包");
+      //   } else {
+      //     this.$message.error("登录钱包与绑定钱包不一致");
+      //   }
+      // }
     },
 
     open() {
@@ -1018,155 +1026,133 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#replicator {
-  position: absolute;
-  top: 30px;
-  left: 331px;
-  width: 16px;
-  height: 16px;
-  border-radius: 0;
-}
-#examine {
-  position: absolute;
-  top: 2px;
-  left: -22px;
-  margin-right: 20px;
-  width: 20px;
-  height: 17px;
-  border-radius: 0;
-  box-shadow: 0px 0px 0px 0px;
-}
-#examines {
-  position: absolute;
-  top: 3px;
-  left: -22px;
-  margin-right: 20px;
-  width: 20px;
-  height: 14px;
-  border-radius: 0;
-  box-shadow: 0px 0px 0px 0px;
-}
-.el-table--enable-row-transition {
-  border: 1px solid #ebf0f5;
-  border-bottom: 0;
-  border-radius: 10px;
-}
-.el-tabs--top {
-  width: 100%;
-  margin: 40px 0 150px 0;
-}
-/deep/ tr td:first-child .cell {
-  font-size: 9px;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
-  color: #0066ed;
-}
-.el-table {
-  margin: 0;
-}
-.price {
-  font-size: 36px;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
-  color: #000000;
-  line-height: 60px;
-}
-.browse {
-  // position: relative;
-  font-size: 14px;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
-  color: #7b7b7b;
-  margin-right: 13px;
-}
-.attestation {
-  font-size: 18px;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
-  color: #0066ed;
-}
-.productTitle {
-  width: 503px;
-  // height: 57px;
-  font-size: 26px;
-  font-family: Source Han Sans CN;
-  font-weight: bold;
-  color: #000000;
-  line-height: 36px;
-}
 .details {
-  // position: relative;、
-  display: flex;
   width: 1200px;
-  // height: 640px;
   margin: 0 auto;
-  flex-wrap: wrap;
-  margin-top: 60px;
-}
-.details img {
-  float: left;
-  width: 612px;
-  height: 782px;
-  background: #ffffff;
-  // box-shadow: 0px 0px 8px 1px rgba(140, 140, 140, 0.26);
-  border-radius: 36px;
-}
+  .details_a {
+    display: flex;
+    margin-top: 47px;
+    #imgShows {
+      width: 486px;
+      height: 421px;
+      margin-right: 126px;
+    }
+    .details-a {
+      .attestation {
+        font-size: 32px;
+        font-family: Poppins-SemiBold, Poppins;
+        font-weight: 600;
+        color: #09090a;
+        margin-bottom: 25px;
+      }
 
-.clear {
-  clear: both;
-}
-.details-a {
-  display: flex;
-  flex-direction: column;
-  padding-left: 81px;
-  line-height: 42px;
-}
-.details-button {
-  margin-top: 30px;
-  width: 504px;
-  height: 61px;
-  background: #0066ed;
-  // box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
-  border-radius: 10px;
-}
-.details-buttonFn {
-  margin-top: 20px;
-  width: 504px;
-  height: 61px;
-  background-color: #a0cfff;
-  // box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
-  border-radius: 10px;
-  border: 0;
-}
-.danger-button {
-  margin-top: 20px;
-  width: 504px;
-  height: 61px;
-  box-shadow: 0px 0px 19px 0px rgba(186, 191, 205, 0.45);
-  border-radius: 10px;
-}
+      .details-a_a {
+        font-size: 14px;
+        font-family: Poppins-SemiBold, Poppins;
+        font-weight: 600;
+        color: #09090a;
+      }
 
-.details-b {
-  display: flex;
-  border-bottom: 1px solid #eceef0;
+      .details-a_b {
+        display: flex;
+        .a {
+          width: 28px;
+          height: 28px;
+          line-height: 28px;
+          text-align: center;
+          display: block;
+          background: #09090a;
+          border-radius: 4px;
+          margin: 10px 10px 25px 0;
+          font-size: 14px;
+          font-family: Poppins-Regular, Poppins;
+          font-weight: 400;
+          color: #ffffff;
+        }
+      }
+
+      .price {
+        .price_a {
+          font-size: 12px;
+          font-family: Poppins-Regular, Poppins;
+          font-weight: 400;
+          color: #09090a;
+          margin-bottom: 15px;
+        }
+        .price_b {
+          display: flex;
+          align-items: center;
+          font-size: 24px;
+          font-family: Poppins-SemiBold, Poppins;
+          font-weight: 600;
+          color: #09090a;
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+          }
+          .aa {
+            font-size: 12px;
+            margin-top: 5px;
+            margin-left: 5px;
+            margin-right: 30px;
+          }
+          .bb {
+            font-size: 12px;
+            font-family: Poppins-Regular, Poppins;
+            font-weight: 400;
+            color: #7a7a7a;
+          }
+        }
+      }
+
+      .details_btn {
+        .a {
+          margin: 50px 0 20px 0;
+        }
+        .details-button {
+          width: 384px;
+          height: 60px;
+          background: #0066ed;
+          border-radius: 4px;
+          font-size: 16px;
+          font-family: Poppins-SemiBold, Poppins;
+          font-weight: 600;
+          color: #ffffff;
+          border: 0;
+        }
+
+        .details-buttonFn {
+          width: 384px;
+          height: 60px;
+          background: #e1e7f0;
+          border-radius: 4px;
+          border: 0;
+        }
+      }
+    }
+  }
+
+  .details_b {
+    margin: 20px 0 30px 0;
+    .a {
+      font-size: 12px;
+      font-family: Poppins-Regular, Poppins;
+      font-weight: 400;
+      color: #7a7a7a;
+    }
+    .b {
+      font-size: 12px;
+      font-family: Poppins-Regular, Poppins;
+      font-weight: 400;
+      color: #09090a;
+    }
+  }
 }
-.productdetails {
-  position: relative;
-}
-.productdetails img {
-  width: 48px;
-  height: 48px;
-  margin-right: 20px;
-  border-radius: 50%;
-}
-.productdetails-a p {
-  display: flex;
-  height: 17px;
-  line-height: 37px;
-  flex-direction: column;
-}
-.productdetails-b p {
-  height: 30px;
-  line-height: 30px;
+.tab_pane_a {
+  font-size: 14px;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #09090a;
 }
 </style>

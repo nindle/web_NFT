@@ -22,7 +22,7 @@
 
     <div class="dishubazaar_b">
       <div class="dishu_d">
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -67,7 +67,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -82,7 +82,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -97,7 +97,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -112,7 +112,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -127,7 +127,7 @@
           </div>
         </div>
 
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -248,6 +248,7 @@ export default {
         border-radius: 8px;
         border: 1px solid #e5e8eb;
         margin-bottom: 20px;
+        cursor: pointer;
         .dishu_d_a_t {
           width: 280px;
           height: 345px;

@@ -60,7 +60,7 @@
       <h3 style="padding: 40px 0">Metawords Mystery Box</h3>
 
       <div class="dishu_d">
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -74,7 +74,7 @@
             </p>
           </div>
         </div>
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -88,7 +88,7 @@
             </p>
           </div>
         </div>
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -102,7 +102,7 @@
             </p>
           </div>
         </div>
-        <div class="dishu_d_a">
+        <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
           </div>
@@ -287,6 +287,7 @@ export default {
       background: #ffffff;
       border-radius: 8px;
       border: 1px solid #e5e8eb;
+      cursor: pointer;
       .dishu_d_a_t {
         width: 280px;
         height: 345px;
