@@ -185,6 +185,7 @@ export default {
           item.token_id = "";
         }
       });
+      this.countFn();
     },
 
     dialogFn() {
