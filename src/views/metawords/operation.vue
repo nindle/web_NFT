@@ -57,7 +57,6 @@
             :key="index"
             @mouseup.stop="mouseUp2(item)"
             @mousedown="mouseEnter2(item)"
-            @ondragover="allowDrop(event)"
           >
             <div v-show="item.prop_image" class="item-img">
               <img
@@ -67,12 +66,15 @@
               />
             </div>
           </div>
+
           <div class="right_c">
-            <div class="right_c_a">97 / 100</div>
+            <div class="right_c_a">{{ showcount }} / 100</div>
             <div class="right_c_b" @click="dialogFn">
               <i class="el-icon-view"></i> Preview
             </div>
-            <div class="right_c_c"><i class="el-icon-delete"></i>(1)</div>
+            <div class="right_c_c" @mouseup.stop="stopUp">
+              <i class="el-icon-delete"></i>(1)
+            </div>
           </div>
         </div>
       </div>
@@ -81,7 +83,7 @@
     <el-dialog
       title="Preview"
       :visible.sync="dialogVisible"
-      width="32%"
+      width="610px"
       top="4vh"
     >
       <div class="show">
@@ -126,12 +128,10 @@ import $http from "../../utils/request";
 import html2canvas from "html2canvas";
 
 export default {
-  props: {
-    msg: String,
-  },
-
   data() {
     return {
+      showcount: 100,
+      showcounts: [],
       dialogVisible: false,
       classifyList: [],
       selectedItem: {},
@@ -166,29 +166,43 @@ export default {
   },
 
   methods: {
+    countFn() {
+      this.showcounts = [];
+      this.rightList.forEach((item) => {
+        if (item.prop_image !== "") {
+          this.showcounts.push(item);
+        }
+      });
+      this.showcount = 100 - this.showcounts.length;
+    },
+
+    stopUp() {
+      this.selectedItem = {};
+      this.selectedItem2 = {};
+      this.rightList.forEach((item) => {
+        if (item.id == this.mouseImg.id) {
+          item.prop_image = "";
+          item.token_id = "";
+        }
+      });
+    },
+
     dialogFn() {
       this.dialogVisible = true;
     },
 
     forFn() {
-      console.log(1);
-      for (var i = 0; i < 100; i++) {
-        console.log(i);
+      for (var i = 1; i < 101; i++) {
         var arr = {
           id: i,
           prop_image: "",
           token_id: "",
         };
-        console.log(arr);
         this.rightList.push(arr);
       }
     },
 
     drag(e) {
-      console.log(e);
-    },
-
-    allowDrop(e) {
       console.log(e);
     },
 
@@ -236,8 +250,8 @@ export default {
 
     //监听鼠标位置
     updateMouse(e) {
-      this.mousePoint.x = e.pageX - 30 + "px";
-      this.mousePoint.y = e.pageY - 30 + "px";
+      this.mousePoint.x = e.clientX - 30 + "px";
+      this.mousePoint.y = e.clientY - 30 + "px";
       if (this.selectedItem && this.selectedItem.prop_image) {
         this.mouseImg = JSON.parse(JSON.stringify(this.selectedItem));
       } else if (this.selectedItem2 && this.selectedItem2.prop_image) {
@@ -249,48 +263,43 @@ export default {
 
     //选择区鼠标按下
     mouseEnter1(item) {
-      console.log("mouseEnter", item);
       this.selectedItem2 = {};
       this.selectedItem = item;
     },
 
     //整个页面鼠标按下
     mouseUp(item) {
-      console.log("mouseUp", item);
       this.selectedItem = {};
+      this.selectedItem2 = {};
     },
 
-    //操作区鼠标按下
+    //操作区鼠标抬起
     mouseUp2(item) {
-      console.log("mouseUp2", item, this.selectedItem2);
+      //左边拖拽触发
       if (this.selectedItem && this.selectedItem.prop_image) {
         item.prop_image = this.$Cover(this.selectedItem.prop_image);
         item.token_id = this.selectedItem.token_id;
         this.selectedItem = {};
       }
-
+      //右边拖拽触发
       if (this.selectedItem2 && this.selectedItem2.prop_image) {
-        console.log(this.selectedItem2);
         let item2 = JSON.parse(JSON.stringify(item));
-        console.log(item);
         item.prop_image = this.selectedItem2.prop_image;
         item.token_id = this.selectedItem2.token_id;
         this.rightList.forEach((item3) => {
-          console.log(item3);
           if (item3.id == this.selectedItem2.id) {
             item3.prop_image = item2.prop_image;
             item3.token_id = item2.token_id;
           }
         });
       }
+      this.selectedItem = {};
+      this.selectedItem2 = {};
+      this.countFn();
     },
 
     //操作区鼠标按下
     mouseEnter2(item) {
-      if (this.selectedItem && this.selectedItem.prop_image) {
-        console.log("mouseEnter2", item);
-        item.prop_image = this.selectedItem.prop_image;
-      }
       if (item) {
         this.selectedItem2 = item;
       }
