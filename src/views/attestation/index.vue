@@ -360,6 +360,7 @@ export default {
       this.attestationTwo = false;
     }
   },
+
   methods: {
     async attestationOneFn() {
       const address = await initWallet();
@@ -371,6 +372,7 @@ export default {
         this.dialogVisible = true;
       }
     },
+
     postIdCardFn() {
       let accessKeyId = "AKIAUZZ7N3HSXPDOV6QN";
       let secretAccessKey = "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";
@@ -395,6 +397,15 @@ export default {
           });
         }
       });
+      s3.getObject(
+        {
+          Bucket: `lionusertest/UserImg/1104892323@qq.com`,
+          Key: "5.jpg",
+        },
+        function (err, data) {
+          console.log(data.Body.toString());
+        }
+      );
     },
 
     submitForm(formName) {
@@ -612,6 +623,7 @@ export default {
   padding-left: 10px;
   border-bottom: 1px solid #eceef0;
 }
+
 /deep/.el-dialog {
   margin-top: 10vh !important;
 }

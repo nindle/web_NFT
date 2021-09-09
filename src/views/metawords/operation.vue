@@ -282,6 +282,7 @@ export default {
         item.token_id = this.selectedItem.token_id;
         this.selectedItem = {};
       }
+
       //右边拖拽触发
       if (this.selectedItem2 && this.selectedItem2.prop_image) {
         let item2 = JSON.parse(JSON.stringify(item));
