@@ -6,11 +6,14 @@
     <div class="content">
       <div class="dishu_a">
         <div class="dishu_a_left">
-          <p class="dishu_a_a">欢迎来到“地书”</p>
-          <p class="dishu_a_b">只需几分钟体验，就可以创作出你的“地书”NFT！</p>
+          <p class="dishu_a_a">Welcome to Metawords</p>
+          <p class="dishu_a_b">
+            You can create your Metawords NFT in just a few minutes of
+            experience!
+          </p>
         </div>
         <div class="dishu_a_right" @click="$router.push({ name: 'operation' })">
-          去创造 <i class="el-icon-arrow-right"></i>
+          Get Started <i class="el-icon-arrow-right"></i>
         </div>
       </div>
 
@@ -166,21 +169,22 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-image: url("../../assets/dishu/dishubg.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     padding: 0 40px;
     .dishu_a_left {
       .dishu_a_a {
-        font-size: 24px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 500;
+        font-size: 28px;
+        font-family: Poppins-SemiBold, Poppins;
+        font-weight: 600;
         color: #09090a;
-        letter-spacing: 1px;
       }
       .dishu_a_b {
         font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
+        font-family: Poppins-Regular, Poppins;
         font-weight: 400;
         color: #09090a;
-        letter-spacing: 1px;
       }
     }
     .dishu_a_right {

@@ -397,15 +397,6 @@ export default {
           });
         }
       });
-      s3.getObject(
-        {
-          Bucket: `lionusertest/UserImg/1104892323@qq.com`,
-          Key: "5.jpg",
-        },
-        function (err, data) {
-          console.log(data.Body.toString());
-        }
-      );
     },
 
     submitForm(formName) {
