@@ -3,9 +3,11 @@
     <div class="rollback" @click="$router.go(-1)">
       <i class="el-icon-arrow-left" />{{ $t("establish.go") }}
     </div>
+
     <div class="create">
       {{ $t("establish.Create") }}
     </div>
+
     <div class="create_a">
       {{ $t("establish.jieshao") }}
     </div>
@@ -24,10 +26,17 @@
         <p>{{ $t("establish.weiqi") }}</p>
       </div>
     </div>
+
     <div class="prompt">
       {{ $t("establish.zijin") }}
     </div>
 
+    <el-button
+      type="primary"
+      @click="$router.push({ name: 'createMetawords' })"
+    >
+      createMetawords
+    </el-button>
     <el-dialog
       :title="$t('establish.tishi')"
       :visible.sync="dialogVisible"
@@ -59,14 +68,14 @@ export default {
   data() {
     return {
       next: true,
-      dialogVisible: false
+      dialogVisible: false,
     };
   },
   computed: {},
   mounted() {
     window.addEventListener(
       "message",
-      ev => {
+      (ev) => {
         var data = ev.data;
         if (data.code === 10000) {
           this.next = false;
@@ -81,7 +90,7 @@ export default {
     weiqiFn() {
       this.dialogVisible = false;
       this.$router.push({
-        name: "Weiqi"
+        name: "Weiqi",
         // params: { userId: sessionStorage.getItem("address") },
       });
     },
@@ -94,7 +103,7 @@ export default {
         this.$message.error("个人信息不全");
         this.$router.push({
           name: "redactUser",
-          params: { userId: sessionStorage.getItem("address") }
+          params: { userId: sessionStorage.getItem("address") },
         });
       }
     },
@@ -104,8 +113,8 @@ export default {
     },
     Multiple() {
       this.$router.push({ name: "multiple", params: { userId: "123" } });
-    }
-  }
+    },
+  },
 };
 </script>
 

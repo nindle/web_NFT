@@ -12,12 +12,14 @@
             experience!
           </p>
         </div>
+
         <div class="dishu_a_right" @click="$router.push({ name: 'operation' })">
           Get Started <i class="el-icon-arrow-right"></i>
         </div>
       </div>
 
       <h3>World Famous Works Of Metaword</h3>
+
       <div class="dishu_b">
         <div class="dishu_b_a">
           <div class="dishu_b_a_a">
@@ -32,6 +34,7 @@
             </p>
           </div>
         </div>
+
         <div class="dishu_b_a">
           <div class="dishu_b_a_a">
             <img src="../../assets/dishu/show2.png" alt="" />
@@ -43,6 +46,7 @@
             </p>
           </div>
         </div>
+
         <div class="dishu_b_a">
           <div class="dishu_b_a_a">
             <img src="../../assets/dishu/show3.png" alt="" />
@@ -60,6 +64,7 @@
       <div class="dishu_c" @click="SeemoreFn">
         See more<i class="el-icon-arrow-right"></i>
       </div>
+
       <h3 style="padding: 40px 0">Metawords Mystery Box</h3>
 
       <div class="dishu_d">
@@ -77,6 +82,7 @@
             </p>
           </div>
         </div>
+
         <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
@@ -91,6 +97,7 @@
             </p>
           </div>
         </div>
+
         <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />
@@ -105,6 +112,7 @@
             </p>
           </div>
         </div>
+
         <div class="dishu_d_a" @click="$router.push({ name: 'Blindbox' })">
           <div class="dishu_d_a_t">
             <img src="../../assets/dishu/dishu1.png" alt="" />

@@ -6,7 +6,10 @@ import { ethers } from "ethers";
 import { defaultAbiCoder, ParamType } from "@ethersproject/abi";
 import { keccak256 } from "@ethersproject/keccak256";
 
-const TransferProxyAddr = process.env.NODE_ENV === "production" ? "0x1ff9d91B940d552acE0f1a7A6e3c1c04b87B725d" : "0x200e61C267f040c3e00fC86d1fe507247F1b1B26";
+const TransferProxyAddr =
+  process.env.NODE_ENV === "production"
+    ? "0x1ff9d91B940d552acE0f1a7A6e3c1c04b87B725d"
+    : "0x200e61C267f040c3e00fC86d1fe507247F1b1B26";
 
 async function Sgfitem(
   address,
@@ -26,10 +29,7 @@ async function Sgfitem(
   json.meta_field3 = meta_field3;
   json.meta_field4 = meta_field4;
 
-  const jsonResp = await $http.post(
-    "/v1/item/metadata",
-    json
-  );
+  const jsonResp = await $http.post("/v1/item/metadata", json);
   return jsonResp;
 }
 
@@ -44,20 +44,21 @@ async function uploadJson(image, title, desc, props) {
   });
   const formData = new FormData();
   formData.append("file", blob);
-  const jsonResp = await $http.post(
-    "/v1/upload/file",
-    formData
-  );
+  const jsonResp = await $http.post("/v1/upload/file", formData);
   return jsonResp;
 }
 
 async function newTokenId(contract) {
   const formData = new FormData();
   formData.append("address", contract);
-  const tokenResp = await $http.post(
-    "/v1/tokenid/new",
-    formData
-  );
+  const tokenResp = await $http.post("/v1/tokenid/new", formData);
+  return tokenResp;
+}
+
+async function newTokenIdV1(contract) {
+  const formData = new FormData();
+  formData.append("address", contract);
+  const tokenResp = await $http.post("/v1/tokenid/newv1", formData);
   return tokenResp;
 }
 
@@ -67,6 +68,19 @@ async function mintErc721(contract721, tokenid, signature, fees, uri) {
   console.log(id);
   const sign = ethers.utils.splitSignature(signature);
   const tx = await contract721.mint(id, sign.v, sign.r, sign.s, fees, uri);
+  console.log("transaction=>", tx);
+  const receipt = await tx.wait();
+  console.log("receipt=>", receipt);
+  return tx;
+}
+
+//地书方法
+async function MetawordsErc721V1(contract721, tokenid, signature, fees, uri) {
+  console.log("MetawordsErc721V1=>", tokenid, signature, fees, uri);
+  const id = ethers.BigNumber.from(tokenid).toBigInt();
+  console.log(id);
+  const sign = ethers.utils.splitSignature(signature);
+  const tx = await contract721.mint(id, 1, sign.v, sign.r, sign.s, [], uri);
   console.log("transaction=>", tx);
   const receipt = await tx.wait();
   console.log("receipt=>", receipt);
@@ -106,6 +120,16 @@ async function addItem(hash, assetType) {
     tx_id: hash,
     // 721=4 1155=3
     asset_type: assetType
+  });
+  return resp;
+}
+
+async function addItemV1(hash, assetType, cont_address) {
+  const resp = await $http.post("/v1/item/add", {
+    tx_id: hash,
+    // 721=4 1155=3
+    asset_type: assetType,
+    cont_address: cont_address
   });
   return resp;
 }
@@ -215,6 +239,16 @@ async function createOrder(order, signature) {
   return resp;
 }
 
+async function createOrderV1(order, signature, kind, cate_id) {
+  const resp = await $http.post("/v1/order/createV1", {
+    order: order,
+    signature: signature,
+    kind: kind,
+    cate_id: cate_id
+  });
+  return resp;
+}
+
 function sequence(order) {
   return {
     key: {
@@ -239,10 +273,7 @@ function sequence(order) {
 
 async function setApproveAll(contract, address) {
   console.log("approveAll", address, contract);
-  const tx = await contract.setApprovalForAll(
-    TransferProxyAddr,
-    true
-  );
+  const tx = await contract.setApprovalForAll(TransferProxyAddr, true);
   console.log("transaction=>", tx);
   const receipt = await tx.wait();
   console.log("receipt=>", receipt);
@@ -251,10 +282,7 @@ async function setApproveAll(contract, address) {
 }
 
 async function isApprovedAll(contract, address) {
-  const res = await contract.isApprovedForAll(
-    address,
-    TransferProxyAddr
-  );
+  const res = await contract.isApprovedForAll(address, TransferProxyAddr);
   console.log("isApprovedForAll=>", res);
   return res;
 }
@@ -269,13 +297,17 @@ export default {
   uploadJson,
   Sgfitem,
   newTokenId,
+  newTokenIdV1,
   mintErc721,
   mintErc1155,
+  MetawordsErc721V1,
   addItem,
+  addItemV1,
   // order
   orderSigner,
   changeSale,
   createOrder,
+  createOrderV1,
   sequence,
   // approve
   setApproveAll,

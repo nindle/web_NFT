@@ -160,6 +160,14 @@ const routes = [
     name: "Blindbox",
     component: () =>
       import(/* webpackChunkName: "Blindbox" */ "../views/metawords/Blindbox")
+  },
+  {
+    path: "/establish/metawords",
+    name: "createMetawords",
+    component: () =>
+      import(
+        /* webpackChunkName: "createMetawords" */ "../views/establish/metawords"
+      )
   }
 ];
 

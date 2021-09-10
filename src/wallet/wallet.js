@@ -1,5 +1,6 @@
 import Vue from "vue";
 import ERC721 from "./VVMERC721.json";
+import METAWORDS721 from "./LionNFTV1.json"; //引入地书合约
 import ERC1155 from "./VVMToken1155.json";
 import ExchangeV1 from "./ExchangeV1.json";
 import ERC20 from "./ERC20.json";
@@ -75,7 +76,19 @@ export function Contracts721() {
   return erc721;
 }
 
+// 实例化地书合约721
+export function Metawords721() {
+  const provider = getProvider();
+  const dishu721 = new ethers.Contract(
+    METAWORDS721[address_name],
+    METAWORDS721.abi,
+    provider.getSigner()
+  );
+  return dishu721;
+}
+
 export const erc721Addr = ethers.utils.getAddress(ERC721[address_name]);
+export const dishu721Addr = ethers.utils.getAddress(METAWORDS721[address_name]);
 export const erc1155Addr = ethers.utils.getAddress(ERC1155[address_name]);
 export const erc20TranProxyAddr = ethers.utils.getAddress(
   ERC20Proxy[address_name]
